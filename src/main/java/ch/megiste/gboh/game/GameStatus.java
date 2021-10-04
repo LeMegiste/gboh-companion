@@ -1,10 +1,13 @@
 package ch.megiste.gboh.game;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -13,9 +16,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.logging.log4j.util.Strings;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.thoughtworks.xstream.XStream;
@@ -63,22 +68,47 @@ public class GameStatus {
 		return battleName + " " + Helper.toRoman(state.currentTurn) + "." + state.currentCommand;
 	}
 
-	public void load(final Path battleDir) {
+	public void load(Path battleDir) {
 		try {
 			if (battleDir == null) {
 				final String battleDirString = generalProperties.getProperty("currentBattle");
 				if (Strings.isEmpty(battleDirString)) {
 					return;
+				} else {
+					battleDir = Paths.get(battleDirString);
 				}
 			}
 			final Stream<Path> children = Files.list(battleDir);
 			final List<Path> armyFiles = children.filter(p -> p.getFileName().toString().startsWith("Army_")).sorted()
 					.collect(Collectors.toList());
 			if (armyFiles.size() != 2) {
-				throw new RuntimeException("We need two army files in the battle directory.");
+				throw new GbohError("We need two army files in the battle directory.");
 			}
 			army1 = loadArmy(armyFiles.get(0));
 			army2 = loadArmy(armyFiles.get(1));
+
+			//Check armies consistency
+			List<String> processedCodes = new ArrayList<>();
+			boolean invalidArmies = false;
+			List<String> duplicateCodes = new ArrayList<>();
+			for (Unit u : getAllUnits()) {
+				final String unitCode = u.getUnitCode();
+
+				if (processedCodes.contains(unitCode)) {
+					invalidArmies = true;
+					if (!duplicateCodes.contains(unitCode)) {
+						duplicateCodes.add(unitCode);
+					}
+				} else {
+					processedCodes.add(unitCode);
+				}
+			}
+			Collections.sort(duplicateCodes);
+			if (invalidArmies) {
+				throw new GbohError(
+						"Invalid army. The following codes are duplicated." + Joiner.on(", ").join(duplicateCodes));
+			}
+
 			currentDir = battleDir;
 			battleName = battleDir.getFileName().toString();
 
@@ -121,7 +151,7 @@ public class GameStatus {
 	private Army loadArmy(final Path path) throws IOException {
 		String name = path.getFileName().toString().split("\\.")[0].split("_")[1];
 
-		CSVFormat format = CSVFormat.newFormat('\t').withFirstRecordAsHeader();
+		CSVFormat format = buildCsvFormat();
 		try (Reader r = Files.newBufferedReader(path)) {
 			final List<CSVRecord> records = format.parse(r).getRecords();
 			List<Unit> units = records.stream().map(this::fromRecordToUnit).collect(Collectors.toList());
@@ -131,24 +161,28 @@ public class GameStatus {
 
 	}
 
-	private Unit fromRecordToUnit(final CSVRecord r) {
-		final int tq = Integer.parseInt(r.get("TQ"));
-		final int size = Integer.parseInt(r.get("Size"));
+	private CSVFormat buildCsvFormat() {
+		return CSVFormat.newFormat('\t').withFirstRecordAsHeader().withRecordSeparator("\r\n");
+	}
 
-		final UnitKind kind = Helper.readEnum(r.get("Kind"), UnitKind.class, UnitKind.LG);
-		final SubClass sc = Helper.readEnum(r.get("Subclass"), SubClass.class, SubClass.NONE);
-		final MissileType missileType = Helper.readEnum(r.get("Missile"), MissileType.class, MissileType.NONE);
+	private Unit fromRecordToUnit(final CSVRecord r) {
+		final int tq = Integer.parseInt(r.get(Head.TQ));
+		final int size = Integer.parseInt(r.get(Head.Size));
+
+		final UnitKind kind = Helper.readEnum(r.get(Head.Kind), UnitKind.class, UnitKind.LG);
+		final SubClass sc = Helper.readEnum(r.get(Head.Subclass), SubClass.class, SubClass.NONE);
+		final MissileType missileType = Helper.readEnum(r.get(Head.Missile), MissileType.class, MissileType.NONE);
 
 		final Unit unit =
-				new Unit(kind, sc, r.get("Origin"), r.get("Number"), r.get("Unit code"), tq, size, missileType);
-		if (r.isSet("Hits") && Strings.isNotEmpty(r.get("Hits"))) {
-			unit.getStatus().hits = Integer.parseInt(r.get("Hits"));
+				new Unit(kind, sc, r.get(Head.Origin), r.get(Head.Number), r.get(Head.UnitCode), tq, size, missileType);
+		if (r.isSet(Head.Hits.toString()) && Strings.isNotEmpty(r.get(Head.Hits))) {
+			unit.getStatus().hits = Integer.parseInt(r.get(Head.Hits));
 		}
-		if (r.isSet("State") && Strings.isNotEmpty(r.get("State"))) {
-			unit.getStatus().state = UnitState.valueOf(r.get("State"));
+		if (r.isSet(Head.State.toString()) && Strings.isNotEmpty(r.get(Head.State))) {
+			unit.getStatus().state = UnitState.valueOf(r.get(Head.State));
 		}
-		if (r.isSet("MissileStatus") && Strings.isNotEmpty(r.get("MissileStatus"))) {
-			unit.getStatus().missileStatus = MissileStatus.valueOf(r.get("MissileStatus"));
+		if (r.isSet(Head.MissileStatus.toString()) && Strings.isNotEmpty(r.get(Head.MissileStatus))) {
+			unit.getStatus().missileStatus = MissileStatus.valueOf(r.get(Head.MissileStatus));
 		}
 		return unit;
 	}
@@ -198,6 +232,50 @@ public class GameStatus {
 		generalProperties = Helper.loadProperties();
 		return generalProperties;
 
+	}
+
+	public void dump() {
+		dumpArmy(army1);
+		dumpArmy(army2);
+	}
+
+	private enum Head {
+		TQ, Size, Kind, Subclass, Missile, Origin, Number, UnitCode("Unit code"), Hits, State, MissileStatus;
+
+		private String header;
+
+		Head(final String header) {
+			this.header = header;
+		}
+
+		Head() {
+			this.header = name();
+		}
+
+		@Override
+		public String toString() {
+			return header;
+		}
+	}
+
+	private void dumpArmy(final Army army) {
+		final String armyFileName =
+				"Dump_" + state.currentTurn + "_" + state.currentCommand + "_" + army.getName() + ".tsv";
+		Path dumpPath = currentDir.resolve(armyFileName);
+		try (CSVPrinter printer = new CSVPrinter(new FileWriter(dumpPath.toFile()), buildCsvFormat())) {
+			printer.printRecord(Head.Kind, Head.Subclass, Head.Origin, Head.Number, Head.UnitCode, Head.TQ, Head.Size,
+					Head.Missile, Head.Hits, Head.State, Head.MissileStatus);
+
+			for (Unit u : army.getUnits()) {
+				printer.printRecord(u.getKind(), u.getSubclass(), u.getOrigin(), u.getNumber(), u.getUnitCode(),
+						u.getOriginalTq(), u.getSize(), u.getMissile(), u.getHits(), u.getState(),
+						u.getMissileStatus());
+
+			}
+
+		} catch (IOException ex) {
+			throw new GbohError(ex);
+		}
 	}
 
 	public static class FindUnitsResult {

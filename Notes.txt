@@ -1,9 +1,10 @@
-Add DUMP army feature
+Implement preloaded battles
+DUMP army feature
 Autocomplete unit searching
-LOAD function
+OK - LOAD function
 
 Implement pursuit rules
-HELP functions
+OK - HELP functions
 Attacks ou routed always from back
 Log in a file
 

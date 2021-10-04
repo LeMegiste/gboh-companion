@@ -35,27 +35,45 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
-				 <finalName>gboh-companion</finalName>
-                  <descriptorRefs>
-                    <descriptorRef>jar-with-dependencies</descriptorRef>
-                  </descriptorRefs>
-                                    <archive>
-            <manifest>
-              <mainClass>ch.megiste.gboh.Repl</mainClass>
-            </manifest>
-          </archive>
+                    <finalName>gboh-companion</finalName>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>ch.megiste.gboh.Repl</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
                 <executions>
-                  <execution>
-                    <id>make-assembly</id> <!-- this is used for inheritance merges -->
-                    <phase>package</phase> <!-- bind to the packaging phase -->
-                    <goals>
-                      <goal>single</goal>
-                    </goals>
+                    <execution>
+                        <id>make-assembly</id> <!-- this is used for inheritance merges -->
+                        <phase>package</phase> <!-- bind to the packaging phase -->
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
 
-                  </execution>
+                    </execution>
                 </executions>
-              </plugin>
+            </plugin>
+            <plugin>
+                <groupId>com.coderplus.maven.plugins</groupId>
+                <artifactId>copy-rename-maven-plugin</artifactId>
+                <version>1.0.1</version>
+                <executions>
+                    <execution>
+                        <id>rename-file</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>rename</goal>
+                        </goals>
+                        <configuration>
+                            <sourceFile>${project.basedir}/target/gboh-companion-jar-with-dependencies.jar</sourceFile>
+                            <destinationFile>${project.basedir}/target/gboh-companion.jar</destinationFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
         </plugins>
     </build>
@@ -138,13 +156,13 @@
             <artifactId>jline-groovy</artifactId>
             <version>3.20.0</version>
         </dependency>
-            <!--
-        <dependency>
-            <groupId>jline</groupId>
-            <artifactId>jline</artifactId>
-            <version>2.6</version>
-            <scope>compile</scope>
-        </dependency>
+        <!--
+    <dependency>
+        <groupId>jline</groupId>
+        <artifactId>jline</artifactId>
+        <version>2.6</version>
+        <scope>compile</scope>
+    </dependency>
 -->
         <dependency>
             <groupId>org.mockito</groupId>

@@ -154,6 +154,7 @@ public class Repl {
 			}
 
 		} catch (Throwable t) {
+			System.out.println(t.getMessage());
 			t.printStackTrace();
 		}
 	}

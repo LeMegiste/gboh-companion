@@ -49,7 +49,7 @@ public class PersistableGameState {
 
 		public String description() {
 			final List<String> affectedUnits =
-					getChanges().stream().map(UnitChange::getUnitCode).collect(Collectors.toList());
+					getChanges().stream().map(UnitChange::getUnitCode).distinct().collect(Collectors.toList());
 			return "Command " + commandNumber + ": " + commandText + " affecting " + Joiner.on(",").join(affectedUnits);
 		}
 	}
