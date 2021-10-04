@@ -1,0 +1,59 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile
+SK		Balearic	1	BSK1	5	1	S
+SK		Balearic	2	BSK2	5	1	S
+SK		Balearic	3	BSK3	5	1	S
+SK		Balearic	4	BSK4	5	1	S
+SK		Balearic	5	BSK5	5	1	S
+SK		Balearic	6	BSK6	5	1	S
+MI		Carth Levy	1	CMI1	4	4	
+MI		Carth Levy	2	CMI2	4	4	
+MI		Carth Levy	3	CMI3	4	4	
+MI		Carth Levy	4	CMI4	4	4	
+MI		Carth Levy	5	CMI5	4	4	
+MI		Carth Levy	6	CMI6	4	4	
+MI		Carth Levy	7	CMI7	4	4	
+MI		Carth Levy	8	CMI8	4	4	
+MI		Carth Levy	9	CMI9	4	4	
+MI		Carth Levy	10	CMI10	4	4	
+MI		Carth Levy	11	CMI11	4	4	
+MI		Carth Levy	12	CMI12	4	4	
+MI		Carth Levy	13	CMI13	4	4	
+MI		Carth Levy	14	CMI14	4	4	
+MI		Carth Levy	15	CMI15	4	4	
+MI		Carth Levy	16	CMI16	4	4	
+HI		Iber Merc	1	MHI1	8	7	
+HI		Iber Merc	2	MHI2	8	7	
+HI		Iber Merc	3	MHI3	8	7	
+HI		Iber Merc	4	MHI4	8	7	
+HI		Iber Merc	5	MHI5	8	7	
+HI		Iber Merc	6	MHI6	8	7	
+HI		Iber Merc	7	MHI7	8	7	
+HI		Iber Merc	8	MHI8	8	7	
+HI		Iber Merc	9	MHI9	8	7	
+HI		Iber Merc	10	MHI10	8	7	
+HI		Numid	1	NHI1	6	5	
+HI		Numid	2	NHI2	6	5	
+HI		Numid	3	NHI3	6	5	
+HI		Numid	4	NHI4	6	5	
+MI		Numid	1	NMI1	5	5	
+MI		Numid	2	NMI2	5	5	
+MI		Numid	3	NMI3	5	5	
+MI		Numid	4	NMI4	5	5	
+MI		Numid	5	NMI5	5	5	
+MI		Numid	6	NMI6	5	5	
+LI		Numid	1	NLI1	6	3	
+LI		Numid	2	NLI2	6	3	
+LI		Numid	3	NLI3	6	3	
+LI		Numid	4	NLI4	6	3	
+LI		Num Levy	1	LLI1	4	5	
+LI		Num Levy	2	LLI2	4	5	
+LI		Num Levy	3	LLI3	4	5	
+LI		Num Levy	4	LLI4	4	5	
+LC		Numid	1	NLC1	8	4	J
+LC		Numid	2	NLC2	8	4	J
+LC		Numid	3	NLC3	8	4	J
+LC		Numid	4	NLC4	8	4	J
+HC		Carth	6	CHC6	6	4	
+HC		Carth	7	CHC7	6	4	
+HC		Carth	8	CHC8	6	4	
+HC		Carth	9	CHC9	6	4	

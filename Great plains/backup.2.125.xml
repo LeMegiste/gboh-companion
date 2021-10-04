@@ -1,0 +1,912 @@
+<GameState>
+  <currentTurn>2</currentTurn>
+  <currentCommand>125</currentCommand>
+  <Command commandNumber="1" commandText="BSK1 M -m 1Vea">
+    <Change unitCode="BSK1">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="2" state="OK" missileStatus="NO"/>
+    </Change>
+  </Command>
+  <Command commandNumber="2" commandText="BSK2 M -m 1Veb">
+    <Change unitCode="1Veb">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="0" state="OK" missileStatus="NO"/>
+    </Change>
+  </Command>
+  <Command commandNumber="3" commandText="BSK3 M -m 1Vec">
+    <Change unitCode="1Vec">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Vec">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="NO"/>
+    </Change>
+  </Command>
+  <Command commandNumber="4" commandText="BSK4 M -m 1AVea">
+    <Change unitCode="BSK4">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="5" commandText="BSK5 M -m 1AVeb">
+    <Change unitCode="BSK5">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="6" commandText="1Haa M CHC6">
+    <Change unitCode="CHC6">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="7" commandText="CHC7,CHC6 S -f 1Haa">
+    <Change unitCode="CHC7">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Haa">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="7" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="CHC6">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="CHC7">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="2" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="8" commandText="CHC7 --">
+    <Change unitCode="CHC7">
+      <before hits="2" state="OK" missileStatus="FULL"/>
+      <after hits="0" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="9" commandText="CHC7 +">
+    <Change unitCode="CHC7">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ELIMINATED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="10" commandText="1ARCa S NLC1">
+    <Change unitCode="NLC1">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="0" state="OK" missileStatus="LOW"/>
+    </Change>
+    <Change unitCode="1ARCa">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1ARCa">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLC1">
+      <before hits="0" state="OK" missileStatus="LOW"/>
+      <after hits="7" state="OK" missileStatus="NO"/>
+    </Change>
+  </Command>
+  <Command commandNumber="12" commandText="1RC S NLC2">
+    <Change unitCode="1RC">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1RC">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="2" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1RC">
+      <before hits="2" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLC2">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="8" state="ELIMINATED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="17" commandText="1ARCb +">
+    <Change unitCode="1ARCb">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="18" commandText="1ARCc +">
+    <Change unitCode="1ARCc">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="19" commandText="1ARCd +">
+    <Change unitCode="1ARCd">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="20" commandText="ExRC +">
+    <Change unitCode="ExRC">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="7" state="ELIMINATED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="21" commandText="1ARCb,1ARCc S NLC4">
+    <Change unitCode="1ARCb">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="2" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1ARCb">
+      <before hits="2" state="OK" missileStatus="FULL"/>
+      <after hits="5" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1ARCc">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ELIMINATED" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLC4">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1ARCb">
+      <before hits="5" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ELIMINATED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="29" commandText="1ARCd S NLC3">
+    <Change unitCode="1ARCd">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="2" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1ARCd">
+      <before hits="2" state="OK" missileStatus="FULL"/>
+      <after hits="5" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1ARCd">
+      <before hits="5" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ELIMINATED" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLC3">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="30" commandText="1ARCa S NLC1">
+    <Change unitCode="1ARCa">
+      <before hits="4" state="OK" missileStatus="FULL"/>
+      <after hits="5" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLC1">
+      <before hits="4" state="OK" missileStatus="LOW"/>
+      <after hits="4" state="OK" missileStatus="NO"/>
+    </Change>
+    <Change unitCode="1ARCa">
+      <before hits="5" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLC1">
+      <before hits="4" state="OK" missileStatus="NO"/>
+      <after hits="7" state="OK" missileStatus="NO"/>
+    </Change>
+  </Command>
+  <Command commandNumber="31" commandText="UNDO">
+    <Change unitCode="1ARCa">
+      <before hits="6" state="ROUTED" missileStatus="FULL"/>
+      <after hits="4" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLC1">
+      <before hits="7" state="OK" missileStatus="NO"/>
+      <after hits="4" state="OK" missileStatus="LOW"/>
+    </Change>
+    <Change unitCode="1ARCa">
+      <before hits="4" state="OK" missileStatus="FULL"/>
+      <after hits="5" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLC1">
+      <before hits="4" state="OK" missileStatus="LOW"/>
+      <after hits="4" state="OK" missileStatus="NO"/>
+    </Change>
+  </Command>
+  <Command commandNumber="32" commandText="1ARCa F NLC1">
+    <Change unitCode="1ARCa">
+      <before hits="5" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ELIMINATED" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLC1">
+      <before hits="4" state="OK" missileStatus="NO"/>
+      <after hits="4" state="OK" missileStatus="NO"/>
+    </Change>
+  </Command>
+  <Command commandNumber="33" commandText="1RC F NLC2">
+    <Change unitCode="1RC">
+      <before hits="4" state="OK" missileStatus="FULL"/>
+      <after hits="5" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLC2">
+      <before hits="6" state="OK" missileStatus="FULL"/>
+      <after hits="8" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="34" commandText="1RC S -b NLC2">
+    <Change unitCode="1RC">
+      <before hits="5" state="OK" missileStatus="FULL"/>
+      <after hits="5" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLC2">
+      <before hits="8" state="ROUTED" missileStatus="FULL"/>
+      <after hits="8" state="ELIMINATED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="42" commandText="CHC8,CHC9 +">
+    <Change unitCode="CHC8">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="CHC9">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="43" commandText="BSK1 M -r2 1Vea">
+    <Change unitCode="BSK1">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="LOW"/>
+    </Change>
+  </Command>
+  <Command commandNumber="45" commandText="CHC9,CHC8 S -f 1Pra">
+    <Change unitCode="CHC9">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="2" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="CHC9">
+      <before hits="2" state="OK" missileStatus="FULL"/>
+      <after hits="3" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="CHC8">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="2" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Pra">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="7" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="46" commandText="CHC7,CHC6 F -f 1Haa">
+    <Change unitCode="CHC7">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="3" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="CHC6">
+      <before hits="2" state="OK" missileStatus="FULL"/>
+      <after hits="3" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Haa">
+      <before hits="5" state="OK" missileStatus="FULL"/>
+      <after hits="7" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="48" commandText="NLC1 --">
+    <Change unitCode="NLC1">
+      <before hits="7" state="OK" missileStatus="NO"/>
+      <after hits="5" state="OK" missileStatus="NO"/>
+    </Change>
+  </Command>
+  <Command commandNumber="49" commandText="NLI1 +">
+    <Change unitCode="NLI1">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="50" commandText="NLI2,NLI3,NLI4 +">
+    <Change unitCode="NLI2">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLI3">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLI4">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="51" commandText="NLI2,NLI1 S -f ExRC">
+    <Change unitCode="NLI1">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="4" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLI2">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="2" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLI1">
+      <before hits="4" state="OK" missileStatus="FULL"/>
+      <after hits="5" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="ExRC">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="5" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="52" commandText="NLI3 S 1ARCa">
+    <Change unitCode="NLI3">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="4" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1ARCa">
+      <before hits="6" state="ROUTED" missileStatus="FULL"/>
+      <after hits="6" state="ELIMINATED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="53" commandText="NLI3 +">
+    <Change unitCode="NLI3">
+      <before hits="4" state="OK" missileStatus="FULL"/>
+      <after hits="5" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="56" commandText="NLC1 +">
+    <Change unitCode="NLC1">
+      <before hits="5" state="OK" missileStatus="NO"/>
+      <after hits="6" state="OK" missileStatus="NO"/>
+    </Change>
+  </Command>
+  <Command commandNumber="57" commandText="NLC3,NLC4 F 1ARCc">
+    <Change unitCode="NLC3">
+      <before hits="4" state="OK" missileStatus="FULL"/>
+      <after hits="5" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLC4">
+      <before hits="4" state="OK" missileStatus="FULL"/>
+      <after hits="5" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1ARCc">
+      <before hits="2" state="OK" missileStatus="FULL"/>
+      <after hits="4" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="58" commandText="NLC1 S 1ARCb">
+    <Change unitCode="1ARCb">
+      <before hits="6" state="ROUTED" missileStatus="FULL"/>
+      <after hits="6" state="ELIMINATED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="59" commandText="NLI2,NLI1 F -f ExRC">
+    <Change unitCode="NLI2">
+      <before hits="2" state="OK" missileStatus="FULL"/>
+      <after hits="3" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLI1">
+      <before hits="5" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="ExRC">
+      <before hits="5" state="OK" missileStatus="FULL"/>
+      <after hits="7" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="60" commandText="NLI3 S 1ARCd">
+    <Change unitCode="1ARCd">
+      <before hits="6" state="ROUTED" missileStatus="FULL"/>
+      <after hits="6" state="ELIMINATED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="63" commandText="NLI1 R">
+    <Change unitCode="NLI1">
+      <before hits="6" state="ROUTED" missileStatus="FULL"/>
+      <after hits="1" state="DEPLETED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="64" commandText="NLC1 --">
+    <Change unitCode="NLC1">
+      <before hits="6" state="OK" missileStatus="NO"/>
+      <after hits="4" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="66" commandText="NLI2 --">
+    <Change unitCode="NLI2">
+      <before hits="3" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="68" commandText="NLC3,NLC4 F 1ARCc">
+    <Change unitCode="NLC3">
+      <before hits="5" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLC4">
+      <before hits="5" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1ARCc">
+      <before hits="4" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="69" commandText="1ARCc E">
+    <Change unitCode="1ARCc">
+      <before hits="6" state="ROUTED" missileStatus="FULL"/>
+      <after hits="6" state="ELIMINATED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="70" commandText="NLI3 F ExRC">
+    <Change unitCode="ExRC">
+      <before hits="7" state="ROUTED" missileStatus="FULL"/>
+      <after hits="7" state="ELIMINATED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="71" commandText="NLI4 --">
+    <Change unitCode="NLI4">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="0" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="74" commandText="CHC6 +">
+    <Change unitCode="CHC6">
+      <before hits="3" state="OK" missileStatus="FULL"/>
+      <after hits="4" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="75" commandText="1Hab +">
+    <Change unitCode="1Hab">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="77" commandText="BSK1,BSK2,BSK3 +">
+    <Change unitCode="BSK1">
+      <before hits="1" state="OK" missileStatus="LOW"/>
+      <after hits="2" state="OK" missileStatus="LOW"/>
+    </Change>
+    <Change unitCode="BSK2">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="BSK3">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="79" commandText="BSK1 M -f 1Vea">
+    <Change unitCode="1Vea">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="BSK1">
+      <before hits="2" state="OK" missileStatus="LOW"/>
+      <after hits="2" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="82" commandText="BSK2 M -m 1Veb">
+    <Change unitCode="BSK2">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Veb">
+      <before hits="0" state="OK" missileStatus="LOW"/>
+      <after hits="0" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="83" commandText="BSK3 M -m 1Vec">
+    <Change unitCode="1Vec">
+      <before hits="1" state="OK" missileStatus="LOW"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="84" commandText="CHC6,CHC7 S 1Hab">
+    <Change unitCode="1Hab">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="NO"/>
+    </Change>
+    <Change unitCode="CHC7">
+      <before hits="3" state="OK" missileStatus="FULL"/>
+      <after hits="4" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Hab">
+      <before hits="1" state="OK" missileStatus="NO"/>
+      <after hits="3" state="OK" missileStatus="NO"/>
+    </Change>
+  </Command>
+  <Command commandNumber="85" commandText="CHC9,CHC8 F -f 1Pra">
+    <Change unitCode="CHC9">
+      <before hits="3" state="OK" missileStatus="FULL"/>
+      <after hits="4" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="CHC8">
+      <before hits="2" state="OK" missileStatus="FULL"/>
+      <after hits="3" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Pra">
+      <before hits="7" state="OK" missileStatus="FULL"/>
+      <after hits="9" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="86" commandText="1Prb +">
+    <Change unitCode="1Prb">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="88" commandText="CHC8 +++">
+    <Change unitCode="CHC8">
+      <before hits="3" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="89" commandText="MNLC6,1Prb S -f CHC9">
+    <Change unitCode="MNLC6">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="0" state="OK" missileStatus="LOW"/>
+    </Change>
+    <Change unitCode="CHC9">
+      <before hits="4" state="OK" missileStatus="FULL"/>
+      <after hits="5" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="MNLC6">
+      <before hits="0" state="OK" missileStatus="LOW"/>
+      <after hits="1" state="OK" missileStatus="LOW"/>
+    </Change>
+    <Change unitCode="1Prb">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="2" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="CHC9">
+      <before hits="5" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="90" commandText="CHC9 E">
+    <Change unitCode="CHC9">
+      <before hits="6" state="ROUTED" missileStatus="FULL"/>
+      <after hits="6" state="ELIMINATED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="91" commandText="MNLC4,MNLC5,1Hab S CHC7">
+    <Change unitCode="CHC7">
+      <before hits="4" state="OK" missileStatus="FULL"/>
+      <after hits="5" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="CHC7">
+      <before hits="5" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="92" commandText="UNDO">
+    <Change unitCode="CHC7">
+      <before hits="6" state="ROUTED" missileStatus="FULL"/>
+      <after hits="4" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="CHC7">
+      <before hits="4" state="OK" missileStatus="FULL"/>
+      <after hits="5" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="93" commandText="MNLC4,MNLC5,1Hab S -b CHC7">
+    <Change unitCode="CHC7">
+      <before hits="5" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="CHC7">
+      <before hits="6" state="ROUTED" missileStatus="FULL"/>
+      <after hits="6" state="ELIMINATED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="94" commandText="MNLC2 S CHC8">
+    <Change unitCode="MNLC2">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="0" state="OK" missileStatus="LOW"/>
+    </Change>
+    <Change unitCode="CHC8">
+      <before hits="6" state="ROUTED" missileStatus="FULL"/>
+      <after hits="6" state="ELIMINATED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="95" commandText="MNLC1,MNLC2,MNLC3,MNLC4,MNLC5,MNLC6 +">
+    <Change unitCode="MNLC1">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="MNLC2">
+      <before hits="0" state="OK" missileStatus="LOW"/>
+      <after hits="1" state="OK" missileStatus="LOW"/>
+    </Change>
+    <Change unitCode="MNLC3">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="MNLC4">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="MNLC5">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="MNLC6">
+      <before hits="1" state="OK" missileStatus="LOW"/>
+      <after hits="2" state="OK" missileStatus="LOW"/>
+    </Change>
+  </Command>
+  <Command commandNumber="96" commandText="MNLC6,1Hab S -f CHC6">
+    <Change unitCode="MNLC6">
+      <before hits="2" state="OK" missileStatus="LOW"/>
+      <after hits="2" state="OK" missileStatus="NO"/>
+    </Change>
+    <Change unitCode="CHC6">
+      <before hits="4" state="OK" missileStatus="FULL"/>
+      <after hits="6" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="98" commandText="MNLC6 +">
+    <Change unitCode="MNLC6">
+      <before hits="2" state="OK" missileStatus="NO"/>
+      <after hits="3" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="99" commandText="MNLC1,MNLC2,MNLC3,MNLC4 --">
+    <Change unitCode="MNLC1">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="0" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="MNLC2">
+      <before hits="1" state="OK" missileStatus="LOW"/>
+      <after hits="0" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="MNLC3">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="0" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="MNLC4">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="0" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="101" commandText="1Hab,1Prb +">
+    <Change unitCode="1Hab">
+      <before hits="3" state="OK" missileStatus="NO"/>
+      <after hits="4" state="OK" missileStatus="NO"/>
+    </Change>
+    <Change unitCode="1Prb">
+      <before hits="2" state="OK" missileStatus="FULL"/>
+      <after hits="3" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="103" commandText="1Pra R">
+    <Change unitCode="1Pra">
+      <before hits="9" state="ROUTED" missileStatus="FULL"/>
+      <after hits="2" state="RALLIED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="105" commandText="1Pra +">
+    <Change unitCode="1Pra">
+      <before hits="2" state="RALLIED" missileStatus="FULL"/>
+      <after hits="3" state="RALLIED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="106" commandText="1Pra +">
+    <Change unitCode="1Pra">
+      <before hits="3" state="RALLIED" missileStatus="FULL"/>
+      <after hits="4" state="DEPLETED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="108" commandText="1Hab,1Hac,1Had,5Coa,5Cob,1Coa,1Cob,1Coc,1Cod +">
+    <Change unitCode="1Hab">
+      <before hits="4" state="OK" missileStatus="NO"/>
+      <after hits="5" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Hac">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="3" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Had">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="3" state="OK" missileStatus="NO"/>
+    </Change>
+    <Change unitCode="5Coa">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="3" state="OK" missileStatus="NO"/>
+    </Change>
+    <Change unitCode="5Cob">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="4" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Coa">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Cob">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Coc">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Cod">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="110" commandText="1Prb,1Prc,1Prd,1COe,1Cof,1CE,1Cog,1Coh,1COi +">
+    <Change unitCode="1Prb">
+      <before hits="3" state="OK" missileStatus="FULL"/>
+      <after hits="4" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Prc">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Prd">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Coe">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Cof">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1CE">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Cog">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Coh">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Coi">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="114" commandText="END_TURN">
+    <Change unitCode="NLI1">
+      <before hits="1" state="RALLIED" missileStatus="FULL"/>
+      <after hits="1" state="DEPLETED" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Pra">
+      <before hits="4" state="RALLIED" missileStatus="FULL"/>
+      <after hits="4" state="DEPLETED" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="BSK1">
+      <before hits="2" state="OK" missileStatus="NO"/>
+      <after hits="3" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="BSK2">
+      <before hits="1" state="OK" missileStatus="LOW"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="NLC1">
+      <before hits="4" state="OK" missileStatus="NO"/>
+      <after hits="4" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Hab">
+      <before hits="5" state="OK" missileStatus="NO"/>
+      <after hits="5" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="MNLC2">
+      <before hits="0" state="OK" missileStatus="LOW"/>
+      <after hits="0" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="MNLC6">
+      <before hits="3" state="OK" missileStatus="NO"/>
+      <after hits="3" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Veb">
+      <before hits="0" state="OK" missileStatus="NO"/>
+      <after hits="0" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Vec">
+      <before hits="1" state="OK" missileStatus="NO"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="116" commandText="1Hab S CMI1">
+    <Change unitCode="CMI1">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="CMI1">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="4" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="117" commandText="1Hac S CMI2">
+    <Change unitCode="CMI2">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="CMI2">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="3" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="1Hac">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="3" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="CMI2">
+      <before hits="3" state="OK" missileStatus="FULL"/>
+      <after hits="4" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="118" commandText="CMI9 +">
+    <Change unitCode="CMI9">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="119" commandText="1Had S CMI3">
+    <Change unitCode="1Had">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="NO"/>
+    </Change>
+    <Change unitCode="1Had">
+      <before hits="1" state="OK" missileStatus="NO"/>
+      <after hits="3" state="OK" missileStatus="NO"/>
+    </Change>
+    <Change unitCode="CMI3">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="4" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="120" commandText="CMI10 +">
+    <Change unitCode="CMI10">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="121" commandText="5Coa S CMI4">
+    <Change unitCode="5Coa">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="NO"/>
+    </Change>
+    <Change unitCode="5Coa">
+      <before hits="1" state="OK" missileStatus="NO"/>
+      <after hits="3" state="OK" missileStatus="NO"/>
+    </Change>
+    <Change unitCode="CMI4">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="4" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="122" commandText="CMI11 +">
+    <Change unitCode="CMI11">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="123" commandText="5Cob S CMI5">
+    <Change unitCode="CMI5">
+      <before hits="0" state="OK" missileStatus="FULL"/>
+      <after hits="1" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="CMI5">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="2" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="5Cob">
+      <before hits="1" state="OK" missileStatus="FULL"/>
+      <after hits="3" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="CMI5">
+      <before hits="2" state="OK" missileStatus="FULL"/>
+      <after hits="4" state="ROUTED" missileStatus="FULL"/>
+    </Change>
+  </Command>
+  <Command commandNumber="124" commandText="BSK1 M 5Cob">
+    <Change unitCode="5Cob">
+      <before hits="3" state="OK" missileStatus="FULL"/>
+      <after hits="4" state="OK" missileStatus="FULL"/>
+    </Change>
+    <Change unitCode="BSK1">
+      <before hits="2" state="OK" missileStatus="FULL"/>
+      <after hits="3" state="OK" missileStatus="FULL"/>
+    </Change>
+  </Command>
+</GameState>

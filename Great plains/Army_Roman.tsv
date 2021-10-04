@@ -1,0 +1,46 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile
+LG	Ha	1	a	1Haa	7	3	
+LG	Ha	1	b	1Hab	7	3	
+LG	Ha	1	c	1Hac	7	3	
+LG	Ha	1	d	1Had	7	3	
+LG	Pr	1	a	1Pra	9	3	
+LG	Pr	1	b	1Prb	8	3	
+LG	Pr	1	c	1Prc	8	3	
+LG	Pr	1	d	1Prd	8	3	
+LG	Co	1	a	1Coa	6	3	
+LG	Co	1	b	1Cob	6	3	
+LG	Co	1	c	1Coc	6	3	
+LG	Co	1	d	1Cod	6	3	
+LG	Co	1	e	1Coe	6	3	
+LG	Co	1	f	1Cof	6	3	
+LG	Co	1	g	1Cog	6	3	
+LG	Co	1	h	1Coh	6	3	
+LG	Co	1	i	1Coi	6	3	
+LG	CE	1		1CE	7	3	
+LG	Co	5	a	5Coa	6	3	
+LG	Co	5	b	5Cob	6	3	
+HI	TR	1	a	1TRa	8	2	
+HI	TR	1	b	1TRb	8	2	
+HI	TR	1	c	1TRc	8	2	
+HI	TR	1A	a	1ATRa	7	2	
+HI	TR	1A	b	1ATRb	7	2	
+HI	TR	5	a	5TRa	7	2	
+HI	TR	5	b	5TRb	7	2	
+HI	TR	5	b	5TRc	7	2	
+LC		Massinissa's Numids	1	MNLC1	8	4	J
+LC		Massinissa's Numids	2	MNLC2	8	4	J
+LC		Massinissa's Numids	3	MNLC3	8	4	J
+LC		Massinissa's Numids	4	MNLC4	8	4	J
+LC		Massinissa's Numids	5	MNLC5	8	4	J
+LC		Massinissa's Numids	6	MNLC6	8	4	J
+RC		1	1	1RC	6	3	
+RC		1A	a	1ARCa	6	3	
+RC		1A	b	1ARCb	6	3	
+RC		1A	c	1ARCc	6	3	
+RC		1A	d	1ARCd	6	3	
+RC		Ex		ExRC	7	3	
+SK	Ve	1A	a	1AVea	5	1	J
+SK	Ve	1A	b	1AVeb	5	1	J
+SK	Ve	1	a	1Vea	5	1	J
+SK	Ve	1	b	1Veb	5	1	J
+SK	Ve	1	c	1Vec	5	1	J

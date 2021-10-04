@@ -1,0 +1,41 @@
+Add DUMP army feature
+Autocomplete unit searching
+LOAD function
+
+Implement pursuit rules
+HELP functions
+Attacks ou routed always from back
+Log in a file
+
+OK - EOT function - remove rallied markers, handle missile low units (ask which ones can reload)
+OK - Fight dice roll not showing
+OK - Recap hit status after shock
+
+OK - Pad text when answering
+OK - HC agains Legio facing (DSp)
+OK - Bug in rally : too many hits removed
+OK - Routed units cannot rf
+OK - Missile units lose their missiles after shock
+
+OK - Final log : have all the units, not only the ones left in combat
+OK - Units attacking a routing units do not do preshock
+OK - Preshock Not both units should rout
+
+
+OK - Barbaric Infantry rules
+OK - Remove 1 hit
+OK - Attaques sur défenseurs multiples
+OK - Case insensitive unit searching
+OK - Elimination
+OK - Generic feature in all caps
+OK - Gestion des commandes dans l'undo
+OK - Modificateurs terrain pour combat (add shift)
+OK - Nommage cavalerie romaine
+OK - Rally is removing hits not based on current status
+OK - Reaction fire sur le flanc
+OK - Reaction fire when no missile attack
+
+
+
+
+

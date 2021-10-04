@@ -1,0 +1,19 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile
+LI		Samnite	a	SLIa	5	4	J
+LI		Samnite	b	SLIb	5	4	J
+LG		Samnite Van	a	Svaa	6	4	
+LG		Samnite Van	b	Svab	5	4	
+LG		Samnite Van	c	Svac	5	4	
+LG		Samnite Van	d	Svad	5	4	
+LG		Samnite Main	a	SMaa	6	4	
+LG		Samnite Main	b	Smab	5	4	
+LG		Samnite Main	c	SMac	5	4	
+LG		Samnite Main	d	SMad	5	4	
+HC		Lineata	a	LHCa	7	4	
+LI		Lineata	a	LLIa	6	4	J
+LG		Lineata Van	a	Lvaa	7	4	
+LG		Lineata Van	b	Lvab	6	4	
+LG		Lineata Main	a	Lmaa	6	4	
+LG		Lineata Main	b	Lmab	7	4	
+LC		Samnite	a	SLCa	6	4	J
+LC		Samnite	b	SLCb	6	4	J

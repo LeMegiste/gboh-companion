@@ -1,0 +1,32 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile
+LG	Ha	5	a	5Haa	6	3	
+LG	Ha	5	b	5Hab	6	3	
+LG	Ha	5	c	5Hac	6	3	
+LG	Ha	5	d	5Had	6	3	
+LG	Pr	5	a	5Pra	8	3	
+LG	Pr	5	b	5Prb	7	3	
+LG	Pr	5	c	5Prc	7	3	
+LG	Pr	5	d	5Prd	7	3	
+LG	Co	5	a	5Coa	6	3	
+LG	Co	5	b	5Cob	6	3	
+LG	Co	5	c	5Coc	6	3	
+LG	Co	5	d	5Cod	6	3	
+LG	Co	5	e	5Coe	6	3	
+LG	Co	5	f	5Cof	6	3	
+LG	Co	5	g	5Cog	6	3	
+LG	Co	5	h	5Coh	6	3	
+LG	Co	5	i	5Coi	6	3	
+LG	CE	5		5CE	7	3	
+HI	TR	5	a	TRa	7	2	
+HI	TR	5	b	TRb	7	2	
+HI	TR	5	c	TRc	7	2	
+HI	TR	5A	a	5ATRa	6	2	
+HI	TR	5A	b	5ATRb	6	2	
+RC		5	1	5RC	5	3	
+RC		5A	a	5ARCa	6	3	
+RC		5A	b	5ARCb	6	3	
+LI	Ve	5A	a	5AVea	5	1	J
+LI	Ve	5A	b	5AVeb	5	1	J
+LI	Ve	5	a	5Vea	5	1	J
+LI	Ve	5	b	5Veb	5	1	J
+LI	Ve	5	c	5Vec	5	1	J
