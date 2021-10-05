@@ -289,6 +289,15 @@ public class GameStatus {
 		FindUnitsResult res = new FindUnitsResult();
 
 		for (String q : queries) {
+			if(army1.getName().equals(q)){
+				res.foundUnits.addAll(army1.getUnits());
+				continue;
+			}
+			if(army2.getName().equals(q)){
+				res.foundUnits.addAll(army2.getUnits());
+				continue;
+			}
+
 			final List<Unit> foundUnits =
 					getAllUnits().stream().filter(u -> unitIsMatchingQuery(q, u)).collect(Collectors.toList());
 			if (!foundUnits.isEmpty()) {

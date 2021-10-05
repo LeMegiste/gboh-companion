@@ -38,7 +38,7 @@ public class EndTurn extends GameCommand {
 			console.logNL(Log.logUnit(u));
 		}
 		final Predicate<Unit> forRefill =
-				u -> u.getMissile() != MissileType.NONE && u.getMissileStatus() != MissileStatus.FULL;
+				u -> u.getMissile() != MissileType.NONE && u.getMissileStatus() != MissileStatus.FULL && u.getState()!=UnitState.ROUTED && u.getState()!=UnitState.ELIMINATED;
 		final List<String> candidatesForRefill =
 				gs.getAllUnits().stream().filter(forRefill).map(Unit::getUnitCode).collect(Collectors.toList());
 		final String allRefills = Joiner.on(",").join(candidatesForRefill);
