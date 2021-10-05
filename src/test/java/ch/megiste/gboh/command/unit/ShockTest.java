@@ -319,4 +319,22 @@ public class ShockTest {
 		}
 
 	}
+
+	@Test
+	public void shockAgainstSkirmishers() {
+		Unit lg1 = new Unit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
+
+		Unit sk1 = new Unit(UnitKind.SK, SubClass.NONE, "Skirmishers", "1", "NSK1", 5, 1, MissileType.S);
+
+		//Roll 5 - missed
+		//Roll 1 - hit
+		//SK makes pre shock TQ, rolls 6 (1 hit)
+		//Fight. 0
+		Mockito.when(dice.roll()).thenReturn(5, 1, 6, 0);
+
+		sh.execute(Collections.singletonList(lg1), Collections.singletonList(sk1), null);
+		Assert.assertEquals(2,lg1.getHits());
+		Assert.assertEquals(5,sk1.getHits());
+		Assert.assertEquals(UnitState.ROUTED, sk1.getState());
+	}
 }

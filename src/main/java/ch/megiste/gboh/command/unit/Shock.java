@@ -82,8 +82,16 @@ public class Shock extends UnitCommand {
 
 			Map<Unit, Integer> diffPerUnit = new HashMap<>();
 
+			boolean noTqCheckForAttacker = mainDefender.getKind() == UnitKind.SK || allDefendersRouted;
+			boolean noTqCheckForDefender =
+					mainAttacker.getKind() == UnitKind.LI && (mainDefender.getKind() == UnitKind.LG
+							|| mainDefender.getKind() == UnitKind.PH || mainDefender.getKind() == UnitKind.HI
+					);
+
+
 			for (Unit attacker : c.getAttackers()) {
-				if (allDefendersRouted) {
+
+				if (noTqCheckForAttacker) {
 					diffPerUnit.put(attacker, 0);
 					continue;
 				}
@@ -101,6 +109,10 @@ public class Shock extends UnitCommand {
 				diffPerUnit.put(attacker, diff);
 			}
 			for (Unit defender : c.getDefenders()) {
+				if(noTqCheckForDefender){
+					diffPerUnit.put(defender, 0);
+					continue;
+				}
 				int r = dice.roll();
 				int shift = 0;
 

@@ -1,12 +1,15 @@
 Implement preloaded battles
-DUMP army feature
+OK - DUMP army feature
 Autocomplete unit searching
 OK - LOAD function
+
 
 Implement pursuit rules
 OK - HELP functions
 Attacks ou routed always from back
 Log in a file
+Shooting on routed unit
+Phalanx defense rule151
 
 OK - EOT function - remove rallied markers, handle missile low units (ask which ones can reload)
 OK - Fight dice roll not showing

@@ -27,7 +27,7 @@ public class EndTurn extends GameCommand {
 	@Override
 	public void execute(final GameStatus gs, final List<String> commandArgs) {
 		String val = console.readLine(
-				"This command will end the current turn.\nAll rallied units will become depleted.\nDo you want to proceed ?[y/n]\n>>C");
+				"This command will end the current turn.\nAll rallied units will become depleted.\nDo you want to proceed ?[y/n]\n>>");
 		if (!"y".equals(val)) {
 			return;
 		}

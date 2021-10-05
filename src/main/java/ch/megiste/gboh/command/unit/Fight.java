@@ -44,7 +44,6 @@ public class Fight extends UnitCommand {
 	public Fight() {
 		super("Fight! Resolves the shock combat between attackers and defenders");
 
-
 		Helper helper = new Helper();
 		buildSuperiorities(helper);
 
@@ -193,8 +192,8 @@ public class Fight extends UnitCommand {
 
 			List<String> colModifiers = new ArrayList<>();
 
-			int sumSizeAttackers = c.getAttackers().stream().mapToInt(u -> u.getSize()).sum();
-			int sumSizeDefenders = c.getDefenders().stream().mapToInt(u -> u.getSize()).sum();
+			int sumSizeAttackers = c.getAttackers().stream().mapToInt(Unit::getSize).sum();
+			int sumSizeDefenders = c.getDefenders().stream().mapToInt(Unit::getSize).sum();
 
 			int columnShift = computeColumnShift(sumSizeAttackers, sumSizeDefenders);
 			if (columnShift != 0) {
@@ -215,7 +214,6 @@ public class Fight extends UnitCommand {
 				columnShift += manualColumShift;
 				colModifiers.add(String.format("%d additional", manualColumShift));
 			}
-
 
 			column += columnShift;
 			if (column > 13) {
@@ -244,6 +242,9 @@ public class Fight extends UnitCommand {
 			//
 			int attackerImpact = attackerImpactResults.get(r).get(column);
 			int defenderImpact = defenderImpactResults.get(r).get(column);
+			if (mainDefender.getKind() == UnitKind.SK) {
+				attackerImpact = attackerImpact / 2;
+			}
 
 			if (sup == Superiority.AS) {
 				defenderImpact = 2 * defenderImpact;
@@ -270,10 +271,7 @@ public class Fight extends UnitCommand {
 			missileDepletionForUnitsInvolvedInShock(u);
 		}
 
-
 	}
-
-
 
 	private void missileDepletionForUnitsInvolvedInShock(final Unit u) {
 		if (u.getMissile() != MissileType.NONE) {
