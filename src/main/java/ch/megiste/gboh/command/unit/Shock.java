@@ -149,7 +149,14 @@ public class Shock extends UnitCommand {
 			}
 
 			//Fight
-			fight.execute(c.getAttackers(), c.getDefenders(), modifiersForMissile);
+			List<String> modifiersForFight;
+			if(modifiers==null){
+				modifiersForFight =new ArrayList<>();
+			} else {
+				modifiersForFight =new ArrayList<>(modifiers);
+			}
+			modifiersForFight.add("m");
+			fight.execute(c.getAttackers(), c.getDefenders(), modifiersForFight);
 
 		}
 	}

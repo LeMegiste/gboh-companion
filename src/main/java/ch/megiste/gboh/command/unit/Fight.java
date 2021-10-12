@@ -15,6 +15,7 @@ import ch.megiste.gboh.army.Unit.UnitKind;
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
 import ch.megiste.gboh.command.CommandModifier;
+import ch.megiste.gboh.util.GbohError;
 import ch.megiste.gboh.util.Helper;
 
 public class Fight extends UnitCommand {
@@ -67,6 +68,9 @@ public class Fight extends UnitCommand {
 					if (defName == "RC") {
 						defName = "HC";
 					}
+					if (defName == "LP") {
+						defName = "LI";
+					}
 					return r.get("Source").equals(defName);
 				}).findFirst();
 				if (!optSource.isPresent()) {
@@ -77,6 +81,9 @@ public class Fight extends UnitCommand {
 				String attackerName = attacker.name();
 				if (attackerName.equals("RC")) {
 					attackerName = "HC";
+				}
+				if (attackerName.equals("LP")) {
+					attackerName = "LI";
 				}
 				if (attacker == UnitKind.SK) {
 					continue;
@@ -95,7 +102,12 @@ public class Fight extends UnitCommand {
 			Map<UnitKind, Superiority> superiorityMap = new HashMap<>();
 			superiorities.put(attacker, superiorityMap);
 			for (UnitKind defender : UnitKind.values()) {
-				CSVRecord rec = records.stream().filter(r -> r.get("Source").equals(defender.name())).findFirst().get();
+				final Optional<CSVRecord> optRecord =
+						records.stream().filter(r -> r.get("Source").equals(defender.name())).findFirst();
+				if(!optRecord.isPresent()){
+					throw new GbohError("Unable to find superiority for unit " + defender.name());
+				}
+				CSVRecord rec = optRecord.get();
 
 				Superiority sup = Superiority.NONE;
 				if (rec.isSet(attacker.name())) {
@@ -209,6 +221,7 @@ public class Fight extends UnitCommand {
 				columnShift++;
 				colModifiers.add("+1 defender depleted");
 			}
+
 			int manualColumShift = getIntModifier(modifiers, CommandModifier.cs, 0);
 			if (manualColumShift != 0) {
 				columnShift += manualColumShift;

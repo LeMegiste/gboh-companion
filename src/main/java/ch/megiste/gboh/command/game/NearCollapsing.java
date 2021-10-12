@@ -13,7 +13,7 @@ import ch.megiste.gboh.game.GameStatus;
 public class NearCollapsing extends GameCommand {
 
 	public NearCollapsing() {
-		super("Lists all units (or of a given army) that 2 or 1 hit from collapsing.");
+		super("Lists all units (or of a given army) that are 2 or 1 hit from collapsing.");
 	}
 
 	@Override

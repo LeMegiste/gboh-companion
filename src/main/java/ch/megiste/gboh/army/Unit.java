@@ -34,10 +34,10 @@ public class Unit {
 	}
 
 	public int getRountPoints() {
-		if(kind==UnitKind.SK || kind== UnitKind.EL){
+		if (kind == UnitKind.SK || kind == UnitKind.EL) {
 			return 2;
-		} else if(size>=9){
-			return 2*getOriginalTq();
+		} else if (size >= 9) {
+			return 2 * getOriginalTq();
 		} else {
 			return getOriginalTq();
 		}
@@ -79,14 +79,13 @@ public class Unit {
 	}
 
 	public enum UnitKind {
-		LG, HI, MI, LI, SK, HC, LC, RC, BI,EL,PH
-
+		LG, HI, MI, LI, SK, HC, LC, RC, BI, EL, PH, LP, LN,
 
 	}
 
 	public enum SubClass {
-		Ha("Hastati"), Pr("Principes"), CE("Cohorte Extraordinary"), Co("Cohorte"), TR("Triarii"), Ve("Velites"), RC("Roman cavalry"),NONE(
-				"");
+		Ha("Hastati"), Pr("Principes"), CE("Cohorte Extraordinary"), Co("Cohorte"), TR("Triarii"), Ve("Velites"), RC(
+				"Roman cavalry"), HO("Hoplite"),CAT("Cataphracted"), NONE("");
 		private String description;
 
 		SubClass(final String description) {
@@ -159,12 +158,12 @@ public class Unit {
 		if (m.matches()) {
 			String legioNumber = m.group(1);
 			String legioNumberInRoman = Helper.toRoman(Integer.parseInt(legioNumber));
-			String allied="";
-			if(getOrigin().endsWith("A")){
+			String allied = "";
+			if (getOrigin().endsWith("A")) {
 				allied = " (Allies)";
 			}
 
-			return "Legio " + legioNumberInRoman+allied;
+			return "Legio " + legioNumberInRoman + allied;
 		}
 		return null;
 	}

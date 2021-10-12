@@ -7,5 +7,6 @@ public class GbohError extends RuntimeException{
 	}
 
 	public GbohError(final String msg) {
+		super(msg);
 	}
 }

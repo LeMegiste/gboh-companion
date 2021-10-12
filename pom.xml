@@ -63,7 +63,7 @@
                 <executions>
                     <execution>
                         <id>rename-file</id>
-                        <phase>package</phase>
+                        <phase>install</phase>
                         <goals>
                             <goal>rename</goal>
                         </goals>
