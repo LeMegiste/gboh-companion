@@ -45,7 +45,7 @@ public class Unit {
 	}
 
 	public enum MissileType {
-		NONE(""), S("Slings", true), BS("Slings", true), J("Javelins", 6);
+		NONE(""), S("Slings", true), BS("Slings", true), J("Javelins", 7), MJ("Javelins",7), A("Bows");
 
 		private String description;
 		private boolean lessPreciseAfterMovement = false;

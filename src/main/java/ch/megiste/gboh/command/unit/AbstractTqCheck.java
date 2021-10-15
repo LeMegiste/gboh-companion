@@ -17,16 +17,16 @@ public abstract class AbstractTqCheck extends UnitCommand {
 		for (Unit u : attackers) {
 			int r = dice.roll();
 			console.logNL("Dice rolled: " + r);
-			if (r > u.getOriginalTq()) {
-				int hits = r - u.getOriginalTq();
-				if (hits < minHits) {
-					hits = minHits;
-				}
-				if (hits > maxHits) {
-					hits = maxHits;
-				}
-				unitChanger.addHits(u, hits);
+			int hits = Math.max(r - u.getOriginalTq(), 0);
+
+			if (hits < minHits) {
+				hits = minHits;
 			}
+			if (hits > maxHits) {
+				hits = maxHits;
+			}
+			unitChanger.addHits(u, hits);
+
 		}
 	}
 }

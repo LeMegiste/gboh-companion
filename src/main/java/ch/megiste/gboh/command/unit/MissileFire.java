@@ -74,6 +74,10 @@ public class MissileFire extends UnitCommand {
 			console.logNL("Unit " + attackerName + " cannot missile fire as it is missile no");
 			return;
 		}
+		if (attacket.getMissileStatus() == MissileStatus.NO) {
+			console.logNL("Unit " + attackerName + " cannot missile fire as it is missile NEVER");
+			return;
+		}
 
 		int range = getIntModifier(modifiers, CommandModifier.r, 1);
 		int maxRange = table.get(attacket.getMissile()).size();
