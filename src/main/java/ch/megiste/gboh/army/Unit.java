@@ -45,7 +45,7 @@ public class Unit {
 	}
 
 	public enum MissileType {
-		NONE(""), S("Slings", true), BS("Slings", true), J("Javelins", 7), MJ("Javelins", 7), A("Bows");
+		NONE(""), S("Slings", true), BS("Slings", true), J("Javelins", 7), MJ("Javelins", 7), A("Bows"), MA("Bows");
 
 		private String description;
 		private boolean lessPreciseAfterMovement = false;
@@ -79,13 +79,13 @@ public class Unit {
 	}
 
 	public enum UnitKind {
-		LG, HI, MI, LI, SK, HC, LC, RC, BI, EL, PH, LP, LN, CH;
+		LG, HI, MI, LI, SK, HC, LC, RC, BI, EL, PH, LP, LN, CH, SKp;
 
 	}
 
 	public enum SubClass {
 		Ha("Hastati"), Pr("Principes"), CE("Cohorte Extraordinary"), Co("Cohorte"), TR("Triarii"), Ve("Velites"), RC(
-				"Roman cavalry"), HO("Hoplite"), CAT("Cataphracted"), CA("Cardaces"),NONE("");
+				"Roman cavalry"), HO("Hoplite"), CAT("Cataphracted"), CA("Cardaces"), NONE("");
 		private String description;
 
 		SubClass(final String description) {

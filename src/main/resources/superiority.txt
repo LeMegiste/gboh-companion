@@ -1,15 +1,15 @@
-Source	PH	HI	LG	MI	BI	LI	LP	HC	RC	LN	LC	EL	CH
-PH					DS	DS	DS	DS	DS	DS	DS	DS
-HI			AS					DS	DS	DS	DS	DS
-LG						DS	DS	DSp	DSp		DSp
-MI	AS		AS						DS		DSp
-BI	AS		AS			DS	DS				DS
-LI	AS	AS	AS		AS						DSp
-LP	AS	AS	AS		AS			DS	DS	DS	DSp
-SK	AS	AS	AS	AS	AS	AS	AS	AS	AS	AS	AS	AS	AS
-HC									DS			AS	AS
-RC												AS	AS
-LN								AS				AS	AS
-LC								AS	AS	AS		AS	AS
-EL
-CH
+Source	PH	HI	LG	MI	BI	LI	LP	SKp	HC	RC	LN	LC	EL	CH
+PH					DS	DS	DS	DS	DS	DS	DS	DS	DS	
+HI			AS					DS	DS	DS	DS	DS	DS	
+LG						DS	DS	DS	DSp	DSp		DSp		
+MI	AS		AS					DS		DS		DSp		
+BI	AS		AS			DS	DS	DS				DS		
+LI	AS	AS	AS		AS							DSp		
+LP	AS	AS	AS		AS				DS	DS	DS	DSp		
+SK	AS	AS	AS	AS	AS	AS	AS		AS	AS	AS	AS	AS	AS
+HC								DS		DS			AS	AS
+RC								DS					AS	AS
+LN								DS	AS				AS	AS
+LC									AS	AS	AS		AS	AS
+EL														
+CH								AS					AS	

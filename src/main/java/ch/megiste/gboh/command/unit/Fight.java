@@ -68,6 +68,9 @@ public class Fight extends UnitCommand {
 					if (defName == "RC") {
 						defName = "HC";
 					}
+					if (defName == "SKp") {
+						defName = "SK";
+					}
 					if (defName == "LP") {
 						defName = "LI";
 					}
@@ -102,10 +105,17 @@ public class Fight extends UnitCommand {
 			Map<UnitKind, Superiority> superiorityMap = new HashMap<>();
 			superiorities.put(attacker, superiorityMap);
 			for (UnitKind defender : UnitKind.values()) {
+
+				final String defName;
+				if (defender == UnitKind.SKp) {
+					defName = "SK";
+				} else {
+					defName = defender.name();
+				}
 				final Optional<CSVRecord> optRecord =
-						records.stream().filter(r -> r.get("Source").equals(defender.name())).findFirst();
-				if(!optRecord.isPresent()){
-					throw new GbohError("Unable to find superiority for unit " + defender.name());
+						records.stream().filter(r -> r.get("Source").equals(defName)).findFirst();
+				if (!optRecord.isPresent()) {
+					throw new GbohError("Unable to find superiority for unit " + defName);
 				}
 				CSVRecord rec = optRecord.get();
 
@@ -215,7 +225,7 @@ public class Fight extends UnitCommand {
 
 			if (mainAttacker.getState() == UnitState.DEPLETED) {
 				columnShift--;
-				colModifiers.add("-1 attacket depleted");
+				colModifiers.add("-1 attacker depleted");
 			}
 			if (mainDefender.getState() == UnitState.DEPLETED) {
 				columnShift++;
@@ -260,7 +270,7 @@ public class Fight extends UnitCommand {
 			}
 
 			if (sup == Superiority.AS) {
-				defenderImpact = 2 * defenderImpact;
+				defenderImpact = 2 * defenderImpact;a
 			} else if (sup == Superiority.DS) {
 				attackerImpact = 3 * attackerImpact;
 			}
