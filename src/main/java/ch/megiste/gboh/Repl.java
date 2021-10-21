@@ -13,6 +13,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.function.Supplier;
@@ -106,7 +107,6 @@ public class Repl {
 			// REPL-loop
 			//
 
-
 			//Register command
 			Console console = new TerminalConsole(terminal, reader);
 			GameStatus gs = new GameStatus();
@@ -115,14 +115,12 @@ public class Repl {
 
 			CommandResolver resolver = new CommandResolver(console, unitChanger);
 
-			final String currentBattle;
-			if (args.length > 0) {
-				currentBattle = args[0];
-			} else {
-				currentBattle = p.getProperty("currentBattle");
-			}
+			List<String> lArgs = Arrays.asList(args);
+			boolean explicitSave = lArgs.stream().anyMatch(s -> s.equals("-explicitSave"));
+			final String currentBattle =
+					lArgs.stream().filter(s -> !s.startsWith("-")).findFirst().orElse(p.getProperty("currentBattle"));
 
-			if(currentBattle!=null){
+			if (currentBattle != null) {
 				Path battleDir = Paths.get(currentBattle);
 				if (!Files.exists(battleDir) || !Files.isDirectory(battleDir)) {
 					console.logNL("Invalid directory :" + battleDir.toString());
@@ -133,6 +131,7 @@ public class Repl {
 			}
 
 			CommandProcessor cp = new CommandProcessor(console, gs, resolver);
+			cp.setExplicitSave(explicitSave);
 
 			while (true) {
 				try {
@@ -141,10 +140,6 @@ public class Repl {
 					final List<String> commands = Splitter.on("&&").omitEmptyStrings().trimResults().splitToList(line);
 					for (String c : commands) {
 						cp.processInput(c);
-					}
-
-					if (line.startsWith("exit")) {
-						System.exit(0);
 					}
 				} catch (UserInterruptException e) {
 					// Ignore

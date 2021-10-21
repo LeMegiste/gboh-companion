@@ -24,6 +24,7 @@ public class CommandProcessor {
 	private Console console;
 	private GameStatus gameStatus;
 	private CommandResolver commandResolver;
+	private boolean explicitSave;
 
 	public CommandProcessor(final Console console, final GameStatus gameStatus, final CommandResolver commandResolver) {
 		this.console = console;
@@ -52,6 +53,7 @@ public class CommandProcessor {
 				commandArgs = new ArrayList<>();
 			}
 			gc.execute(gameStatus, commandArgs);
+			persistGameIfNeeded();
 			return;
 		}
 
@@ -83,7 +85,7 @@ public class CommandProcessor {
 			if (optDestinationUnitsQuery.isPresent()) {
 				final FindUnitsResult res2 = gameStatus.findUnits(optDestinationUnitsQuery.get());
 				if (res2.unknownValues.size() > 0) {
-					console.logNL("Those units are unknown: " + Joiner.on(", ").join(res.unknownValues));
+					console.logNL("Those units are unknown: " + Joiner.on(", ").join(res2.unknownValues));
 					return;
 				}
 				destinationUnits.addAll(res2.foundUnits);
@@ -97,7 +99,14 @@ public class CommandProcessor {
 
 		uc.execute(res.foundUnits, destinationUnits, modifiers);
 		uc.logAfterCommand(res.foundUnits, destinationUnits);
+		persistGameIfNeeded();
 
+	}
+
+	public void persistGameIfNeeded() {
+		if(!explicitSave){
+			gameStatus.persistGame();
+		}
 	}
 
 	private static String[] translateCommandline(final String toProcess) {
@@ -165,5 +174,9 @@ public class CommandProcessor {
 
 		final String[] args = new String[list.size()];
 		return list.toArray(args);
+	}
+
+	public void setExplicitSave(final boolean explicitSave) {
+		this.explicitSave =explicitSave;
 	}
 }

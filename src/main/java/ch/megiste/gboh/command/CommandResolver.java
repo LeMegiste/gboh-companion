@@ -15,6 +15,7 @@ import ch.megiste.gboh.game.UnitChanger;
 import ch.megiste.gboh.util.ClassLocation;
 import ch.megiste.gboh.util.ClassLocator;
 import ch.megiste.gboh.util.Console;
+import ch.megiste.gboh.util.Dice;
 import ch.megiste.gboh.util.GbohError;
 
 public class CommandResolver {
@@ -44,6 +45,7 @@ public class CommandResolver {
 			final Set<ClassLocation> classLocations =
 					getAllClassLocations("ch.megiste.gboh.command", "ch.megiste.gboh.command.game",
 							"ch.megiste.gboh.command.unit");
+			Dice dice = new Dice();
 			for (ClassLocation cl : classLocations) {
 				Class<?> clazz = Class.forName(cl.getClassName());
 				if (Modifier.isAbstract(clazz.getModifiers())) {
@@ -53,6 +55,7 @@ public class CommandResolver {
 					UnitCommand c = (UnitCommand) clazz.getConstructor().newInstance();
 					c.setConsole(console);
 					c.setUnitChanger(uc);
+					c.setDice(dice);
 					commandsHolder.getUnitCommands().add(c);
 
 				}
@@ -61,6 +64,7 @@ public class CommandResolver {
 					GameCommand c = (GameCommand) clazz.getConstructor().newInstance();
 					c.setConsole(console);
 					c.setUnitChanger(uc);
+					c.setDice(dice);
 					commandsHolder.getGameCommands().add(c);
 					c.setCommandsHolder(commandsHolder);
 

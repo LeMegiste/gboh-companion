@@ -19,7 +19,7 @@ public abstract class Command implements Comparable {
 		this.unitChanger = unitChanger;
 	}
 
-	protected Dice dice = new Dice();
+	protected Dice dice;
 
 	public Dice getDice() {
 		return dice;

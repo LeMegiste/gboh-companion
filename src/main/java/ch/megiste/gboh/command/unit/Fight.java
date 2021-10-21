@@ -270,7 +270,7 @@ public class Fight extends UnitCommand {
 			}
 
 			if (sup == Superiority.AS) {
-				defenderImpact = 2 * defenderImpact;a
+				defenderImpact = 2 * defenderImpact;
 			} else if (sup == Superiority.DS) {
 				attackerImpact = 3 * attackerImpact;
 			}
