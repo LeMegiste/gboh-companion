@@ -44,6 +44,12 @@ Example, for the battle of Zama
 
 ``java -jar target/gboh-compagnion.jar battles/Zama``
 
+Or, simply
+
+``java -jar target/gboh-compagnion.jar``
+
+to relaunch the companion using the last battle directory.
+
 
 ## Two types of commands
 ### Generic game commands
