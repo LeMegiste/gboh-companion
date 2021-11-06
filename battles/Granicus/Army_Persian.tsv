@@ -1,0 +1,49 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus
+HI	HO	Athenian	1	HI1	8	10				
+HI	HO	Athenian	2	HI2	8	10				
+HI	HO	Athenian	3	HI3	8	10				
+HI	HO	Megara	4	HI4	8	10				
+HI	HO	Leucra	5	HI5	8	10				
+LP		Greek Merc	1	LP1	6	5	MJ			
+LP		Greek Merc	2	LP2	6	5	MJ			
+LI		Anatolian Levy	1	LI1	3	5	MJ			
+LI		Anatolian Levy	2	LI2	3	5	MJ			
+LI		Anatolian Levy	3	LI3	3	5	MJ			
+LI		Anatolian Levy	4	LI4	3	5	MJ			
+LI		Anatolian Levy	5	LI5	3	5	MJ			
+LI		Anatolian Levy	6	LI6	3	5	MJ			
+HC	CAT	Bactrian	1	BHC1	6	4				
+HC	CAT	Bactrian	2	BHC2	6	4				
+HC	CAT	Bactrian	3	BHC3	6	4				
+HC	CAT	Bactrian	4	BHC4	6	4				
+HC	CAT	Bactrian	5	BHC5	6	4				
+LC		Median	1	MLC1	6	4	MJ			
+LC		Median	2	MLC2	6	4	MJ			
+LC		Median	3	MLC3	6	4	MJ			
+LC		Median	4	MLC4	6	4	MJ			
+LC		Median	5	MLC5	6	4	MJ			
+LC		Paphlagonian	1	PLC1	6	4	MJ			
+LC		Paphlagonian	2	PLC2	6	4	MJ			
+LC		Paphlagonian	3	PLC3	6	4	MJ			
+LC		Paphlagonian	4	PLC4	6	4	MJ			
+LC		Paphlagonian	5	PLC5	6	4	MJ			
+LC		Scythian	1	SLC1	6	4	MJ			
+LC		Scythian	2	SLC2	6	4	MJ			
+LC		Scythian	3	SLC3	6	4	MJ			
+LC		Scythian	4	SLC4	6	4	MJ			
+LC		Scythian	5	SLC5	6	4	MJ			
+LC		Hyrcanian	1	HLC1	6	4	MJ			
+LC		Hyrcanian	2	HLC2	6	4	MJ			
+LC		Hyrcanian	3	HLC3	6	4	MJ			
+LC		Hyrcanian	4	HLC4	6	4	MJ			
+LC		Hyrcanian	5	HLC5	6	4	MJ			
+LC		Arsames	1	ALC1	6	4	MJ			
+LC		Arsames	2	ALC2	6	4	MJ			
+LC		Arsames	3	ALC3	6	4	MJ			
+LC		Arsames	4	ALC4	6	4	MJ			
+LC		Arsames	5	ALC5	6	4	MJ			
+LC		Memnon	1	MeLC1	6	4	MJ			
+LC		Memnon	2	MeLC2	6	4	MJ			
+LC		Memnon	3	MeLC3	6	4	MJ			
+LC		Memnon	4	MeLC4	6	4	MJ			
+LC		Memnon	5	MeLC5	6	4	MJ			

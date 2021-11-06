@@ -1,0 +1,95 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus
+EL		African	1	EL1	5	5	J		DEPLETED	
+EL		African	2	EL2	5	5	J		DEPLETED	
+EL		African	3	EL3	5	5	J		DEPLETED	
+EL		African	4	EL4	5	5	J		DEPLETED	
+EL		African	5	EL5	5	5	J		DEPLETED	
+EL		African	6	EL6	5	5	J		DEPLETED	
+EL		African	7	EL7	5	5	J		DEPLETED	
+EL		African	8	EL8	5	5	J		DEPLETED	
+EL		African	9	EL9	5	5	J		DEPLETED	
+EL		African	10	EL10	5	5	J		DEPLETED	
+EL		African	11	EL11	5	5	J		DEPLETED	
+EL		African	12	EL12	5	5	J		DEPLETED	
+EL		African	13	EL13	5	5	J		DEPLETED	
+EL		African	14	EL14	5	5	J		DEPLETED	
+EL		African	15	EL15	5	5	J		DEPLETED	
+EL		African	16	EL16	5	5	J		DEPLETED	
+LC		Numidian	1	LC1	8	4	J			
+LC		Numidian	2	LC2	8	4	J			
+LC		Numidian	3	LC3	8	4	J			
+LC		Numidian	4	LC4	8	4	J			
+LC		Numidian	5	LC5	8	4	J			
+HC		Carthaginian	1	HC1	6	4				
+HC		Carthaginian	2	HC2	6	4				
+HC		Carthaginian	3	HC3	6	4				
+HC		Carthaginian	4	HC4	6	4				
+HC		Carthaginian	5	HC5	6	4				
+MI		Celtic	1	CMI1	5	5				
+MI		Celtic	2	CMI2	5	5				
+MI		Celtic	3	CMI3	5	5				
+MI		Celtic	4	CMI4	5	5				
+MI		Celtic	5	CMI5	5	5				
+MI		Celtic	6	CMI6	5	5				
+MI		Celtic	7	CMI7	5	5				
+MI		Celtic	8	CMI8	5	5				
+MI		Celtic	9	CMI9	5	5				
+MI		Celtic	10	CMI10	5	5				
+MI		Ligurian	1	LMI1	6	4				
+MI		Ligurian	2	LMI2	6	4				
+MI		Ligurian	3	LMI3	6	4				
+MI		Ligurian	4	LMI4	6	4				
+MI		Ligurian	5	LMI5	6	4				
+MI		Ligurian	6	LMI6	6	4				
+MI		Baleraric	1	BMI1	4	4				
+MI		Baleraric	2	BMI2	4	4				
+MI		Mauritanian	1	MaMI1	5	4	J			
+MI		Mauritanian	2	MaMI2	5	4	J			
+MI		Mauritanian	3	MaMI3	5	4	J			
+MI		Mauritanian	4	MaMI4	5	4	J			
+LI		North African	1	NLI1	5	4	J			
+LI		North African	2	NLI2	5	4	J			
+LI		North African	3	NLI3	5	4	J			
+LI		North African	4	NLI4	5	4	J			
+LI		North African	5	NLI5	5	4	J			
+LI		North African	6	NLI6	5	4	J			
+MI		Carthaginian	1	CaMI1	4	4				
+MI		Carthaginian	2	CaMI2	4	4				
+MI		Carthaginian	3	CaMI3	4	4				
+MI		Carthaginian	4	CaMI4	4	4				
+MI		Carthaginian	5	CaMI5	4	4				
+MI		Carthaginian	6	CaMI6	4	4				
+MI		Carthaginian	7	CaMI7	4	4				
+MI		Carthaginian	8	CaMI8	4	4				
+MI		Carthaginian	9	CaMI9	4	4				
+MI		Carthaginian	10	CaMI10	4	4				
+MI		Carthaginian	11	CaMI11	4	4				
+MI		Carthaginian	12	CaMI12	4	4				
+MI		Carthaginian	13	CaMI13	4	4				
+MI		Carthaginian	14	CaMI14	4	4				
+MI		Carthaginian	15	CaMI15	4	4				
+MI		Carthaginian	16	CaMI16	4	4				
+PH		African	1	PH1	7	10				
+PH		African	2	PH2	7	10				
+PH		African	3	PH3	7	10				
+PH		African	4	PH4	7	10				
+PH		African	5	PH5	7	10				
+HI		Bruttium	1	HI1	7	5				
+HI		Bruttium	2	HI2	7	5				
+HI		Bruttium	3	HI3	7	5				
+HI		Bruttium	4	HI4	7	5				
+HI		Bruttium	5	HI5	7	5				
+HI		Bruttium	6	HI6	7	5				
+HI		Bruttium	7	HI7	7	5				
+HI		Bruttium	8	HI8	7	5				
+HI		Bruttium	9	HI9	7	5				
+HI		Bruttium	10	HI10	7	5				
+HI		Bruttium	11	HI11	7	5				
+HI		Bruttium	12	HI12	7	5				
+SK		Baleraric	1	BSK1	5	1	S			
+SK		Baleraric	2	BSK2	5	1	S			
+SK		Baleraric	3	BSK3	5	1	S			
+SK		Baleraric	4	BSK4	5	1	S			
+SK		Baleraric	5	BSK5	5	1	S			
+SK		Baleraric	6	BSK6	5	1	S			
+SK		Baleraric	7	BSK7	5	1	S			

@@ -1,0 +1,107 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus
+SK	Ve	1	a	1Vea	5	1	J			
+SK	Ve	1	b	1Veb	5	1	J			
+SK	Ve	1	c	1Vec	5	1	J			
+SK	Ve	10	a	10Vea	4	1	J			
+SK	Ve	10	b	10Veb	4	1	J			
+SK	Ve	10	c	10Vec	4	1	J			
+SK	Ve	1A	a	1AVea	5	1	J			
+SK	Ve	1A	b	1AVeb	5	1	J			
+SK	Ve	10A	a	10AVea	4	1	J			
+SK	Ve	10A	b	10AVeb	4	1	J			
+LG	Ha	1	a	1Haa	7	3				
+LG	Ha	1	b	1Hab	7	3				
+LG	Ha	1	c	1Hac	7	3				
+LG	Ha	1	d	1Had	7	3				
+LG	Pr	1	a	1Pra	9	3				
+LG	Pr	1	b	1Prb	8	3				
+LG	Pr	1	c	1Prc	8	3				
+LG	Pr	1	d	1Prd	8	3				
+LG	Co	1	a	1Coa	6	3				
+LG	Co	1	b	1Cob	6	3				
+LG	Co	1	c	1Coc	6	3				
+LG	Co	1	d	1Cod	6	3				
+LG	Co	1	e	1Coe	6	3				
+LG	Co	1	f	1Cof	6	3				
+LG	Co	1	g	1Cog	6	3				
+LG	Co	1	h	1Coh	6	3				
+LG	Co	1	i	1Coi	6	3				
+LG	CE	1		1CE	7	3				
+LG	TR	1	a	1TRa	8	2				
+LG	TR	1	b	1TRb	8	2				
+LG	TR	1	c	1TRc	8	2				
+LG	TR	1A	a	1ATRa	7	2				
+LG	TR	1A	b	1ATRb	7	2				
+LG	Ha	10	a	10Haa	6	3				
+LG	Ha	10	b	10Hab	6	3				
+LG	Ha	10	c	10Hac	6	3				
+LG	Ha	10	d	10Had	6	3				
+LG	Pr	10	a	10Pra	8	3				
+LG	Pr	10	b	10Prb	7	3				
+LG	Pr	10	c	10Prc	7	3				
+LG	Pr	10	d	10Prd	7	3				
+LG	Co	10	a	10Coa	6	3				
+LG	Co	10	b	10Cob	6	3				
+LG	Co	10	c	10Coc	6	3				
+LG	Co	10	d	10Cod	6	3				
+LG	Co	10	e	10Coe	6	3				
+LG	Co	10	f	10Cof	6	3				
+LG	Co	10	g	10Cog	6	3				
+LG	Co	10	h	10Coh	6	3				
+LG	Co	10	i	10Coi	6	3				
+LG	CE	10		10CE	7	3				
+LG	TR	10	a	10TRa	8	2				
+LG	TR	10	b	10TRb	8	2				
+LG	TR	10	c	10TRc	8	2				
+LG	TR	10A	a	10ATRa	7	2				
+LG	TR	10A	b	10ATRb	7	2				
+LG	Co	7	a	7Coa	5	3				
+LG	Co	7	b	7Cob	5	3				
+LG	Co	7	c	7Coc	5	3				
+LG	Co	7	d	7Cod	5	3				
+LG	Co	7	e	7Coe	5	3				
+LG	Co	7	f	7Cof	5	3				
+LG	Co	7	g	7Cog	5	3				
+LG	Co	7	h	7Coh	5	3				
+LG	Co	14	a	14Coa	5	3				
+LG	Co	14	b	14Cob	5	3				
+LG	Co	14	c	14Coc	5	3				
+LG	Co	14	d	14Cod	5	3				
+LG	Co	14	e	14Coe	5	3				
+LG	Co	14	f	14Cof	5	3				
+LG	Co	14	g	14Cog	5	3				
+LG	Co	14	h	14Coh	5	3				
+LG	Co	15	a	15Coa	5	3				
+LG	Co	15	b	15Cob	5	3				
+LG	Co	15	c	15Coc	5	3				
+LG	Co	15	d	15Cod	5	3				
+LG	Co	15	c	15Coe	5	3				
+LG	Co	15	d	15Cof	5	3				
+RC	RC	1		1RC	6	3				
+RC	RC	10		10RC	5	3				
+RC	RC	1A	a	1ARCa	6	3				
+RC	RC	1A	b	1ARCb	6	3				
+RC	RC	1EX		1EXRC	7	3				
+RC	RC	10A	a	10ARCa	6	3				
+RC	RC	10A	b	10ARCb	6	3				
+RC	RC	10EX		10EXRC	7	3				
+LI		Massinissa's Numidian	1	MLI1	6	3				
+LI		Massinissa's Numidian	2	MLI2	6	3				
+LI		Massinissa's Numidian	3	MLI3	6	3				
+LI		Massinissa's Numidian	4	MLI4	6	3				
+MI		Massinissa's Numidian	1	MMI1	5	5				
+MI		Massinissa's Numidian	2	MMI2	5	5				
+MI		Massinissa's Numidian	3	MMI3	5	5				
+MI		Massinissa's Numidian	4	MMI4	5	5				
+MI		Massinissa's Numidian	5	MMI5	5	5				
+MI		Massinissa's Numidian	6	MMI6	5	5				
+LC		Massinissa's Numidian	1	MLC1	8	4	J			
+LC		Massinissa's Numidian	2	MLC2	8	4	J			
+LC		Massinissa's Numidian	3	MLC3	8	4	J			
+LC		Massinissa's Numidian	4	MLC4	8	4	J			
+LC		Massinissa's Numidian	5	MLC5	8	4	J			
+LC		Massinissa's Numidian	6	MLC6	8	4	J			
+LC		Massinissa's Numidian	7	MLC7	8	4	J			
+LC		Massinissa's Numidian	8	MLC8	8	4	J			
+LC		Massinissa's Numidian	9	MLC9	8	4	J			
+LC		Massinissa's Numidian	10	MLC10	8	4	J			

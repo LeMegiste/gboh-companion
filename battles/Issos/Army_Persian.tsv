@@ -1,0 +1,82 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus
+CH		Bodyguards	1	CH1	7	5				
+HI	HO	Athenian	1	HI1	8	10				
+HI	HO	Athenian	2	HI2	8	10				
+HI	HO	Corinth	3	HI3	8	10				
+HI	HO	Corcyra	4	HI4	8	10				
+MI		Immortals	1	MI1	8	5				
+MI		Immortals	2	MI2	8	5				
+MI		Immortals	3	MI3	8	5				
+LP	CA	Cardaces	1	CA1	5	10				
+LP	CA	Cardaces	2	CA2	5	10				
+LP	CA	Cardaces	3	CA3	5	10				
+LP	CA	Cardaces	4	CA4	5	10				
+LP	CA	Cardaces	5	CA5	5	10				
+LP	CA	Cardaces	6	CA6	5	10				
+LP	CA	Cardaces	7	CA7	5	10				
+LP	CA	Cardaces	8	CA8	5	10				
+LP	CA	Cardaces	9	CA9	5	10				
+LP	CA	Cardaces	10	CA10	5	10				
+HC	CAT	Bactrian	1	BHC1	6	4				
+HC	CAT	Bactrian	2	BHC2	6	4				
+HC	CAT	Bactrian	3	BHC3	6	4				
+HC	CAT	Bactrian	4	BHC4	6	4				
+HC	CAT	Bactrian	5	BHC5	6	4				
+HC	CAT	Royal guards	1	RHC1	6	4				
+HC	CAT	Royal guards	2	RHC2	6	4				
+HC	CAT	Royal guards	3	RHC3	6	4				
+LC		Median	1	MLC1	6	4	MJ			
+LC		Median	2	MLC2	6	4	MJ			
+LC		Median	3	MLC3	6	4	MJ			
+LC		Median	4	MLC4	6	4	MJ			
+LC		Median	5	MLC5	6	4	MJ			
+LC		Persian	1	PLC1	6	4	MJ			
+LC		Persian	2	PLC2	6	4	MJ			
+LC		Persian	3	PLC3	6	4	MJ			
+LC		Persian	4	PLC4	6	4	MJ			
+LC		Persian	5	PLC5	6	4	MJ			
+LC		Persian	6	PLC6	5	4	MA			
+LC		Hyrcanian	1	HLC1	6	4	MJ			
+LC		Hyrcanian	2	HLC2	6	4	MJ			
+LC		Hyrcanian	3	HLC3	6	4	MJ			
+LC		Hyrcanian	4	HLC4	6	4	MJ			
+LC		Hyrcanian	5	HLC5	5	4	MJ			
+LI		Asian Levy	1	LI1	3	5	J			
+LI		Asian Levy	2	LI2	3	5	J			
+LI		Asian Levy	3	LI3	3	5	J			
+LI		Asian Levy	4	LI4	3	5	J			
+LI		Asian Levy	5	LI5	3	5	J			
+LI		Asian Levy	6	LI6	3	5	J			
+LI		Asian Levy	7	LI7	3	5	J			
+LI		Asian Levy	8	LI8	3	5	J			
+LI		Asian Levy	9	LI9	3	5	J			
+LI		Asian Levy	10	LI10	3	5	J			
+LI		Asian Levy	11	LI11	3	5	J			
+LI		Asian Levy	12	LI12	3	5	J			
+LI		Asian Levy	13	LI13	3	5	J			
+LI		Asian Levy	14	LI14	3	5	J			
+SK		Syrian	1	SySK1	5	1	A			
+SK		Syrian	2	SySK2	5	1	A			
+SK		Syrian	3	SySK3	5	1	A			
+SK		Syrian	4	SySK4	5	1	A			
+SK		Susian	1	SuSK1	5	1	A			
+SK		Susian	2	SuSK2	5	1	A			
+SK		Susian	3	SuSK3	5	1	A			
+SK		Susian	4	SuSK4	5	1	A			
+SK		Arabian	1	ArSK1	4	1	A			
+SK		Arabian	2	ArSK2	4	1	A			
+SK		Arabian	3	ArSK3	4	1	A			
+SK		Arabian	3	ArSK4	4	1	A			
+SK		Sitacenian	1	SiSK1	3	1	A			
+SK		Sitacenian	2	SiSK2	3	1	A			
+SK		Sitacenian	3	SiSK3	3	1	A			
+SK		Sitacenian	4	SiSK4	3	1	A			
+SK		Sitacenian	5	SiSK5	3	1	A			
+SK		Sitacenian	6	SiSK6	3	1	A			
+SK		Median	1	MeSK1	5	1	A			
+SK		Median	2	MeSK2	5	1	A			
+SK		Persian	1	PeSK1	5	1	J			
+SK		Persian	2	PeSK2	5	1	J			
+SK		Rhodian	1	RhSK1	5	1	S			
+SK		Rhodian	2	RhSK2	5	1	S			
+SK		Rhodian	3	RhSK3	5	1	S			
