@@ -13,7 +13,7 @@ The tool won't replace the knowledge of the rules and does not pretend to cover 
 
 ## What this tool does not do
 
-* the GBOH Companion is not integrated within Vassal (but a clever programmer could certainly make the two softwares working together)
+* the GBOH Companion is not integrated within Vassal (but a clever programmer could certainly make the two softwares work together)
 * the GBOH Companion is not following Leader activations and leader rules.
 * the rules as so rich and complex, that you cannot trust the GBOH Companion entirely. The **D** and **SET** commands are here to allow you to *manually* handle edge cases.
 
@@ -28,6 +28,10 @@ etc.
 
 
 ## How to use ? 
+In order to use that program, you need to have java 8 (at least) installed locally.
+
+https://java.com/en/download/help/download_options.html
+
 Prepare the battle sheets (using excel). Each unit must be identified by a unique code, easy to remember
 (see the folders for Zama, Great Plains and Lautulae as examples, in the ``battles`` directory.)
 
