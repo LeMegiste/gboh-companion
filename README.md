@@ -32,6 +32,7 @@ In order to use that program, you need to have java 8 (at least) installed local
 
 https://java.com/en/download/help/download_options.html
 
+
 Prepare the battle sheets (using excel). Each unit must be identified by a unique code, easy to remember
 (see the folders for Zama, Great Plains and Lautulae as examples, in the ``battles`` directory.)
 
@@ -61,7 +62,7 @@ Example, for the battle of Zama
 ### Unit commands
 The syntax for those commands is always the same:
 
-``<actingUnit1>[,<actingUnit2>,...] CMD <-modifier1> <-modifier1> [<defendingUnit>,<defendingUnit>,...]``
+``<actingUnit1>[,<actingUnit2>,...] CMD <-modifier1> <-modifier2> ... [<defendingUnit1>,<defendingUnit2>,...]``
 
 Possible modifiers can be listed using ``HELP <myCommand>``
 
@@ -91,7 +92,7 @@ Example: Legio I Hastati a assited by Principes a shocks (flank attack) Mercenar
 The game is automatically saved after each command. (do not hesitate to open the file game.xml to see the latest commands)
 
 ## And now?
-I wrote this program to help me during my solitaire replay of some battles. I'm sharing it if it can be of any use to anybody even if I'm conscious that, due to its command line nature, it may be a little hard to adopt by people who are not old geeks.
+I wrote this program to help me during my solitaire replay of some battles. I'm sharing it if it can be of any use to anybody even if I'm conscious that, between its command line nature and the necessity to have java installed, it may be a little hard to adopt by people who are not geeks or programmers.
 
 If you find bugs, if you want evolutions, if you need help to use it, please write me: dev [at] megiste.ch, I'll do my best to help you.
 
