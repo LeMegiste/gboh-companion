@@ -1,5 +1,5 @@
 # gboh-companion
-A commande line tool to handle 99% of the dice rolls of GMT Great Battles of History games.
+A command line tool to handle 99% of the dice rolls of GMT Great Battles of History games.
 
 ## Overview
 This is a command line interface to handle all the dice rolls and charts when playing GMT Games's Great Battles of History Games.
@@ -85,3 +85,10 @@ Example: Legio I Hastati a assited by Principes a shocks (flank attack) Mercenar
 * **SET** : Sets the counter values for the units.
 
 The game is automatically saved after each command. (do not hesitate to open the file game.xml to see the latest commands)
+
+## And now?
+I wrote this program to help me during my solitaire replay of some battles. I'm sharing it if it can be of any use to anybody even if I'm conscious that, due to its command line nature, it may be a little hard to adopt by people who are not old geeks.
+
+If you find bugs, if you want evolutions, if you need help to use it, please write me: dev [at] megiste.ch, I'll do my best to help you.
+
+
