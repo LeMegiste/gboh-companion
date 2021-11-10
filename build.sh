@@ -7,7 +7,7 @@ export MVN_HOME=/Users/laurentkloetzer/code/apache-maven-3.8.2/bin
 
 $MVN_HOME/mvn -Dhttps.protocols=TLSv1.2 install package;
 
-export CMD="${JAVA_HOME}bin/java -jar target/gboh-1.0-SNAPSHOT-jar-with-dependencies.jar";
+export CMD="${JAVA_HOME}bin/java -jar target/gboh-companion.jar";
 
 echo $CMD;
 

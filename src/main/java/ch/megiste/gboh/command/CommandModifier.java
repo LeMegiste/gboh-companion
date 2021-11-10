@@ -14,6 +14,9 @@ public enum CommandModifier {
 	fury("Barbarian fury"),
 	hits("Hits",Integer.class),
 	state("State", UnitState.class),
+	nmf("No missile fire"),
+	sa("Stacked attackers",Integer.class),
+	sb("Stacked defenders",Integer.class),
 	missile("Missile status", MissileStatus.class);
 
 	private Class<?> objectClass = Boolean.class;

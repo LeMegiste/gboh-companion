@@ -42,29 +42,45 @@ public class Shock extends UnitCommand {
 		final List<Combat> combats = fight.buildCombats(attackers, defenders);
 		for (Combat c : combats) {
 
-			//Missile fire if possible.
-			final List<String> modifiersForMissile;
-			if (modifiers != null) {
-				modifiersForMissile = new ArrayList<>(modifiers);
-			} else {
-				modifiersForMissile = new ArrayList<>();
-			}
-			modifiersForMissile.add("norf");
-			final Unit mainDefender = c.getMainDefender();
-			for (Unit attacker : c.getAttackers()) {
-				if (attacker.getMissile() != MissileType.NONE
-						&& attacker.getStatus().missileStatus != MissileStatus.NO) {
-					missileFire.execute(Collections.singletonList(attacker), Collections.singletonList(mainDefender),
-							modifiersForMissile);
-				}
-			}
-			//Reaction fire
+			boolean noMissiles = getBooleanModifier(modifiers, CommandModifier.nmf);
+			int stackedAttackers = getIntModifier(modifiers, CommandModifier.sa,-1);
+			int stackedDefenders = getIntModifier(modifiers, CommandModifier.sb,-1);
 			final Unit mainAttacker = c.getMainAttacker();
-			for (Unit defender : c.getDefenders()) {
-				if (defender.getMissile() != MissileType.NONE
-						&& defender.getStatus().missileStatus != MissileStatus.NO) {
-					missileFire.execute(Collections.singletonList(defender), Collections.singletonList(mainAttacker),
-							modifiersForMissile);
+			final Unit mainDefender = c.getMainDefender();
+
+			if(!noMissiles){
+				//Missile fire if possible.
+				final List<String> modifiersForMissile;
+				if (modifiers != null) {
+					modifiersForMissile = new ArrayList<>(modifiers);
+				} else {
+					modifiersForMissile = new ArrayList<>();
+				}
+				modifiersForMissile.add("norf");
+				int count=0;
+				for (Unit attacker : c.getAttackers()) {
+					if(count==stackedAttackers){
+						continue;
+					}
+					count++;	
+					if (attacker.getMissile() != MissileType.NONE
+							&& attacker.getStatus().missileStatus != MissileStatus.NO) {
+						missileFire.execute(Collections.singletonList(attacker), Collections.singletonList(mainDefender),
+								modifiersForMissile);
+					}
+				}
+				count=0;
+				//Reaction fire
+				for (Unit defender : c.getDefenders()) {
+					if(count==stackedDefenders){
+						continue;
+					}
+					count++;
+					if (defender.getMissile() != MissileType.NONE
+							&& defender.getStatus().missileStatus != MissileStatus.NO) {
+						missileFire.execute(Collections.singletonList(defender), Collections.singletonList(mainAttacker),
+								modifiersForMissile);
+					}
 				}
 			}
 
@@ -88,11 +104,15 @@ public class Shock extends UnitCommand {
 							|| mainDefender.getKind() == UnitKind.PH || mainDefender.getKind() == UnitKind.HI
 					);
 
-
+			int count=0;
 			for (Unit attacker : c.getAttackers()) {
-
+				diffPerUnit.put(attacker, 0);
+				if(count==stackedAttackers){
+						continue;
+				}
+				count++;
 				if (noTqCheckForAttacker) {
-					diffPerUnit.put(attacker, 0);
+				
 					continue;
 				}
 				int r = dice.roll();
@@ -108,9 +128,15 @@ public class Shock extends UnitCommand {
 
 				diffPerUnit.put(attacker, diff);
 			}
+			count=0;
 			for (Unit defender : c.getDefenders()) {
+				diffPerUnit.put(defender, 0);
+				if(count==stackedDefenders){
+						continue;
+				}
+				count++;
 				if(noTqCheckForDefender){
-					diffPerUnit.put(defender, 0);
+					
 					continue;
 				}
 				int r = dice.roll();

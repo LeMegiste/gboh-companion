@@ -27,3 +27,8 @@ target/*
 !target/gboh-companion.jar
 
 
+.DS_Store
+battles/Lautulae/game.xml
+battles/Lautulae/backup.3.189.xml
+battles/Lautulae/backup.2.96.xml
+history
