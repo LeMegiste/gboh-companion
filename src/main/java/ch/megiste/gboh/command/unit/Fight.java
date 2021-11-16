@@ -1,6 +1,7 @@
 package ch.megiste.gboh.command.unit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.apache.commons.csv.CSVRecord;
 import ch.megiste.gboh.army.Combat;
 import ch.megiste.gboh.army.Unit;
 import ch.megiste.gboh.army.Unit.MissileType;
+import ch.megiste.gboh.army.Unit.UnitCategory;
 import ch.megiste.gboh.army.Unit.UnitKind;
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
@@ -96,6 +98,8 @@ public class Fight extends UnitCommand {
 				superiorityMap.put(defender, Integer.parseInt(strSup));
 			}
 		}
+		//Specific handling of skirmishers
+		columns.put(UnitKind.SK, Collections.singletonMap(UnitKind.CH, columns.get(UnitKind.SKp).get(UnitKind.CH)));
 	}
 
 	private void buildSuperiorities(final Helper helper) {
@@ -130,6 +134,8 @@ public class Fight extends UnitCommand {
 				superiorityMap.put(defender, sup);
 			}
 		}
+		//Manual handling of SK
+		superiorities.put(UnitKind.SK, Collections.singletonMap(UnitKind.CH, Superiority.AS));
 	}
 
 	private void buildImpacts(final Helper helper) {
@@ -170,22 +176,45 @@ public class Fight extends UnitCommand {
 	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<String> modifiers) {
 
 		List<Combat> combats = buildCombats(attackers, defenders);
-		boolean flank = getBooleanModifier(modifiers, CommandModifier.f);
-		boolean back = getBooleanModifier(modifiers, CommandModifier.b);
-		Position position;
-		if (back) {
-			position = Position.BACK;
-		} else if (flank) {
-			position = Position.FLANK;
-		} else {
-			position = Position.FRONT;
-		}
+		Position position = computePosition(modifiers);
 
 		for (Combat c : combats) {
 			Superiority sup;
 			final Unit mainAttacker = c.getMainAttacker();
 			final Unit mainDefender = c.getMainDefender();
-			if (position != Position.FRONT) {
+
+			boolean ignorePositionSuperiority = false;
+			final UnitCategory mainAttackerCategory = mainAttacker.getKind().getUnitCategory();
+
+			final UnitCategory mainDefCategory = mainDefender.getKind().getUnitCategory();
+			if (mainDefCategory == UnitCategory.Skirmishers && position == Position.FLANK) {
+				ignorePositionSuperiority = true;
+				console.logNL("No position superiority against skirmishers attacked on the flank");
+			}
+			if (mainAttackerCategory == UnitCategory.Cavalry && mainDefCategory == UnitCategory.Elephants) {
+				ignorePositionSuperiority = true;
+				console.logNL("No position superiority for cavalry against elephants");
+
+			}
+			if (mainAttackerCategory == UnitCategory.Elephants && mainDefCategory == UnitCategory.Elephants) {
+				ignorePositionSuperiority = true;
+				console.logNL("No position superiority for elephants against elephants");
+			}
+			if (mainAttackerCategory == UnitCategory.Skirmishers && mainDefCategory != UnitCategory.Chariots
+					&& mainDefCategory != UnitCategory.Skirmishers) {
+				ignorePositionSuperiority = true;
+				console.logNL("No position superiority for skirmishers against anything else than chariots or skirmishers");
+
+			}
+			if (mainAttacker.getKind() == UnitKind.LC && (mainDefender.getKind() == UnitKind.PH
+					|| mainDefender.getKind() == UnitKind.HI || mainDefender.getKind() == UnitKind.LG
+					|| mainDefender.getKind() == UnitKind.MI)) {
+				ignorePositionSuperiority = true;
+				console.logNL("No position superiority for light cavalry heavy or medium infantry");
+
+			}
+
+			if (position != Position.FRONT && !ignorePositionSuperiority) {
 				sup = Superiority.AS;
 				console.logNL(String.format("%s is AS for better position.", Log.buildStaticDesc(mainAttacker)));
 			} else {
@@ -218,6 +247,11 @@ public class Fight extends UnitCommand {
 			int sumSizeDefenders = c.getDefenders().stream().mapToInt(Unit::getSize).sum();
 
 			int columnShift = computeColumnShift(sumSizeAttackers, sumSizeDefenders);
+			if (mainAttacker.getKind() != mainDefender.getKind() && (doNotUseSizeColumnShift(mainAttacker.getKind())
+					|| doNotUseSizeColumnShift(mainDefender.getKind()))) {
+				columnShift = 0;
+			}
+
 			if (columnShift != 0) {
 				colModifiers.add(String
 						.format("%d due to size ratio %d/%d", columnShift, sumSizeAttackers, sumSizeDefenders));
@@ -265,8 +299,13 @@ public class Fight extends UnitCommand {
 			//
 			int attackerImpact = attackerImpactResults.get(r).get(column);
 			int defenderImpact = defenderImpactResults.get(r).get(column);
-			if (mainDefender.getKind() == UnitKind.SK) {
+			if (mainDefCategory == UnitCategory.Skirmishers && mainAttackerCategory != UnitCategory.Chariots
+					&& mainAttackerCategory != UnitCategory.Skirmishers) {
 				attackerImpact = attackerImpact / 2;
+			}
+			if (mainAttackerCategory == UnitCategory.Skirmishers && mainDefCategory != UnitCategory.Chariots
+					&& mainDefCategory != UnitCategory.Skirmishers) {
+				defenderImpact = defenderImpact / 2;
 			}
 
 			if (sup == Superiority.AS) {
@@ -294,6 +333,24 @@ public class Fight extends UnitCommand {
 			missileDepletionForUnitsInvolvedInShock(u);
 		}
 
+	}
+
+	protected Position computePosition(final List<String> modifiers) {
+		boolean flank = getBooleanModifier(modifiers, CommandModifier.f);
+		boolean back = getBooleanModifier(modifiers, CommandModifier.b);
+		Position position;
+		if (back) {
+			position = Position.BACK;
+		} else if (flank) {
+			position = Position.FLANK;
+		} else {
+			position = Position.FRONT;
+		}
+		return position;
+	}
+
+	private boolean doNotUseSizeColumnShift(final UnitKind kind) {
+		return kind == UnitKind.CH || kind == UnitKind.EL;
 	}
 
 	private void missileDepletionForUnitsInvolvedInShock(final Unit u) {
@@ -417,21 +474,29 @@ public class Fight extends UnitCommand {
 
 	private int computeColumnFromTableAndPosition(final Position position, final UnitKind attackerKind,
 			final UnitKind defenderKind) {
-		int column;
+
+		Map<UnitKind, Integer> table;
 		switch (position) {
 
 		case FLANK:
-			column = columnsFlank.get(attackerKind).get(defenderKind);
+			table = columnsFlank.get(attackerKind);
 			break;
 		case BACK:
-			column = columnsBack.get(attackerKind).get(defenderKind);
+			table = columnsBack.get(attackerKind);
 			break;
 		case FRONT:
 		default:
-			column = columnsFront.get(attackerKind).get(defenderKind);
+			table = columnsFront.get(attackerKind);
 			break;
 		}
-		return column;
+		if (table == null) {
+			return 0;
+		}
+		if (!table.containsKey(defenderKind)) {
+			return 0;
+		}
+
+		return table.get(defenderKind);
 	}
 
 	protected List<Combat> buildCombats(final List<Unit> sourceUnits, final List<Unit> destinationUnits) {
@@ -443,6 +508,10 @@ public class Fight extends UnitCommand {
 
 	Superiority findSuperiority(Unit attacker, Unit defender) {
 		final Superiority tmpSup = superiorities.get(attacker.getKind()).get(defender.getKind());
+		if (tmpSup == null) {
+			return Superiority.NONE;
+		}
+
 		if (tmpSup != Superiority.DSp) {
 			return tmpSup;
 		} else { //In case of DSp

@@ -29,11 +29,11 @@ public class Combat {
 	}
 
 	public Unit getMainAttacker() {
-		return attackers.get(0);
+		return getAttackers().get(0);
 	}
 
 	public Unit getMainDefender() {
-		return defenders.get(0);
+		return getDefenders().get(0);
 	}
 
 	public Combat(final List<Unit> attackers, final List<Unit> defenders) {

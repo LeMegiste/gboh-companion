@@ -188,4 +188,44 @@ public class FightTest {
 
 	}
 
+	@Test
+	public void skirmishersAttacks1() {
+		Unit ag1 = new Unit(UnitKind.SKp, null, "Agrianian", "1", "Ag1", 6, 1, MissileType.J);
+
+		Unit li = new Unit(UnitKind.LI, SubClass.NONE, "Levy", "1", "CLI1", 4, 3, MissileType.NONE);
+
+		Mockito.when(dice.roll()).thenReturn(5, 7, 8);
+
+		fc.execute(Collections.singletonList(ag1), Collections.singletonList(li), null);
+		Mockito.verify(unitChanger).addHits(eq(ag1), eq(3));
+		Mockito.verify(unitChanger).addHits(eq(li), eq(1));
+
+	}
+
+	@Test
+	public void skirmishersAttacks2() {
+		Unit ag1 = new Unit(UnitKind.SK, null, "Mac archers", "1", "SK1", 3, 1, MissileType.A);
+
+		Unit li = new Unit(UnitKind.LI, SubClass.NONE, "Levy", "1", "CLI1", 4, 3, MissileType.NONE);
+
+		Mockito.when(dice.roll()).thenReturn(5, 7, 8);
+
+		fc.execute(Collections.singletonList(ag1), Collections.singletonList(li), null);
+
+	}
+
+	@Test
+	public void skirmishersAttacks3() {
+		Unit ag1 = new Unit(UnitKind.SK, null, "Mac archers", "1", "SK1", 3, 1, MissileType.A);
+
+		Unit li = new Unit(UnitKind.CH, SubClass.NONE, "Chariots", "1", "CH1", 4, 3, MissileType.A);
+
+		Mockito.when(dice.roll()).thenReturn(5, 7, 8);
+
+		fc.execute(Collections.singletonList(ag1), Collections.singletonList(li), null);
+		Mockito.verify(unitChanger).addHits(eq(ag1), eq(4));
+		Mockito.verify(unitChanger).addHits(eq(li), eq(3));
+
+	}
+
 }

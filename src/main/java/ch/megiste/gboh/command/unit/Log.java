@@ -30,7 +30,7 @@ public class Log extends UnitCommand {
 
 	public static String logUnit(Unit u) {
 
-		final String s = "[" + buildStaticDesc(u) + "] " + buildStats(u);
+		final String s = u.getUnitCode() + " [" + buildStaticDesc(u) + "] " + buildStats(u);
 		StringBuilder add = new StringBuilder();
 		switch (u.getState()) {
 
@@ -83,5 +83,10 @@ public class Log extends UnitCommand {
 		} else {
 			return String.format("%s %s %s", u.getOrigin(), u.getKind().name(), u.getNumber());
 		}
+	}
+
+	@Override
+	public void logAfterCommand(final List<Unit> attackers, final List<Unit> defenders) {
+		//Nothing
 	}
 }

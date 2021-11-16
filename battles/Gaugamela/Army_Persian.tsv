@@ -1,0 +1,122 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus
+CH		Persian	1	CH1	5	3	A			
+CH		Persian	2	CH2	5	3	A			
+CH		Persian	3	CH3	5	3	A			
+CH		Persian	4	CH4	5	3	A			
+CH		Persian	5	CH5	5	3	A			
+CH		Persian	6	CH6	5	3	A			
+CH		Persian	7	CH7	5	3	A			
+CH		Persian	8	CH8	5	3	A			
+CH		Persian	9	CH9	5	3	A			
+CH		Persian	10	CH10	5	3	A			
+CH		Persian	11	CH11	5	3	A			
+CH		Persian	12	CH12	5	3	A			
+EL		Indian	1	EL1	4	5	J			
+EL		Indian	2	EL2	4	5	J			
+EL		Indian	3	EL3	4	5	J			
+MI		Immortals	1	MI1	8	5				
+MI		Immortals	2	MI2	8	5				
+HC		Kinsmen	1	KHC1	7	5				
+HC		Kinsmen	2	KHC2	7	5				
+HI	HO	Greek mercenaries	1	HI1	6	4				
+HI	HO	Greek mercenaries	2	HI2	6	4				
+HC	CAT	Bactrian	1	BHC1	6	4				
+HC	CAT	Bactrian	2	BHC2	6	4				
+HC	CAT	Bactrian	3	BHC3	6	4				
+HC	CAT	Bactrian	4	BHC4	6	4				
+HC	CAT	Bactrian	5	BHC5	6	4				
+HC	CAT	Bactrian	6	BHC6	6	4				
+HC	CAT	Bactrian	7	BHC7	6	4				
+HC	CAT	Bactrian	8	BHC8	6	4				
+HC	CAT	Bactrian	9	BHC9	6	4				
+HC	CAT	Bactrian	10	BHC10	6	4				
+HC	CAT	Bactrian	11	BHC11	6	4				
+HC	CAT	Bactrian	12	BHC12	6	4				
+HC	CAT	Bactrian	13	BHC13	6	4				
+HC	CAT	Bactrian	14	BHC14	6	4				
+HC	CAT	Scythian	1	SHC1	7	5				
+HC	CAT	Scythian	2	SHC2	7	5				
+LC		Scythian	1	SLC1	5	5	MJ			
+LC		Scythian	2	SLC2	5	5	MJ			
+LC		Scythian	3	SLC3	5	5	MJ			
+LC		Scythian	4	SLC4	5	5	MJ			
+LC		Scythian	5	SLC5	5	5	MJ			
+LC		Scythian	6	SLC6	5	5	MJ			
+LC		Dahae	1	DLC1	6	5	MA			
+LC		Dahae	2	DLC2	6	5	MA			
+LC		Arachosian	1	ArLC1	6	5	MJ			
+LC		Arachosian	2	ArLC2	6	5	MJ			
+LC		Arachosian	3	ArLC3	6	5	MJ			
+LC		Arachosian	4	ArLC4	6	5	MJ			
+HC	CAT	Persian	1	PHC1	7	5				
+HC	CAT	Persian	2	PHC2	7	5				
+HC		Susian	1	SuHC1	7	5				
+HC		Susian	2	SuHC2	7	5				
+LN		Cadusian	1	CLN1	6	5				
+LN		Cadusian	2	CLN2	6	5				
+LN		Indian	1	ILN1	6	5				
+LN		Indian	2	ILN2	6	5				
+LN		xCarian	1	xLN1	6	5				
+LN		xCarian	2	xLN2	6	5				
+LN		Sacesinian	1	SLN1	6	5				
+LN		Sacesinian	2	SLN2	6	5				
+LN		Albanian	1	ALN1	6	5				
+LN		Albanian	2	ALN2	6	5				
+LN		Hyrcanian	1	HLN1	6	5				
+LN		Hyrcanian	2	HLN2	6	5				
+LN		Tapurian	1	TLN1	6	5				
+LN		Tapurian	2	TLN2	6	5				
+LC		Sacian	1	SaLC1	5	5	MA			
+LC		Sacian	2	SaLC2	5	5	MA			
+LC		Sacian	3	SaLC3	5	5	MA			
+LC		Sacian	4	SaLC4	5	5	MA			
+LC		Parthian	1	PLC1	7	5	MA			
+LC		Parthian	2	PLC2	7	5	MA			
+LC		Parthian	3	PLC3	7	5	MA			
+LC		Parthian	4	PLC4	7	5	MA			
+HC		Median	1	MHC1	7	5				
+HC		Median	2	MHC2	7	5				
+HC		Median	3	MHC3	7	5				
+HC		Median	4	MHC4	7	5				
+LC		Mesopotamian	1	MLC1	6	5	MJ			
+LC		Mesopotamian	2	MLC2	6	5	MJ			
+LC		Syrian	1	SyLC1	6	5	MJ			
+LC		Syrian	2	SyLC2	6	5	MJ			
+LC		Cappadocian	1	CLC1	6	5	MJ			
+LC		Cappadocian	2	CLC2	6	5	MJ			
+LC		Armenian	1	ALC1	6	5	MJ			
+LC		Armenian	2	ALC2	6	5	MJ			
+LC		Armenian	3	ALC3	6	5	MJ			
+LC		Armenian	4	ALC4	6	5	MJ			
+SK		Mardian	1	MSK1	4	1	A			
+SK		Mardian	2	MSK2	4	1	A			
+SK		Uxian	1	USK1	3	1	S			
+SK		Uxian	2	USK2	3	1	S			
+SK		Uxian	3	USK3	3	1	S			
+SK		Uxian	4	USK4	3	1	S			
+SK		Uxian	5	USK5	3	1	S			
+LI		Carian	1	CLI1	4	5	J			
+LI		Carian	2	CLI2	4	5	J			
+LI		Carian	3	CLI3	4	5	J			
+LI		Babylonian	1	BLI1	3	5	J			
+LI		Babylonian	2	BLI2	3	5	J			
+LI		Babylonian	3	BLI3	3	5	J			
+LI		Babylonian	4	BLI4	3	5	J			
+LI		Babylonian	5	BLI5	3	5	J			
+LI		Babylonian	6	BLI6	3	5	J			
+LI		Babylonian	7	BLI7	3	5	J			
+LI		Babylonian	8	BLI8	3	5	J			
+SK		Arabian	1	ArSK1	4	1	A			
+SK		Arabian	2	ArSK2	4	1	A			
+SK		Arabian	3	ArSK3	4	1	A			
+SK		Arabian	4	ArSK4	4	1	A			
+LI		Indian	1	InLI1	4	5	A			
+LI		Indian	2	InLI2	4	5	A			
+LI		Indian	3	InLI3	5	5	J			
+LI		Indian	4	InLI4	5	5	J			
+SK		Sitacenian	1	SiSK1	3	1	A			
+SK		Sitacenian	2	SiSK2	3	1	A			
+SK		Sitacenian	3	SiSK3	3	1	A			
+SK		Sitacenian	4	SiSK4	3	1	A			
+SK		Sitacenian	5	SiSK5	3	1	A			
+SK		Sitacenian	6	SiSK6	3	1	A			

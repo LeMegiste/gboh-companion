@@ -1,6 +1,7 @@
 package ch.megiste.gboh.command;
 
 import ch.megiste.gboh.command.unit.UnitCommand;
+import ch.megiste.gboh.game.GameStatus.Rules;
 import ch.megiste.gboh.game.UnitChanger;
 import ch.megiste.gboh.util.Console;
 import ch.megiste.gboh.util.Dice;
@@ -48,5 +49,9 @@ public abstract class Command implements Comparable {
 			return this.getKey().compareTo(uc.getKey());
 		}
 		return 1;
+	}
+
+	public Rules getCurrentRules(){
+		return unitChanger.getCurrentRules();
 	}
 }

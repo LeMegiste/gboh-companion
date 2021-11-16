@@ -18,16 +18,19 @@ import com.google.common.base.Preconditions;
 
 import ch.megiste.gboh.army.Unit;
 import ch.megiste.gboh.army.Unit.MissileType;
+import ch.megiste.gboh.army.Unit.UnitCategory;
 import ch.megiste.gboh.army.Unit.UnitKind;
 import ch.megiste.gboh.army.UnitStatus;
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
 import ch.megiste.gboh.command.unit.Log;
+import ch.megiste.gboh.game.GameStatus.Rules;
 import ch.megiste.gboh.util.Console;
 import ch.megiste.gboh.util.Helper;
 
 public class UnitChanger {
 	private static final Set<UnitState> BEFORE_ROUTING = EnumSet.of(DEPLETED, OK, RALLIED);
+	private static final Set<UnitState> BEFORE_ELIMINATED = EnumSet.of(DEPLETED, OK, RALLIED,ROUTED);
 	private static final Set<UnitState> BEFORE_RALLIED = EnumSet.of(ROUTED);
 	private Map<UnitState, Set<UnitState>> stateTransitions = new HashMap<>();
 
@@ -35,7 +38,7 @@ public class UnitChanger {
 		stateTransitions.put(RALLIED, BEFORE_RALLIED);
 		stateTransitions.put(ROUTED, BEFORE_ROUTING);
 		stateTransitions.put(OK, EnumSet.of(ROUTED, UnitState.values()));
-		stateTransitions.put(ELIMINATED, EnumSet.of(ROUTED));
+		stateTransitions.put(ELIMINATED, BEFORE_ELIMINATED);
 		stateTransitions.put(DEPLETED, EnumSet.of(RALLIED));
 
 	}
@@ -64,7 +67,14 @@ public class UnitChanger {
 			newHits = status.hits + c;
 
 			if (newHits >= u.getOriginalTq()) {
+
 				newState = UnitState.ROUTED;
+				if(getCurrentRules()==Rules.GBOA){
+					final UnitCategory unitCategory = u.getKind().getUnitCategory();
+					if(u.getKind()==UnitKind.SK || unitCategory==UnitCategory.Chariots){
+						newState = ELIMINATED;
+					}
+				}
 			} else if (newHits < 0) {
 				newHits = 0;
 				newState = null;
@@ -150,5 +160,9 @@ public class UnitChanger {
 	public void changeStateNoCheck(final Unit u, final int hits, final UnitState state,
 			final MissileStatus missileState) {
 		changeStateInternal(u, hits, state, missileState, true);
+	}
+
+	public Rules getCurrentRules(){
+		return gameStatus.getRules();
 	}
 }

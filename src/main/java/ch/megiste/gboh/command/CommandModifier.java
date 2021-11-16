@@ -17,9 +17,10 @@ public enum CommandModifier {
 	nmf("No missile fire"),
 	sa("Stacked attackers",Integer.class),
 	sb("Stacked defenders",Integer.class),
-	missile("Missile status", MissileStatus.class);
+	missile("Missile status", MissileStatus.class), mod("Modifier",Integer.class);
 
 	private Class<?> objectClass = Boolean.class;
+
 
 	private final String description;
 

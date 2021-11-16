@@ -79,8 +79,29 @@ public class Unit {
 	}
 
 	public enum UnitKind {
-		LG, HI, MI, LI, SK, HC, LC, RC, BI, EL, PH, LP, LN, CH, SKp;
 
+		LG(UnitCategory.Infantry), HI(UnitCategory.Infantry), MI(UnitCategory.Infantry), LI(UnitCategory.Infantry),
+		SK(UnitCategory.Skirmishers), HC(UnitCategory.Cavalry), LC(UnitCategory.Cavalry),
+		RC(	UnitCategory.Cavalry), BI(UnitCategory.Infantry), EL(UnitCategory.Elephants),
+		PH(	UnitCategory.Infantry), LP(UnitCategory.Infantry), LN(UnitCategory.Cavalry),
+		CH(UnitCategory.Chariots), SKp(UnitCategory.Skirmishers);
+
+		private UnitCategory unitCategory;
+		UnitKind(UnitCategory unitCategory){
+			this.unitCategory = unitCategory;
+		}
+
+		public UnitCategory getUnitCategory() {
+			return unitCategory;
+		}
+	}
+
+	public enum UnitCategory {
+		Infantry,
+		Cavalry,
+		Skirmishers,
+		Chariots,
+		Elephants;
 	}
 
 	public enum SubClass {

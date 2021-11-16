@@ -4,6 +4,7 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.times;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -184,7 +185,7 @@ public class ShockTest {
 		//First roll: missile fire 9 (missed).
 		//Pre shock TQ 3 SK collapses.
 		//Combat is over
-		Mockito.when(dice.roll()).thenReturn(9, 3,1);
+		Mockito.when(dice.roll()).thenReturn(9, 3, 1);
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(sk1), null);
 
@@ -333,8 +334,24 @@ public class ShockTest {
 		Mockito.when(dice.roll()).thenReturn(5, 1, 6, 0);
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(sk1), null);
-		Assert.assertEquals(2,lg1.getHits());
-		Assert.assertEquals(5,sk1.getHits());
+		Assert.assertEquals(2, lg1.getHits());
+		Assert.assertEquals(5, sk1.getHits());
 		Assert.assertEquals(UnitState.ROUTED, sk1.getState());
+	}
+
+	@Test
+	public void skirmishersAttacks3() {
+		Unit sk1 = new Unit(UnitKind.SK, null, "Mac archers", "1", "SK1", 3, 1, MissileType.A);
+		Unit sk2 = new Unit(UnitKind.SK, null, "Mac archers", "2", "SK2", 3, 1, MissileType.A);
+
+		Unit ch = new Unit(UnitKind.CH, SubClass.NONE, "Chariots", "1", "CH1", 4, 3, MissileType.A);
+
+		Mockito.when(dice.roll()).thenReturn(9, 9, 9, 5, 4, 7, 8);
+
+		sh.execute(Arrays.asList(sk1, sk2), Collections.singletonList(ch), Arrays.asList("f"));
+		Mockito.verify(unitChanger).addHits(eq(sk1), eq(2));
+		Mockito.verify(unitChanger,times(2)).addHits(eq(sk2), eq(1));
+		Mockito.verify(unitChanger).addHits(eq(ch), eq(3));
+
 	}
 }

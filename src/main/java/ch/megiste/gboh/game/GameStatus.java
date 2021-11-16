@@ -52,6 +52,14 @@ public class GameStatus {
 	private XStream xStream = null;
 	private String commandText;
 	private Properties generalProperties;
+	private Properties battleProperties;
+
+	public enum Rules {
+		SPQR,
+		GBOA
+	}
+
+	private Rules rules = Rules.SPQR;
 
 	public GameStatus() {
 		xStream = new XStream();
@@ -86,6 +94,14 @@ public class GameStatus {
 			}
 			army1 = loadArmy(armyFiles.get(0));
 			army2 = loadArmy(armyFiles.get(1));
+
+			battleProperties = Helper.loadPropertiesFromPath(battleDir.resolve("battle.properties"));
+
+			if(battleProperties.getProperty("rules")==null){
+				rules = Rules.SPQR;
+			} else {
+				rules = Rules.valueOf(battleProperties.getProperty("rules"));
+			}
 
 			//Check armies consistency
 			List<String> processedCodes = new ArrayList<>();
@@ -289,11 +305,11 @@ public class GameStatus {
 		FindUnitsResult res = new FindUnitsResult();
 
 		for (String q : queries) {
-			if(army1.getName().equals(q)){
+			if (army1.getName().equals(q)) {
 				res.foundUnits.addAll(army1.getUnits());
 				continue;
 			}
-			if(army2.getName().equals(q)){
+			if (army2.getName().equals(q)) {
 				res.foundUnits.addAll(army2.getUnits());
 				continue;
 			}
@@ -312,7 +328,9 @@ public class GameStatus {
 	}
 
 	boolean unitIsMatchingQuery(final String q, final Unit u) {
-		return Pattern.matches(q.toLowerCase(), u.getUnitCode().toLowerCase());
+		String regex = q.replace(".*", "*").replace("*", ".*");
+
+		return Pattern.matches(regex.toLowerCase(), u.getUnitCode().toLowerCase());
 	}
 
 	public void endOfTurn() {
@@ -354,5 +372,13 @@ public class GameStatus {
 
 	public Army getArmy2() {
 		return army2;
+	}
+
+	public Rules getRules() {
+		return rules;
+	}
+
+	public void setRules(final Rules rules) {
+		this.rules = rules;
 	}
 }

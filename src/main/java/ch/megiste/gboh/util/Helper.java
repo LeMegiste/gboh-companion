@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,6 +75,21 @@ public class Helper {
 		}
 
 	}
+
+	public static Properties loadPropertiesFromPath(Path path) {
+		if(!Files.exists(path)){
+			return new Properties();
+		}
+		Properties p = new Properties();
+		try (FileReader fr = new FileReader(path.toFile())) {
+			p.load(fr);
+			return p;
+		} catch (IOException e) {
+			throw new GbohError(e);
+		}
+
+	}
+
 
 	public static void storeProperties(final Properties generalProperties) {
 
