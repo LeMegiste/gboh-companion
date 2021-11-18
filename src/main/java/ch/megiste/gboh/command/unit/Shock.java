@@ -141,6 +141,12 @@ public class Shock extends UnitCommand {
 					shift = -1;
 					diceModifiers.add("-1 for barbarian ferocity");
 				}
+				if (attacker.getKind() == UnitKind.EL && (mainDefender.getKind() == UnitKind.HI
+						|| mainDefender.getKind() == UnitKind.PH)) {
+					shift++;
+					diceModifiers.add("+1 for elephants against pikes");
+				}
+
 				int diff = Math.max(0, r - attacker.getTq() + shift);
 
 				logPreshock(attacker, r, diceModifiers);

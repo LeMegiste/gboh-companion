@@ -8,7 +8,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.regex.Pattern;
@@ -381,4 +383,40 @@ public class GameStatus {
 	public void setRules(final Rules rules) {
 		this.rules = rules;
 	}
+
+	public int computeArmy1RoutPoints(){
+		return computeRoutPoints(getArmy1());
+	}
+
+	public int computeArmy2RoutPoints(){
+		return computeRoutPoints(getArmy2());
+	}
+
+	private int computeRoutPoints(final Army army) {
+		Map<UnitKind,Integer> pointsPerSpecialUnit = new HashMap<>();
+		pointsPerSpecialUnit.put(UnitKind.SK,2);
+		pointsPerSpecialUnit.put(UnitKind.SKp,2);
+		pointsPerSpecialUnit.put(UnitKind.EL,2);
+		pointsPerSpecialUnit.put(UnitKind.CH,2);
+		if (rules == Rules.GBOA) {
+			pointsPerSpecialUnit.put(UnitKind.SK, 1);
+		}
+
+		List<Unit> eliminatedUnits = army.getUnits().stream().filter(u->u.getState()==UnitState.ELIMINATED).collect(
+				Collectors.toList());
+		return eliminatedUnits.stream().mapToInt(u->computeRoutPointsForUnit(u,pointsPerSpecialUnit)).sum();
+
+	}
+
+	private int computeRoutPointsForUnit(final Unit u, final Map<UnitKind, Integer> pointsPerSpecialUnit) {
+		final UnitKind kind = u.getKind();
+		if(pointsPerSpecialUnit.containsKey(kind)){
+			return pointsPerSpecialUnit.get(kind);
+		} else if(u.getSize()>=9){
+			return 2*u.getOriginalTq();
+		} else {
+			return u.getOriginalTq();
+		}
+	}
+
 }

@@ -16,7 +16,7 @@ public class RoutPoints extends GameCommand {
 
 	@Override
 	public void execute(final GameStatus gs, final List<String> commandArgs) {
-		console.logNL(String.format("%s - rout points: %d",gs.getArmy1().getName(),gs.getArmy1().routPoints()));
-		console.logNL(String.format("%s - rout points: %d",gs.getArmy2().getName(),gs.getArmy2().routPoints()));
+		console.logNL(String.format("%s - rout points: %d",gs.getArmy1().getName(),gs.computeArmy1RoutPoints()));
+		console.logNL(String.format("%s - rout points: %d",gs.getArmy2().getName(),gs.computeArmy1RoutPoints()));
 	}
 }

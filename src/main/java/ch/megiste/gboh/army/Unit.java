@@ -33,16 +33,7 @@ public class Unit {
 		return tq;
 	}
 
-	public int getRountPoints() {
-		if (kind == UnitKind.SK || kind == UnitKind.EL) {
-			return 2;
-		} else if (size >= 9) {
-			return 2 * getOriginalTq();
-		} else {
-			return getOriginalTq();
-		}
 
-	}
 
 	public enum MissileType {
 		NONE(""), S("Slings", true), BS("Slings", true), J("Javelins", 7), MJ("Javelins", 7), A("Bows"), MA("Bows");

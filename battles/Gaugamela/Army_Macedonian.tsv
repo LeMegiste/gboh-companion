@@ -22,7 +22,7 @@ SK		Macedonian	2	SK2	3	1	A
 SK		Cretan	2	SK3	3	1	A			
 SKp		Agrianian	3	Ag1	6	1	J			
 SKp		Agrianian	4	Ag2	6	1	J			
-SKp		Illyrian	1	SK4	6	1	J			
+SK		Illyrian	1	SK4	5	1	J			
 HC		Companion	Agema	CHCA	9	4				
 HC		Companion	1	CHC1	8	4				
 HC		Companion	2	CHC2	8	4				
@@ -41,7 +41,7 @@ LC		Greek Allied	4	LC4	5	3	J
 LC		Asian merc	1	LC5	5	5	A			
 LN		Prodromoi	1	LN1	7	4				
 LN		Prodromoi	2	LN2	7	4				
-LP		Mercenary	1	LN3	6	5				
+LN		Mercenary	1	LN3	6	5				
 LP		Mercenary	1	MLP1	5	5	J			
 LP		Mercenary	2	MLP2	5	5	J			
 LP		Mercenary	3	MLP3	5	5	J			
