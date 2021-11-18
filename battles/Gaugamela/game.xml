@@ -1,6 +1,6 @@
 <GameState>
   <currentTurn>3</currentTurn>
-  <currentCommand>280</currentCommand>
+  <currentCommand>282</currentCommand>
   <Command commandNumber="6" commandText="Ag2 +">
     <Change unitCode="Ag2">
       <before hits="0" state="OK" missileStatus="FULL"/>
