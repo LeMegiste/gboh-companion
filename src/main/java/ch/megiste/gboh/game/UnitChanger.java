@@ -15,6 +15,7 @@ import java.util.Set;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 
 import ch.megiste.gboh.army.Unit;
 import ch.megiste.gboh.army.Unit.MissileType;
@@ -147,9 +148,10 @@ public class UnitChanger {
 			status.state = state;
 		}
 		String changeMessage = Joiner.on(" It ").join(statusList);
-		console.logNL(Log.buildStaticDesc(u) + " " + changeMessage);
+		if(!Strings.isNullOrEmpty(changeMessage.trim())){
+			console.logNL(Log.buildStaticDesc(u) + " " + changeMessage);
+		}
 		gameStatus.recordChange(before, u);
-
 	}
 
 	public void changeStateForUndo(final String unitCode, final UnitStatus status) {
