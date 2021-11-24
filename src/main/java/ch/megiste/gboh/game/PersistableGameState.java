@@ -30,12 +30,16 @@ public class PersistableGameState {
 		@XStreamAsAttribute
 		private String commandText;
 
+		@XStreamAsAttribute
+		private int turn;
+
 		@XStreamImplicit
 		private List<UnitChange> changes = new ArrayList<>();
 
-		public CommandHistory(final int commandNumber, final String commandText) {
+		public CommandHistory(final int commandNumber, final String commandText, int turn) {
 			this.commandNumber = commandNumber;
 			this.commandText = commandText;
+			this.turn = turn;
 		}
 
 		public List<UnitChange> getChanges() {

@@ -56,7 +56,7 @@ public class UndoTest {
 
 		doReturn(Collections.singletonList(sk)).when(gs).getAllUnits();
 
-		final CommandHistory ch1 = new CommandHistory(1, "CMD1");
+		final CommandHistory ch1 = new CommandHistory(1, "CMD1",1);
 		final UnitStatus before = new UnitStatus();
 		before.missileStatus = MissileStatus.FULL;
 		before.state = UnitState.OK;
@@ -67,7 +67,7 @@ public class UndoTest {
 		ch1.getChanges().add(change);
 		gs.getState().commandHistories.add(ch1);
 
-		final CommandHistory ch2 = new CommandHistory(2, "CMD2");
+		final CommandHistory ch2 = new CommandHistory(2, "CMD2",1);
 		final UnitStatus before2 = Helper.clone(after);
 		final UnitStatus after2 = Helper.clone(before2);
 		before.hits = 2;

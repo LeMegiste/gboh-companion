@@ -352,7 +352,7 @@ public class GameStatus {
 		final Optional<CommandHistory> optHist = state.getCommandForIndex(state.currentCommand);
 		CommandHistory hist;
 		if (!optHist.isPresent()) {
-			hist = new CommandHistory(state.currentCommand, commandText);
+			hist = new CommandHistory(state.currentCommand, commandText,state.currentTurn);
 			if (state.commandHistories == null) {
 				state.commandHistories = new ArrayList<>();
 			}
