@@ -11,6 +11,7 @@ import ch.megiste.gboh.army.UnitStatus.UnitState;
 
 public class Combat {
 
+	private final Map<Unit,Unit> stackLinks = new HashMap<>();
 	private List<Unit> attackers = new ArrayList<>();
 	private List<Unit> defenders = new ArrayList<>();
 
@@ -36,15 +37,18 @@ public class Combat {
 		return getDefenders().get(0);
 	}
 
-	public Combat(final List<Unit> attackers, final List<Unit> defenders) {
+	public Combat(final List<Unit> attackers, final List<Unit> defenders,
+			final Map<Unit, Unit> links) {
 		this.attackers = attackers;
 		this.defenders = defenders;
+		this.stackLinks.putAll(links);
 		storeStates();
 	}
 
 	public Combat(Unit attacker, Unit defender) {
 		this.attackers = Collections.singletonList(attacker);
 		this.defenders = Collections.singletonList(defender);
+
 		storeStates();
 	}
 
@@ -80,5 +84,31 @@ public class Combat {
 
 	public boolean isOver() {
 		return getAttackers().size() == 0 || getDefenders().size() == 0;
+	}
+
+	public List<Unit> getAttackersCountingStacks() {
+		return getAllUnitsIncludingStackedOnes(getAttackers());
+	}
+
+	private List<Unit> getAllUnitsIncludingStackedOnes(final List<Unit> source) {
+		List<Unit> allUnitsInclundingStackedOnes = new ArrayList<>(source);
+		for (Unit u : source) {
+			if (stackLinks.get(u) != null) {
+				allUnitsInclundingStackedOnes.add(stackLinks.get(u));
+			}
+		}
+		return allUnitsInclundingStackedOnes;
+	}
+
+	public List<Unit> getDefendersCountingStacks() {
+		return getAllUnitsIncludingStackedOnes(getDefenders());
+	}
+
+	public Unit getStackedUnit(final Unit u) {
+		return stackLinks.get(u);
+	}
+
+	public boolean isStacked(final Unit u) {
+		return stackLinks.containsKey(u);
 	}
 }

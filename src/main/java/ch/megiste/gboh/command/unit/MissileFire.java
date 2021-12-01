@@ -50,6 +50,11 @@ public class MissileFire extends UnitCommand {
 
 	@Override
 	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<String> modifiers) {
+		boolean moved = getBooleanModifier(modifiers, CommandModifier.m);
+		boolean flank = getBooleanModifier(modifiers, CommandModifier.f);
+		boolean back = getBooleanModifier(modifiers, CommandModifier.b);
+		boolean norf = getBooleanModifier(modifiers, CommandModifier.norf);
+
 		if (attackers.size() != 1) {
 			console.logNL("Only 1 unit can missile fire.");
 			return;
@@ -58,56 +63,53 @@ public class MissileFire extends UnitCommand {
 			console.logNL("Only 1 unit can be fired at.");
 			return;
 		}
-		Unit attacket = attackers.get(0);
+		Unit attacker = attackers.get(0);
 		Unit target = defenders.get(0);
-		final String attackerName = Log.buildStaticDesc(attacket);
+		if (back && target.getStackedOn() != null) {
+			target = unitChanger.getGameStatus().getUnitFromCode(target.getStackedOn());
+		}
 
-		if (attacket.getMissile() == MissileType.NONE) {
+		final String attackerName = Log.buildStaticDesc(attacker);
+
+		if (attacker.getMissile() == MissileType.NONE) {
 			console.logNL("Unit " + attackerName + " cannot missile fire");
 			return;
 		}
-		if (attacket.getState() == UnitState.ROUTED) {
+		if (attacker.getState() == UnitState.ROUTED) {
 			console.logNL("Unit " + attackerName + " cannot missile fire as it is routed");
 			return;
 		}
-		if (attacket.getMissileStatus() == MissileStatus.NO) {
+		if (attacker.getMissileStatus() == MissileStatus.NO) {
 			console.logNL("Unit " + attackerName + " cannot missile fire as it is missile no");
 			return;
 		}
-		if (attacket.getMissileStatus() == MissileStatus.NO) {
+		if (attacker.getMissileStatus() == MissileStatus.NO) {
 			console.logNL("Unit " + attackerName + " cannot missile fire as it is missile NEVER");
 			return;
 		}
 
 		int range = getIntModifier(modifiers, CommandModifier.r, 1);
-		int maxRange = table.get(attacket.getMissile()).size();
+		int maxRange = table.get(attacker.getMissile()).size();
 		if (range > maxRange) {
 			console.logNL("Unit " + attackerName + " cannot fire at this distance");
 			return;
 		}
-		boolean moved = getBooleanModifier(modifiers, CommandModifier.m);
-		boolean flank = getBooleanModifier(modifiers, CommandModifier.f);
-		boolean back = getBooleanModifier(modifiers, CommandModifier.b);
-		boolean norf = getBooleanModifier(modifiers, CommandModifier.norf);
 
-		fire(attacket, target, range, moved, false);
+		fire(attacker, target, range, moved, false);
 
 		//Reaction fire
 		if (range == 1 && target.getMissile() != MissileType.NONE
 				&& target.getStatus().missileStatus != MissileStatus.NO && !flank && !back && !norf) {
-			fire(target, attacket, 1, false, true);
+			fire(target, attacker, 1, false, true);
 		}
 
 	}
 
 	private void fire(final Unit attacker, final Unit target, final int range, final boolean moved,
 			final boolean reaction) {
-		if(attacker.getMissile()==MissileType.NONE
-				|| attacker.getMissileStatus()==MissileStatus.NO
-				|| attacker.getMissileStatus()==MissileStatus.NEVER
-				|| attacker.getState()==UnitState.ROUTED
-				|| attacker.getState()==UnitState.RALLIED
-				|| attacker.getState()==UnitState.ELIMINATED){
+		if (attacker.getMissile() == MissileType.NONE || attacker.getMissileStatus() == MissileStatus.NO
+				|| attacker.getMissileStatus() == MissileStatus.NEVER || attacker.getState() == UnitState.ROUTED
+				|| attacker.getState() == UnitState.RALLIED || attacker.getState() == UnitState.ELIMINATED) {
 			return;
 		}
 		String attackerName = Log.buildStaticDesc(attacker);

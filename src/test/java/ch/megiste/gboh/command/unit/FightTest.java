@@ -131,7 +131,7 @@ public class FightTest {
 
 		Unit hi1 = new Unit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
 
-		Combat c = new Combat(Arrays.asList(lg1, lg2), Collections.singletonList(hi1));
+		Combat c = new Combat(Arrays.asList(lg1, lg2), Collections.singletonList(hi1), new HashMap<>());
 		final Map<Unit, Integer> impactPerUnits = fc.computeImpactPerUnit(c, 2, 2, Position.FRONT);
 		Assert.assertEquals(Integer.valueOf(1), impactPerUnits.get(lg1));
 		Assert.assertEquals(Integer.valueOf(1), impactPerUnits.get(lg2));

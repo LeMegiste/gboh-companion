@@ -1,0 +1,24 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus	Unit global type	Nb mens
+HI	HO	Athens	1	AHI1	6	10					Infantry	1500
+HI	HO	Athens	2	AHI2	6	10					Infantry	1500
+HI	HO	Athens	3	AHI3	6	10					Infantry	1500
+HI	HO	Athens	4	AHI4	6	10					Infantry	1500
+HI	HO	Athens	5	AHI5	6	10					Infantry	1500
+HI	HO	Thebes	1	THI1	6	10					Infantry	1500
+HI	HO	Thebes	2	THI2	6	10					Infantry	1500
+HI	HO	Thebes	3	THI3	6	10					Infantry	1500
+HI	HO	Thebes	4	THI4	6	10					Infantry	1500
+HI	HO	Thebes	5	THI5	6	10					Infantry	1500
+HI	HO	Thebes	6	THI6	6	10					Infantry	1500
+HI	HO	Corinth	1	CHI1	6	10					Infantry	1500
+HI	HO	Megara	2	CHI2	6	10					Infantry	1500
+HI	HO	Leucra	3	CHI3	6	10					Infantry	1500
+HI	HO	Corcyra	4	CHI4	6	10					Infantry	1500
+HI	HO	Theban Sacred Band	1	SBHI	9	2					Infantry	300
+LP		Mercenary	1	MLP1	5	5	J				Infantry	750
+LP		Mercenary	2	MLP2	5	5	J				Infantry	750
+LP		Mercenary	3	MLP3	5	5	J				Infantry	750
+LP		Mercenary	4	MLP4	5	5	J				Infantry	750
+LP		Mercenary	5	MLP5	5	5	J				Infantry	750
+LC		Athens	1	ALC	4	2	J				Cavalry	200
+LC		Thebes	1	TLC	6	2	J				Cavalry	200

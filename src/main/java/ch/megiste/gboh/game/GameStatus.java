@@ -56,9 +56,19 @@ public class GameStatus {
 	private Properties generalProperties;
 	private Properties battleProperties;
 
+	public Unit getStackedUnit(final Unit u) {
+		if (u.getStackedOn() != null) {
+			return findUnitByCode(u.getStackedOn());
+		}
+		if (u.getStackedUnder() != null) {
+			return findUnitByCode(u.getStackedUnder());
+		}
+		return null;
+
+	}
+
 	public enum Rules {
-		SPQR,
-		GBOA
+		SPQR, GBOA
 	}
 
 	private Rules rules = Rules.SPQR;
@@ -99,7 +109,7 @@ public class GameStatus {
 
 			battleProperties = Helper.loadPropertiesFromPath(battleDir.resolve("battle.properties"));
 
-			if(battleProperties.getProperty("rules")==null){
+			if (battleProperties.getProperty("rules") == null) {
 				rules = Rules.SPQR;
 			} else {
 				rules = Rules.valueOf(battleProperties.getProperty("rules"));
@@ -174,9 +184,43 @@ public class GameStatus {
 			final List<CSVRecord> records = format.parse(r).getRecords();
 			List<Unit> units = records.stream().map(this::fromRecordToUnit).collect(Collectors.toList());
 
+			//Handle the stacked on column (needs pre-loading)
+			records.forEach(rec -> {
+				String originalUnitCode = rec.get(Head.UnitCode);
+
+				if (rec.isSet("StackedOn")) {
+					String stackedOnCode = rec.get("StackedOn");
+					if (Strings.isNotEmpty(stackedOnCode)) {
+						stack(originalUnitCode, stackedOnCode, units);
+					}
+				}
+			});
+
 			return new Army(name, units);
 		}
 
+	}
+
+	public void stack(String unitCodeOn, String unitCodeUnder, List<Unit> units) {
+		Unit originalUnit = units.stream().filter(u -> u.getUnitCode().equals(unitCodeOn)).findFirst().get();
+		Optional<Unit> optStackedUnit = units.stream().filter(u -> u.getUnitCode().equals(unitCodeUnder)).findFirst();
+		if (!optStackedUnit.isPresent()) {
+			throw new RuntimeException("Unable to find unit with code:" + unitCodeUnder);
+		}
+		originalUnit.stackOn(unitCodeUnder);
+		optStackedUnit.get().stackUnder(unitCodeOn);
+	}
+
+	public void unStack(String unitCodeOn, String unitCodeUnder, List<Unit> units) {
+		Unit originalUnit = units.stream().filter(u -> u.getUnitCode().equals(unitCodeOn)).findFirst().get();
+		Optional<Unit> optStackedUnit = units.stream().filter(u -> u.getUnitCode().equals(unitCodeUnder)).findFirst();
+		if (!optStackedUnit.isPresent()) {
+			throw new RuntimeException("Unable to find unit with code:" + unitCodeUnder);
+		}
+		originalUnit.stackOn(null);
+		originalUnit.stackUnder(null);
+		optStackedUnit.get().stackUnder(null);
+		optStackedUnit.get().stackOn(null);
 	}
 
 	private CSVFormat buildCsvFormat() {
@@ -258,7 +302,7 @@ public class GameStatus {
 	}
 
 	private enum Head {
-		TQ, Size, Kind, Subclass, Missile, Origin, Number, UnitCode("Unit code"), Hits, State, MissileStatus;
+		TQ, Size, Kind, Subclass, Missile, Origin, Number, UnitCode("Unit code"), Hits, State, MissileStatus, StackedOn;
 
 		private String header;
 
@@ -326,7 +370,10 @@ public class GameStatus {
 		}
 
 		return res;
+	}
 
+	public Unit getUnitFromCode(String unitCode) {
+		return getAllUnits().stream().filter(u -> u.getUnitCode().equals(unitCode)).findFirst().orElse(null);
 	}
 
 	boolean unitIsMatchingQuery(final String q, final Unit u) {
@@ -352,7 +399,7 @@ public class GameStatus {
 		final Optional<CommandHistory> optHist = state.getCommandForIndex(state.currentCommand);
 		CommandHistory hist;
 		if (!optHist.isPresent()) {
-			hist = new CommandHistory(state.currentCommand, commandText,state.currentTurn);
+			hist = new CommandHistory(state.currentCommand, commandText, state.currentTurn);
 			if (state.commandHistories == null) {
 				state.commandHistories = new ArrayList<>();
 			}
@@ -384,36 +431,36 @@ public class GameStatus {
 		this.rules = rules;
 	}
 
-	public int computeArmy1RoutPoints(){
+	public int computeArmy1RoutPoints() {
 		return computeRoutPoints(getArmy1());
 	}
 
-	public int computeArmy2RoutPoints(){
+	public int computeArmy2RoutPoints() {
 		return computeRoutPoints(getArmy2());
 	}
 
 	private int computeRoutPoints(final Army army) {
-		Map<UnitKind,Integer> pointsPerSpecialUnit = new HashMap<>();
-		pointsPerSpecialUnit.put(UnitKind.SK,2);
-		pointsPerSpecialUnit.put(UnitKind.SKp,2);
-		pointsPerSpecialUnit.put(UnitKind.EL,2);
-		pointsPerSpecialUnit.put(UnitKind.CH,2);
+		Map<UnitKind, Integer> pointsPerSpecialUnit = new HashMap<>();
+		pointsPerSpecialUnit.put(UnitKind.SK, 2);
+		pointsPerSpecialUnit.put(UnitKind.SKp, 2);
+		pointsPerSpecialUnit.put(UnitKind.EL, 2);
+		pointsPerSpecialUnit.put(UnitKind.CH, 2);
 		if (rules == Rules.GBOA) {
 			pointsPerSpecialUnit.put(UnitKind.SK, 1);
 		}
 
-		List<Unit> eliminatedUnits = army.getUnits().stream().filter(u->u.getState()==UnitState.ELIMINATED).collect(
-				Collectors.toList());
-		return eliminatedUnits.stream().mapToInt(u->computeRoutPointsForUnit(u,pointsPerSpecialUnit)).sum();
+		List<Unit> eliminatedUnits =
+				army.getUnits().stream().filter(u -> u.getState() == UnitState.ELIMINATED).collect(Collectors.toList());
+		return eliminatedUnits.stream().mapToInt(u -> computeRoutPointsForUnit(u, pointsPerSpecialUnit)).sum();
 
 	}
 
 	private int computeRoutPointsForUnit(final Unit u, final Map<UnitKind, Integer> pointsPerSpecialUnit) {
 		final UnitKind kind = u.getKind();
-		if(pointsPerSpecialUnit.containsKey(kind)){
+		if (pointsPerSpecialUnit.containsKey(kind)) {
 			return pointsPerSpecialUnit.get(kind);
-		} else if(u.getSize()>=9){
-			return 2*u.getOriginalTq();
+		} else if (u.getSize() >= 9) {
+			return 2 * u.getOriginalTq();
 		} else {
 			return u.getOriginalTq();
 		}

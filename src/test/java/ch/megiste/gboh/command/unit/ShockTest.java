@@ -1,10 +1,13 @@
 package ch.megiste.gboh.command.unit;
 
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,9 +18,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.mockito.asm.tree.MethodNode;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
 import ch.megiste.gboh.army.Unit;
@@ -38,6 +39,8 @@ public class ShockTest {
 	private UnitChanger unitChanger;
 	private Shock sh;
 	private List<String> logLines = new ArrayList<>();
+	private GameStatus gs;
+	private List<Unit> currentUnits = new ArrayList<>();
 
 	@Before
 	public void init() {
@@ -47,8 +50,16 @@ public class ShockTest {
 		MissileFire mf = new MissileFire();
 		final Console console = Mockito.mock(Console.class);
 		fc.setConsole(console);
+		currentUnits.clear();
+		gs = Mockito.mock(GameStatus.class);
+		when(gs.getAllUnits()).thenReturn(currentUnits);
+		when(gs.getUnitFromCode(anyString())).then(inv -> {
+			String code = inv.getArgumentAt(0, String.class);
+			return currentUnits.stream().filter(u -> u.getUnitCode().equals(code)).findFirst().get();
+		});
+		doCallRealMethod().when(gs).stack(anyString(),anyString(),anyList());
 
-		final GameStatus gs = Mockito.mock(GameStatus.class);
+		//doCallRealMethod().when(gs.stack(any(),any(),anyList()));
 		unitChanger = Mockito.spy(new UnitChanger(console, gs));
 		dice = Mockito.mock(Dice.class);
 		fc.setUnitChanger(unitChanger);
@@ -75,15 +86,15 @@ public class ShockTest {
 
 	@Test
 	public void basicShock() {
-		Unit lg1 = new Unit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
+		Unit lg1 = createUnit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
 
-		Unit hi1 = new Unit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
+		Unit hi1 = createUnit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
 
 		//First roll: missile fire 5 (hit)
 		//Second roll: TQ check. Roman 9, carth 8
 		//Fight. 9
 		//Near collapse carth:8
-		Mockito.when(dice.roll()).thenReturn(5, 9, 8, 9, 5);
+		when(dice.roll()).thenReturn(5, 9, 8, 9, 5);
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), null);
 		Mockito.verify(unitChanger, Mockito.times(2)).addHits(eq(lg1), eq(2));
@@ -93,15 +104,15 @@ public class ShockTest {
 
 	@Test
 	public void bothCollapseDuringPreShock() {
-		Unit lg1 = new Unit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
+		Unit lg1 = createUnit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
 		lg1.getStatus().hits = 5;
-		Unit hi1 = new Unit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 6, 7, MissileType.NONE);
+		Unit hi1 = createUnit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 6, 7, MissileType.NONE);
 		hi1.getStatus().hits = 5;
 		//Roll 9 on missile fire (missed)
 		//Roll 9 on pre shock (+2)
 		//Roll 9 on pre shock (+4)
 
-		Mockito.when(dice.roll()).thenReturn(9, 9, 9);
+		when(dice.roll()).thenReturn(9, 9, 9);
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), null);
 		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(lg1), eq(1));
@@ -116,14 +127,14 @@ public class ShockTest {
 
 	@Test
 	public void againstRoutedUnit1() {
-		Unit lg1 = new Unit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
+		Unit lg1 = createUnit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
 
-		Unit hi1 = new Unit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
+		Unit hi1 = createUnit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
 		hi1.getStatus().state = UnitState.ROUTED;
 
 		//First roll: missile fire 5 (hit). Hi collapses.
 		//Combat is over
-		Mockito.when(dice.roll()).thenReturn(5, 9, 8, 9);
+		when(dice.roll()).thenReturn(5, 9, 8, 9);
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), null);
 		Mockito.verify(unitChanger, Mockito.never()).addHits(eq(lg1), anyInt());
@@ -135,15 +146,15 @@ public class ShockTest {
 
 	@Test
 	public void againstRoutedUnit2() {
-		Unit lg1 = new Unit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
+		Unit lg1 = createUnit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
 
-		Unit hi1 = new Unit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
+		Unit hi1 = createUnit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
 		hi1.getStatus().state = UnitState.ROUTED;
 
 		//First roll: missile fire 9 (missed).
 		//Pre shock TQ 3 HI collapses.
 		//Combat is over
-		Mockito.when(dice.roll()).thenReturn(9, 3);
+		when(dice.roll()).thenReturn(9, 3);
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), null);
 
@@ -155,16 +166,16 @@ public class ShockTest {
 
 	@Test
 	public void againstRoutedUnit3() {
-		Unit lg1 = new Unit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
+		Unit lg1 = createUnit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
 
-		Unit hi1 = new Unit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
+		Unit hi1 = createUnit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
 		hi1.getStatus().state = UnitState.ROUTED;
 
 		//First roll: missile fire 9 (missed).
 		//Pre shock TQ 0 HI holds !
 		//Dice thrown 6 (legio takes 2, HI eliminated)
 		//Combat is over
-		Mockito.when(dice.roll()).thenReturn(9, 0, 6);
+		when(dice.roll()).thenReturn(9, 0, 6);
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), null);
 
@@ -177,15 +188,15 @@ public class ShockTest {
 
 	@Test
 	public void againstRoutedUnit4() {
-		Unit lg1 = new Unit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
+		Unit lg1 = createUnit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
 
-		Unit sk1 = new Unit(UnitKind.SK, SubClass.NONE, "Balearic", "1", "BSK1", 5, 1, MissileType.S);
+		Unit sk1 = createUnit(UnitKind.SK, SubClass.NONE, "Balearic", "1", "BSK1", 5, 1, MissileType.S);
 		sk1.getStatus().state = UnitState.ROUTED;
 
 		//First roll: missile fire 9 (missed).
 		//Pre shock TQ 3 SK collapses.
 		//Combat is over
-		Mockito.when(dice.roll()).thenReturn(9, 3, 1);
+		when(dice.roll()).thenReturn(9, 3, 1);
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(sk1), null);
 
@@ -197,16 +208,16 @@ public class ShockTest {
 
 	@Test
 	public void frontChargeWithReactionFire() {
-		Unit lg1 = new Unit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
+		Unit lg1 = createUnit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
 
-		Unit samnite = new Unit(UnitKind.LG, SubClass.NONE, "Samnite Main", "a", "SMaa", 7, 7, MissileType.NONE);
+		Unit samnite = createUnit(UnitKind.LG, SubClass.NONE, "Samnite Main", "a", "SMaa", 7, 7, MissileType.NONE);
 
 		//1. roll attacker: missile fire 5 (hit)
 		//2. roll defender: missile fire 3 (hit)
 		//3. roll TQ check 5 (success)
 		//4. roll TQ check 4 (success)
 		//5. roll fight. 5 (2/2)
-		Mockito.when(dice.roll()).thenReturn(5, 3, 5, 4, 5);
+		when(dice.roll()).thenReturn(5, 3, 5, 4, 5);
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(samnite), null);
 		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(lg1), eq(1));
@@ -217,15 +228,15 @@ public class ShockTest {
 
 	@Test
 	public void flankChargeNoReactionFire() {
-		Unit lg1 = new Unit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
+		Unit lg1 = createUnit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
 
-		Unit samnite = new Unit(UnitKind.LG, SubClass.NONE, "Samnite Main", "a", "SMaa", 7, 4, MissileType.NONE);
+		Unit samnite = createUnit(UnitKind.LG, SubClass.NONE, "Samnite Main", "a", "SMaa", 7, 4, MissileType.NONE);
 
 		//1. roll attacker: missile fire 5 (hit)
 		//2. roll TQ check 5 (success)
 		//3. roll TQ check 4 (success)
 		//4. roll fight. 5 (2/4)
-		Mockito.when(dice.roll()).thenReturn(5, 5, 4, 3);
+		when(dice.roll()).thenReturn(5, 5, 4, 3);
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(samnite), Collections.singletonList("f"));
 		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(lg1), eq(2));
@@ -235,15 +246,15 @@ public class ShockTest {
 
 	@Test
 	public void shockWithReactionFireOnly() {
-		Unit lg1 = new Unit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
+		Unit lg1 = createUnit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
 		lg1.getStatus().missileStatus = MissileStatus.NO;
-		Unit samnite = new Unit(UnitKind.LG, SubClass.NONE, "Samnite Main", "a", "SMaa", 7, 7, MissileType.NONE);
+		Unit samnite = createUnit(UnitKind.LG, SubClass.NONE, "Samnite Main", "a", "SMaa", 7, 7, MissileType.NONE);
 
 		//1. roll defender: missile fire 3 (hit)
 		//2. roll TQ check 5 (success)
 		//3. roll TQ check 4 (success)
 		//4. roll fight. 5 (2/2)
-		Mockito.when(dice.roll()).thenReturn(3, 5, 4, 5);
+		when(dice.roll()).thenReturn(3, 5, 4, 5);
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(samnite), null);
 		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(lg1), eq(1));
@@ -258,15 +269,15 @@ public class ShockTest {
 	public void logging() {
 
 		logLines.clear();
-		Unit lg1 = new Unit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
+		Unit lg1 = createUnit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
 
-		Unit hi1 = new Unit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
+		Unit hi1 = createUnit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
 
 		//First roll: missile fire 5 (hit)
 		//Second roll: TQ check. Roman 9, carth 8
 		//Fight. 9
 		//Near collapse carth:8
-		Mockito.when(dice.roll()).thenReturn(5, 8, 3, 7, 5);
+		when(dice.roll()).thenReturn(5, 8, 3, 7, 5);
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), Collections.singletonList("cs-1"));
 
 		List<String> expectedLines = Splitter.on("\n").splitToList(
@@ -291,15 +302,15 @@ public class ShockTest {
 	public void loggingWithARout() {
 
 		logLines.clear();
-		Unit lg1 = new Unit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
+		Unit lg1 = createUnit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
 
-		Unit hi1 = new Unit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
+		Unit hi1 = createUnit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
 		hi1.getStatus().hits = 6;
 		//First roll: missile fire 5 (hit)
 		//Second roll: TQ check. Roman 8, carth 8
 		//Fight. 9
 
-		Mockito.when(dice.roll()).thenReturn(5, 8, 3, 7);
+		when(dice.roll()).thenReturn(5, 8, 3, 7);
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), null);
 
 		List<String> expectedLines = Splitter.on("\n").splitToList(
@@ -323,35 +334,71 @@ public class ShockTest {
 
 	@Test
 	public void shockAgainstSkirmishers() {
-		Unit lg1 = new Unit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
+		Unit lg1 = createUnit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
 
-		Unit sk1 = new Unit(UnitKind.SK, SubClass.NONE, "Skirmishers", "1", "NSK1", 5, 1, MissileType.S);
+		Unit sk1 = createUnit(UnitKind.SK, SubClass.NONE, "Skirmishers", "1", "NSK1", 5, 1, MissileType.S);
 
 		//Roll 5 - missed
 		//Roll 1 - hit
 		//SK makes pre shock TQ, rolls 6 (1 hit)
 		//Fight. 0
-		Mockito.when(dice.roll()).thenReturn(5, 1, 6, 0);
+		when(dice.roll()).thenReturn(5, 1, 6, 0);
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(sk1), null);
 		Assert.assertEquals(2, lg1.getHits());
 		Assert.assertEquals(5, sk1.getHits());
-		Assert.assertEquals(UnitState.ROUTED, sk1.getState());
+		Assert.assertEquals(UnitState.ELIMINATED, sk1.getState());
 	}
 
 	@Test
 	public void skirmishersAttacks3() {
-		Unit sk1 = new Unit(UnitKind.SK, null, "Mac archers", "1", "SK1", 3, 1, MissileType.A);
-		Unit sk2 = new Unit(UnitKind.SK, null, "Mac archers", "2", "SK2", 3, 1, MissileType.A);
+		Unit sk1 = createUnit(UnitKind.SK, null, "Mac archers", "1", "SK1", 3, 1, MissileType.A);
+		Unit sk2 = createUnit(UnitKind.SK, null, "Mac archers", "2", "SK2", 3, 1, MissileType.A);
 
-		Unit ch = new Unit(UnitKind.CH, SubClass.NONE, "Chariots", "1", "CH1", 4, 3, MissileType.A);
+		Unit ch = createUnit(UnitKind.CH, SubClass.NONE, "Chariots", "1", "CH1", 4, 3, MissileType.A);
 
-		Mockito.when(dice.roll()).thenReturn(9, 9, 9, 5, 4, 7, 8);
+		when(dice.roll()).thenReturn(9, 9, 9, 5, 4, 7, 8);
 
 		sh.execute(Arrays.asList(sk1, sk2), Collections.singletonList(ch), Arrays.asList("f"));
 		Mockito.verify(unitChanger).addHits(eq(sk1), eq(2));
-		Mockito.verify(unitChanger,times(2)).addHits(eq(sk2), eq(1));
+		Mockito.verify(unitChanger, times(2)).addHits(eq(sk2), eq(1));
 		Mockito.verify(unitChanger).addHits(eq(ch), eq(3));
 
 	}
+
+	@Test
+	public void stackedPhalanxesFront() {
+		Unit ph1 = createUnit(UnitKind.PH, null, "Macedonian", "1", "PH1", 7, 10, MissileType.NONE);
+		Unit ph2 = createUnit(UnitKind.PH, null, "Macedonian", "2", "PH2", 7, 10, MissileType.NONE);
+		Unit hi1 = createUnit(UnitKind.HI, SubClass.HO, "Athens", "1", "AHI1", 6, 10, MissileType.NONE);
+		gs.stack(ph1.getUnitCode(), ph2.getUnitCode(), Arrays.asList(ph1, ph2));
+		when(dice.roll()).thenReturn(8, 8, 3, 3);
+		sh.execute(Collections.singletonList(ph1), Collections.singletonList(hi1), null);
+		Mockito.verify(unitChanger, times(2)).addHits(eq(ph1), eq(1));
+		Mockito.verify(unitChanger, times(2)).addHits(eq(ph2), eq(1));
+		Mockito.verify(unitChanger).addHits(eq(hi1), eq(2));
+	}
+
+	@Test
+	public void stackedPhalanxesAttackedFromBack() {
+		Unit ph1 = createUnit(UnitKind.PH, null, "Macedonian", "1", "PH1", 7, 10, MissileType.NONE);
+		Unit ph2 = createUnit(UnitKind.PH, null, "Macedonian", "2", "PH2", 7, 10, MissileType.NONE);
+		Unit li = createUnit(UnitKind.LP, null, "Athens", "1", "ALC", 5, 5, MissileType.J);
+		gs.stack(ph1.getUnitCode(), ph2.getUnitCode(), Arrays.asList(ph1, ph2));
+		when(dice.roll()).thenReturn(0, 3, 2, 4);
+		sh.execute(Collections.singletonList(li), Collections.singletonList(ph1), Collections.singletonList("b"));
+		Mockito.verify(unitChanger, times(1)).addHits(eq(ph2), eq(1));
+
+		Mockito.verify(unitChanger, times(1)).addHits(eq(ph1), eq(3));
+		Mockito.verify(unitChanger, times(1)).addHits(eq(ph2), eq(3));
+		Mockito.verify(unitChanger).addHits(eq(li), eq(2));
+	}
+
+	private Unit createUnit(final UnitKind kind, final SubClass subclass, final String origin, final String number,
+			final String unitCode, final int tq, final int size, final MissileType missile) {
+		Unit u = new Unit(kind, subclass, origin, number, unitCode, tq, size, missile);
+		currentUnits.add(u);
+		return u;
+	}
+
 }

@@ -66,15 +66,11 @@ public class UnitChanger {
 			newHits = u.getOriginalTq();
 		} else {
 			newHits = status.hits + c;
-
 			if (newHits >= u.getOriginalTq()) {
-
 				newState = UnitState.ROUTED;
-				if(getCurrentRules()==Rules.GBOA){
-					final UnitCategory unitCategory = u.getKind().getUnitCategory();
-					if(u.getKind()==UnitKind.SK || unitCategory==UnitCategory.Chariots){
-						newState = ELIMINATED;
-					}
+				final UnitCategory unitCategory = u.getKind().getUnitCategory();
+				if (u.getKind() == UnitKind.SK || unitCategory == UnitCategory.Chariots) {
+					newState = ELIMINATED;
 				}
 			} else if (newHits < 0) {
 				newHits = 0;
@@ -138,7 +134,9 @@ public class UnitChanger {
 			status.missileStatus = MissileStatus.NEVER;
 		}
 
+		boolean stateChanged = false;
 		if (state != null && state != before.state) {
+			stateChanged=true;
 			if (!undo) {
 				Preconditions.checkArgument(stateTransitions.get(state).contains(before.state),
 						"Unit must be in state " + Joiner.on(" or ").join(stateTransitions.get(state))
@@ -152,6 +150,14 @@ public class UnitChanger {
 			console.logNL(Log.buildStaticDesc(u) + " " + changeMessage);
 		}
 		gameStatus.recordChange(before, u);
+
+		if (stateChanged && state == ROUTED && u.isStacked()) {
+			final Unit stackedUnit = gameStatus.getStackedUnit(u);
+			Preconditions.checkNotNull(stackedUnit);
+			if (stackedUnit.getState() != ROUTED && stackedUnit.getState() != ELIMINATED) {
+				changeStateInternal(stackedUnit, stackedUnit.getOriginalTq(), ROUTED, null, undo);
+			}
+		}
 	}
 
 	public void changeStateForUndo(final String unitCode, final UnitStatus status) {
@@ -166,5 +172,9 @@ public class UnitChanger {
 
 	public Rules getCurrentRules(){
 		return gameStatus.getRules();
+	}
+
+	public GameStatus getGameStatus() {
+		return gameStatus;
 	}
 }

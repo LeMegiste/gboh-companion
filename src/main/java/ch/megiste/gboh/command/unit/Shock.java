@@ -40,13 +40,12 @@ public class Shock extends UnitCommand {
 
 	@Override
 	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<String> modifiers) {
-		final List<Combat> combats = fight.buildCombats(attackers, defenders);
+		Position position = fight.computePosition(modifiers);
+		final List<Combat> combats = fight.buildCombats(attackers, defenders,position);
 		for (Combat c : combats) {
-			Position position = fight.computePosition(modifiers);
+
 
 			boolean noMissiles = getBooleanModifier(modifiers, CommandModifier.nmf);
-			int stackedAttackers = getIntModifier(modifiers, CommandModifier.sa, -1);
-			int stackedDefenders = getIntModifier(modifiers, CommandModifier.sb, -1);
 			Unit mainAttacker = c.getMainAttacker();
 			Unit mainDefender = c.getMainDefender();
 
@@ -59,12 +58,7 @@ public class Shock extends UnitCommand {
 					modifiersForMissile = new ArrayList<>();
 				}
 				modifiersForMissile.add("norf");
-				int count = 0;
 				for (Unit attacker : c.getAttackers()) {
-					if (count == stackedAttackers) {
-						continue;
-					}
-					count++;
 					if (attacker.getMissile() != MissileType.NONE
 							&& attacker.getStatus().missileStatus != MissileStatus.NO) {
 						missileFire
@@ -72,13 +66,8 @@ public class Shock extends UnitCommand {
 										modifiersForMissile);
 					}
 				}
-				count = 0;
 				//Reaction fire
 				for (Unit defender : c.getDefenders()) {
-					if (count == stackedDefenders) {
-						continue;
-					}
-					count++;
 
 					if (position == Position.BACK) {
 						continue;
@@ -123,72 +112,32 @@ public class Shock extends UnitCommand {
 					mainAttacker.getKind() == UnitKind.LI && (mainDefender.getKind() == UnitKind.LG
 							|| mainDefender.getKind() == UnitKind.PH || mainDefender.getKind() == UnitKind.HI);
 
-			int count = 0;
 			for (Unit attacker : c.getAttackers()) {
-				diffPerUnit.put(attacker, 0);
-				if (count == stackedAttackers) {
-					continue;
-				}
-				count++;
-				if (noTqCheckForAttacker) {
-
-					continue;
-				}
-				int r = dice.roll();
-				int shift = 0;
-				List<String> diceModifiers = new ArrayList<>();
-				if (ferociousBarbarians && attacker.getKind() == UnitKind.BI) {
-					shift = -1;
-					diceModifiers.add("-1 for barbarian ferocity");
-				}
-				if (attacker.getKind() == UnitKind.EL && (mainDefender.getKind() == UnitKind.HI
-						|| mainDefender.getKind() == UnitKind.PH)) {
-					shift++;
-					diceModifiers.add("+1 for elephants against pikes");
-				}
-
-				int diff = Math.max(0, r - attacker.getTq() + shift);
-
-				logPreshock(attacker, r, diceModifiers);
-				diff = specialHoldingPossibilityForBigUnits(attacker, diff, true);
-
+				int diff =
+						preshockTQCheckForAttacker(c, ferociousBarbarians, noTqCheckForAttacker, attacker);
 				diffPerUnit.put(attacker, diff);
+				final Unit stackedUnit = c.getStackedUnit(attacker);
+				if (diff > 0 && stackedUnit != null) {
+					int diffStackOn =
+							preshockTQCheckForAttacker(c, ferociousBarbarians, noTqCheckForAttacker,
+									stackedUnit);
+					diffPerUnit.put(stackedUnit, diffStackOn);
+
+				}
 			}
-			count = 0;
 			for (Unit defender : c.getDefenders()) {
-				diffPerUnit.put(defender, 0);
-				if (count == stackedDefenders) {
-					continue;
-				}
-				count++;
-				if (noTqCheckForDefender) {
-
-					continue;
-				}
-				int r = dice.roll();
-				int shift = 0;
-
-				List<String> diceModifiers = new ArrayList<>();
-				if (ferociousBarbarians) {
-					shift = 2;
-					diceModifiers.add("+2 for barbarian ferocity");
-				}
-				if (mainAttacker.getKind() == UnitKind.CH) {
-					shift = 1;
-					diceModifiers.add("+1 because attacked by chariots");
-				}
-				if (mainAttacker.getKind() == UnitKind.EL) {
-					shift = 1;
-					diceModifiers.add("+1 because attacked by elephants");
-				}
-
-				logPreshock(defender, r, diceModifiers);
-
-				int diff = Math.max(0, r - defender.getTq() + shift);
-				diff = specialHoldingPossibilityForBigUnits(defender, diff, false);
-
-
+				int diff =
+						preshockTQCheckForDefender(c, ferociousBarbarians, noTqCheckForDefender, defender);
 				diffPerUnit.put(defender, diff);
+
+				final Unit stackedUnit = c.getStackedUnit(defender);
+				if (diff > 0 && stackedUnit != null) {
+					int diffStackOn =
+							preshockTQCheckForAttacker(c, ferociousBarbarians, noTqCheckForDefender,
+									stackedUnit);
+					diffPerUnit.put(stackedUnit, diffStackOn);
+
+				}
 
 			}
 
@@ -205,7 +154,7 @@ public class Shock extends UnitCommand {
 				}
 
 			}
-			fight.applyImpactOnUnits(c, diffPerUnit);
+			fight.applyImpactOnUnits(diffPerUnit);
 
 			if (c.isOver()) {
 				continue;
@@ -219,9 +168,76 @@ public class Shock extends UnitCommand {
 				modifiersForFight = new ArrayList<>(modifiers);
 			}
 			modifiersForFight.add("m");
-			fight.execute(c.getAttackers(), c.getDefenders(), modifiersForFight);
+			fight.fightCombat(modifiers,position,c);
 
 		}
+	}
+
+	protected int preshockTQCheckForDefender(final Combat c, final boolean ferociousBarbarians,
+			final boolean noTqCheckForDefender, final Unit defender) {
+		Unit mainAttacker = c.getMainAttacker();
+		if (noTqCheckForDefender) {
+
+			return 0;
+		}
+		int r = dice.roll();
+		int shift = 0;
+
+		List<String> diceModifiers = new ArrayList<>();
+		if (ferociousBarbarians) {
+			shift = 2;
+			diceModifiers.add("+2 for barbarian ferocity");
+		}
+		if (mainAttacker.getKind() == UnitKind.CH) {
+			shift = 1;
+			diceModifiers.add("+1 because attacked by chariots");
+		}
+		if (mainAttacker.getKind() == UnitKind.EL) {
+			shift = 1;
+			diceModifiers.add("+1 because attacked by elephants");
+		}
+		if (mainAttacker.getKind() == UnitKind.PH && c.isStacked(mainAttacker)) {
+			shift = +1;
+			diceModifiers.add("+1 because attacked by stacked phalanxes");
+		}
+		if (c.isStacked(defender)) {
+			shift = -1;
+			diceModifiers.add("-1 because defender are stacked phalanxes");
+		}
+
+		logPreshock(defender, r, diceModifiers);
+
+		int diff = Math.max(0, r - defender.getTq() + shift);
+		diff = specialHoldingPossibilityForBigUnits(defender, diff, false);
+
+		return diff;
+	}
+
+	protected int preshockTQCheckForAttacker(final Combat c, final boolean ferociousBarbarians,
+			final boolean noTqCheckForAttacker, final Unit attacker) {
+		Unit mainDefender = c.getMainDefender();
+		if (noTqCheckForAttacker) {
+			return 0;
+		}
+		int r = dice.roll();
+		int shift = 0;
+		List<String> diceModifiers = new ArrayList<>();
+		if (ferociousBarbarians && attacker.getKind() == UnitKind.BI) {
+			shift = -1;
+			diceModifiers.add("-1 for barbarian ferocity");
+		}
+		if (attacker.getKind() == UnitKind.EL && (mainDefender.getKind() == UnitKind.HI
+				|| mainDefender.getKind() == UnitKind.PH)) {
+			shift++;
+			diceModifiers.add("+1 for elephants against pikes");
+		}
+
+		int diff = Math.max(0, r - attacker.getTq() + shift);
+
+		logPreshock(attacker, r, diceModifiers);
+		diff = specialHoldingPossibilityForBigUnits(attacker, diff, true);
+
+		return diff;
 	}
 
 	protected int specialHoldingPossibilityForBigUnits(final Unit unit, int diff, final boolean isAttacker) {
@@ -247,8 +263,7 @@ public class Shock extends UnitCommand {
 				diff = unit.getTq() - 1 - unit.getHits();
 			}
 			console.logNL(
-					String.format("Double units tries to hold. Dice rolls %d, %s%s. %s", d,
-							modif,modif2,result));
+					String.format("Double units tries to hold. Dice rolls %d, %s%s. %s", d, modif, modif2, result));
 
 		}
 		return diff;

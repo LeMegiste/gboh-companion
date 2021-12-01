@@ -11,6 +11,7 @@ public class UnitStatus implements Serializable {
 	@XStreamAsAttribute
 	public int hits = 0;
 
+
 	public enum UnitState {
 		OK, DEPLETED, RALLIED, ROUTED, ELIMINATED;
 
@@ -26,5 +27,10 @@ public class UnitStatus implements Serializable {
 	@XStreamAsAttribute
 	public MissileStatus missileStatus = MissileStatus.FULL;
 
+	@XStreamAsAttribute
+	public String stackOn = null;
+
+	@XStreamAsAttribute
+	public String stackUnder = null;
 
 }

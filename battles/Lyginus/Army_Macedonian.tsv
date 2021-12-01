@@ -1,0 +1,21 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus
+PH		Craterus	1	PH1	7	10				
+PH		Meleager	2	PH2	7	10				
+PH		Philip	3	PH3	7	10				
+PH		Amyntas	4	PH4	7	10				
+PH		Coenus	5	PH5	7	10				
+PH		Perdiccas	6	PH6	7	10				
+HI		Hypaspists	Agema	HHIA	9	7				
+HI		Hypaspists	1	HHI1	8	6				
+HI		Hypaspists	2	HHI2	8	6				
+SK		Macedonian	1	SK1	4	1	A			
+SK		Cretan	1	SK2	4	1	A			
+SK		Mercenary	2	SK3	4	1	S			
+SK		Mercenary	3	SK4	4	1	S			
+SKp		Agrianian	3	SK5	6	1	J			
+SKp		Agrianian	4	SK6	6	1	J			
+HC		Companion	Agema	CHCA	9	4				
+HC		Companion	1	CHC1	8	4				
+HC		Companion	2	CHC2	8	4				
+LC		Macedonian	1	LC1	6	2	J			
+LC		Thracian	2	LC2	6	2	MJ			

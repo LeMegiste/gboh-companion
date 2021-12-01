@@ -4,6 +4,8 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.logging.log4j.util.Strings;
+
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
 import ch.megiste.gboh.command.unit.Log;
@@ -33,7 +35,24 @@ public class Unit {
 		return tq;
 	}
 
+	public void stackOn(final String unitCode) {
+		status.stackOn = unitCode;
+	}
 
+	public String getStackedOn() {
+		return status.stackOn;
+	}
+	public void stackUnder(final String unitCode) {
+		status.stackUnder = unitCode;
+	}
+
+	public String getStackedUnder() {
+		return status.stackUnder;
+	}
+
+	public boolean isStacked() {
+		return Strings.isNotEmpty(status.stackOn) || Strings.isNotEmpty(status.stackUnder);
+	}
 
 	public enum MissileType {
 		NONE(""), S("Slings", true), BS("Slings", true), J("Javelins", 7), MJ("Javelins", 7), A("Bows"), MA("Bows");
@@ -71,14 +90,15 @@ public class Unit {
 
 	public enum UnitKind {
 
-		LG(UnitCategory.Infantry), HI(UnitCategory.Infantry), MI(UnitCategory.Infantry), LI(UnitCategory.Infantry),
-		SK(UnitCategory.Skirmishers), HC(UnitCategory.Cavalry), LC(UnitCategory.Cavalry),
-		RC(	UnitCategory.Cavalry), BI(UnitCategory.Infantry), EL(UnitCategory.Elephants),
-		PH(	UnitCategory.Infantry), LP(UnitCategory.Infantry), LN(UnitCategory.Cavalry),
-		CH(UnitCategory.Chariots), SKp(UnitCategory.Skirmishers);
+		LG(UnitCategory.Infantry), HI(UnitCategory.Infantry), MI(UnitCategory.Infantry), LI(UnitCategory.Infantry), SK(
+				UnitCategory.Skirmishers), HC(UnitCategory.Cavalry), LC(UnitCategory.Cavalry), RC(
+				UnitCategory.Cavalry), BI(UnitCategory.Infantry), EL(UnitCategory.Elephants), PH(
+				UnitCategory.Infantry), LP(UnitCategory.Infantry), LN(UnitCategory.Cavalry), CH(
+				UnitCategory.Chariots), SKp(UnitCategory.Skirmishers);
 
 		private UnitCategory unitCategory;
-		UnitKind(UnitCategory unitCategory){
+
+		UnitKind(UnitCategory unitCategory) {
 			this.unitCategory = unitCategory;
 		}
 
@@ -88,11 +108,7 @@ public class Unit {
 	}
 
 	public enum UnitCategory {
-		Infantry,
-		Cavalry,
-		Skirmishers,
-		Chariots,
-		Elephants;
+		Infantry, Cavalry, Skirmishers, Chariots, Elephants;
 	}
 
 	public enum SubClass {
