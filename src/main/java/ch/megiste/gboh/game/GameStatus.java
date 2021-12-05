@@ -1,5 +1,7 @@
 package ch.megiste.gboh.game;
 
+import static ch.megiste.gboh.army.UnitStatus.NONE;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
@@ -57,14 +59,18 @@ public class GameStatus {
 	private Properties battleProperties;
 
 	public Unit getStackedUnit(final Unit u) {
-		if (u.getStackedOn() != null) {
+		if (u.isStackedOn()) {
 			return findUnitByCode(u.getStackedOn());
 		}
-		if (u.getStackedUnder() != null) {
+		if (u.isStackedUnder()) {
 			return findUnitByCode(u.getStackedUnder());
 		}
 		return null;
 
+	}
+
+	public void stack(final String top, final String under) {
+		stack(top,under,getAllUnits());
 	}
 
 	public enum Rules {
@@ -151,7 +157,12 @@ public class GameStatus {
 					if (!optHist.isPresent()) {
 						continue;
 					}
+
+
 					for (UnitChange uc : optHist.get().getChanges()) {
+						//setting default values
+						setDefaultValues(uc.getAfter());
+
 						Unit u = findUnitByCode(uc.getUnitCode());
 						u.setStatus(uc.getAfter());
 					}
@@ -163,9 +174,21 @@ public class GameStatus {
 		}
 	}
 
+	private void setDefaultValues(final UnitStatus status) {
+		if (status.stackOn == null) {
+			status.stackOn = NONE;
+		}
+		if (status.stackUnder == null) {
+			status.stackUnder = NONE;
+		}
+	}
+
 	Unit findUnitByCode(final String unitCode) {
+		return findUnitByCode(unitCode,getAllUnits());
+	}
+	public Unit findUnitByCode(final String unitCode, List<Unit> units) {
 		final List<Unit> candidates =
-				getAllUnits().stream().filter(u -> u.getUnitCode().equals(unitCode)).collect(Collectors.toList());
+				units.stream().filter(u -> u.getUnitCode().equals(unitCode)).collect(Collectors.toList());
 		Preconditions.checkArgument(candidates.size() > 0, "There should be one unit named:" + unitCode);
 		Preconditions.checkArgument(candidates.size() == 1, "There should be no more than one unit named:" + unitCode);
 
@@ -202,7 +225,7 @@ public class GameStatus {
 	}
 
 	public void stack(String unitCodeOn, String unitCodeUnder, List<Unit> units) {
-		Unit originalUnit = units.stream().filter(u -> u.getUnitCode().equals(unitCodeOn)).findFirst().get();
+		Unit originalUnit = findUnitByCode(unitCodeOn,units);
 		Optional<Unit> optStackedUnit = units.stream().filter(u -> u.getUnitCode().equals(unitCodeUnder)).findFirst();
 		if (!optStackedUnit.isPresent()) {
 			throw new RuntimeException("Unable to find unit with code:" + unitCodeUnder);

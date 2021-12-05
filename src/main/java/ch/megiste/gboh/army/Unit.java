@@ -1,5 +1,7 @@
 package ch.megiste.gboh.army;
 
+import static ch.megiste.gboh.army.UnitStatus.NONE;
+
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,6 +38,9 @@ public class Unit {
 	}
 
 	public void stackOn(final String unitCode) {
+		if (Strings.isEmpty(unitCode)) {
+			status.stackOn = NONE;
+		}
 		status.stackOn = unitCode;
 	}
 
@@ -43,6 +48,9 @@ public class Unit {
 		return status.stackOn;
 	}
 	public void stackUnder(final String unitCode) {
+		if (Strings.isEmpty(unitCode)) {
+			status.stackUnder = NONE;
+		}
 		status.stackUnder = unitCode;
 	}
 
@@ -51,11 +59,27 @@ public class Unit {
 	}
 
 	public boolean isStacked() {
-		return Strings.isNotEmpty(status.stackOn) || Strings.isNotEmpty(status.stackUnder);
+		return isStackedOn() || isStackedUnder();
+	}
+
+	public boolean isStackedOn() {
+		String str = status.stackOn;
+		return !NONE.equals(str) && Strings.isNotEmpty(str);
+
+	}
+	public boolean isStackedUnder() {
+		String str = status.stackUnder;
+		return !NONE.equals(str) && Strings.isNotEmpty(str);
+
+	}
+
+	public boolean isStackedWith(final Unit other) {
+		return isStacked() && (Objects.equals(getStackedOn(),other.getStackedUnder()) || Objects.equals(getStackedUnder(),other.getStackedOn()));
 	}
 
 	public enum MissileType {
-		NONE(""), S("Slings", true), BS("Slings", true), J("Javelins", 7), MJ("Javelins", 7), A("Bows"), MA("Bows");
+		NONE(""), S("Slings", true), BS("Slings", true), J("Javelins", 7), MJ("Javelins", 7), A("Bows"), MA("Bows"), O(
+				"Oxybeles");
 
 		private String description;
 		private boolean lessPreciseAfterMovement = false;
@@ -94,7 +118,7 @@ public class Unit {
 				UnitCategory.Skirmishers), HC(UnitCategory.Cavalry), LC(UnitCategory.Cavalry), RC(
 				UnitCategory.Cavalry), BI(UnitCategory.Infantry), EL(UnitCategory.Elephants), PH(
 				UnitCategory.Infantry), LP(UnitCategory.Infantry), LN(UnitCategory.Cavalry), CH(
-				UnitCategory.Chariots), SKp(UnitCategory.Skirmishers);
+				UnitCategory.Chariots), SKp(UnitCategory.Skirmishers), OX(UnitCategory.Artillery);
 
 		private UnitCategory unitCategory;
 
@@ -108,7 +132,9 @@ public class Unit {
 	}
 
 	public enum UnitCategory {
-		Infantry, Cavalry, Skirmishers, Chariots, Elephants;
+		Infantry, Cavalry, Skirmishers, Chariots, Elephants, Artillery;
+
+
 	}
 
 	public enum SubClass {

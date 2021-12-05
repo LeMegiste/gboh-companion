@@ -57,6 +57,15 @@ public class Log extends UnitCommand {
 			add.append(" ").append(u.getState());
 			break;
 		}
+		if (u.isStackedOn()) {
+			add.append(" stacked on: ").append(u.getStackedOn());
+
+		}
+		if (u.isStackedUnder()) {
+			add.append(" stacked under: ").append(u.getStackedUnder());
+
+		}
+
 		if (add.length() > 0) {
 			return s + " -" + add.toString();
 		} else {

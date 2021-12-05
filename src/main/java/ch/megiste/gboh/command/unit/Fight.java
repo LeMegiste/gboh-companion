@@ -76,6 +76,9 @@ public class Fight extends UnitCommand {
 					if (defName == "LP") {
 						defName = "LI";
 					}
+					if (defName == "OX") {
+						defName = "LI";
+					}
 					return r.get("Source").equals(defName);
 				}).findFirst();
 				if (!optSource.isPresent()) {
@@ -91,6 +94,9 @@ public class Fight extends UnitCommand {
 					attackerName = "LI";
 				}
 				if (attacker == UnitKind.SK) {
+					continue;
+				}
+				if (attacker == UnitKind.OX) {
 					continue;
 				}
 				String strSup = rec.get(attackerName);
@@ -113,6 +119,8 @@ public class Fight extends UnitCommand {
 				final String defName;
 				if (defender == UnitKind.SKp) {
 					defName = "SK";
+				} else if (defender == UnitKind.OX) {
+					defName = "LI";
 				} else {
 					defName = defender.name();
 				}
@@ -208,8 +216,7 @@ public class Fight extends UnitCommand {
 		if (mainAttackerCategory == UnitCategory.Skirmishers && mainDefCategory != UnitCategory.Chariots
 				&& mainDefCategory != UnitCategory.Skirmishers) {
 			ignorePositionSuperiority = true;
-			console.logNL(
-					"No position superiority for skirmishers against anything else than chariots or skirmishers");
+			console.logNL("No position superiority for skirmishers against anything else than chariots or skirmishers");
 
 		}
 		if (mainAttacker.getKind() == UnitKind.LC && (mainDefender.getKind() == UnitKind.PH
@@ -227,11 +234,9 @@ public class Fight extends UnitCommand {
 
 			sup = findSuperiority(mainAttacker, mainDefender);
 			if (sup == Superiority.AS) {
-				console.logNL(
-						String.format("%s is AS for better weapon system.", Log.buildStaticDesc(mainAttacker)));
+				console.logNL(String.format("%s is AS for better weapon system.", Log.buildStaticDesc(mainAttacker)));
 			} else if (sup == Superiority.DS) {
-				console.logNL(
-						String.format("%s is DS for better weapon system.", Log.buildStaticDesc(mainDefender)));
+				console.logNL(String.format("%s is DS for better weapon system.", Log.buildStaticDesc(mainDefender)));
 			}
 		}
 
@@ -259,8 +264,8 @@ public class Fight extends UnitCommand {
 		}
 
 		if (columnShift != 0) {
-			colModifiers.add(String
-					.format("%d due to size ratio %d/%d", columnShift, sumSizeAttackers, sumSizeDefenders));
+			colModifiers
+					.add(String.format("%d due to size ratio %d/%d", columnShift, sumSizeAttackers, sumSizeDefenders));
 		}
 
 		if (mainAttacker.getState() == UnitState.DEPLETED) {
@@ -327,8 +332,9 @@ public class Fight extends UnitCommand {
 		}
 		String rollModifiersString = Helper.buildModifiersLog("", rollModifiers);
 		String columnModifiersString = Helper.buildModifiersLog("column " + originalColumn, colModifiers);
-		console.logNL(String.format("Shock! Dice rolls %d%s on column %d%s. Result %d/%d", originalRoll,
-				rollModifiersString, column, columnModifiersString, defenderImpact, attackerImpact));
+		console.logNL(
+				String.format("Shock! Dice rolls %d%s on column %d%s. Result %d/%d", originalRoll, rollModifiersString,
+						column, columnModifiersString, defenderImpact, attackerImpact));
 
 		//Repartition of impact
 		Map<Unit, Integer> impactPerUnit = computeImpactPerUnit(c, attackerImpact, defenderImpact, position);
@@ -507,15 +513,15 @@ public class Fight extends UnitCommand {
 		List<Combat> combats = new ArrayList<>();
 		Map<Unit, Unit> stackLinks = new HashMap<>();
 		for (Unit u : attackers) {
-			if (u.getStackedOn() != null) {
+			if (u.isStackedOn()) {
 				stackLinks.put(u, unitChanger.getGameStatus().getUnitFromCode(u.getStackedOn()));
 			}
 		}
 		List<Unit> updatedDefenders = new ArrayList<>();
 		for (Unit u : defenders) {
-			if (u.getStackedOn() != null) {
+			if (u.isStackedOn()) {
 				if (position != Position.BACK) {
-					stackLinks.put(u,unitChanger.getGameStatus().getUnitFromCode(u.getStackedOn()));
+					stackLinks.put(u, unitChanger.getGameStatus().getUnitFromCode(u.getStackedOn()));
 					updatedDefenders.add(u);
 				} else {
 					stackLinks.put(unitChanger.getGameStatus().getUnitFromCode(u.getStackedOn()), u);

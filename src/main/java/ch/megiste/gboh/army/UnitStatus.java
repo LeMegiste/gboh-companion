@@ -8,6 +8,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 @XStreamAlias("UnitStatus")
 public class UnitStatus implements Serializable {
 
+	public static final String NONE = "NONE";
 	@XStreamAsAttribute
 	public int hits = 0;
 
@@ -28,9 +29,11 @@ public class UnitStatus implements Serializable {
 	public MissileStatus missileStatus = MissileStatus.FULL;
 
 	@XStreamAsAttribute
-	public String stackOn = null;
+	public String stackOn = NONE;
 
 	@XStreamAsAttribute
-	public String stackUnder = null;
+	public String stackUnder = NONE;
+
+
 
 }

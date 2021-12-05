@@ -1,0 +1,26 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus	StackedOn	Unit global type	Nb mens
+PH		Macedonian	1	PH1	7	10						Infantry	1500
+PH		Macedonian	2	PH2	7	10						Infantry	1500
+SK		Macedonian	1	SK1	3	1	A					SK	0
+SK		Macedonian	2	SK2	3	1	A					SK	0
+SK		Macedonian	3	SK3	3	1	A						
+SK		Mercenary	1	MSK1	3	1	S					SK	0
+SK		Mercenary	2	MSK2	3	1	S					SK	0
+SKp		Agrianian	3	Ag1	6	1	J					SKp	0
+SKp		Agrianian	4	Ag2	6	1	J					SKp	0
+HI		Hypaspists	Agema	HHIA	9	7						Infantry	1050
+HI		Hypaspists	1	HHI1	8	6						Infantry	900
+HI		Hypaspists	2	HHI2	8	6						Infantry	900
+LC		Greek Allied	3	GLC3	5	5	J					Cavalry	500
+LC		Greek Allied	4	GLC4	5	5	J					Cavalry	500
+LC		Paenian	1	PLC1	6	2	J					Cavalry	200
+LC		Paenian	2	PLC2	6	2	J					Cavalry	200
+LN		Prodromoi	2	PLN2	7	4						Cavalry	400
+LN		Prodromoi	3	PLN3	7	4							
+HC		Companion	Agema	CHCA	9	4						Cavalry	400
+HC		Companion	1	CHC1	8	4						Cavalry	400
+HC		Companion	2	CHC2	8	4						Cavalry	400
+OX		Oxybeles	1	OX1	5	2	O					OX	0
+OX		Oxybeles	2	OX2	5	2	O						
+OX		Oxybeles	3	OX3	5	2	O						
+OX		Oxybeles	4	OX4	5	2	O						

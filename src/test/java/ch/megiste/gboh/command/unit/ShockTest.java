@@ -57,6 +57,11 @@ public class ShockTest {
 			String code = inv.getArgumentAt(0, String.class);
 			return currentUnits.stream().filter(u -> u.getUnitCode().equals(code)).findFirst().get();
 		});
+		when(gs.findUnitByCode(anyString(),anyList())).then(inv -> {
+			String code = inv.getArgumentAt(0, String.class);
+			return currentUnits.stream().filter(u -> u.getUnitCode().equals(code)).findFirst().get();
+		});
+
 		doCallRealMethod().when(gs).stack(anyString(),anyString(),anyList());
 
 		//doCallRealMethod().when(gs.stack(any(),any(),anyList()));

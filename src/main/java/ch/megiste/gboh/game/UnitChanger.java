@@ -1,5 +1,6 @@
 package ch.megiste.gboh.game;
 
+import static ch.megiste.gboh.army.UnitStatus.NONE;
 import static ch.megiste.gboh.army.UnitStatus.UnitState.DEPLETED;
 import static ch.megiste.gboh.army.UnitStatus.UnitState.ELIMINATED;
 import static ch.megiste.gboh.army.UnitStatus.UnitState.OK;
@@ -31,7 +32,7 @@ import ch.megiste.gboh.util.Helper;
 
 public class UnitChanger {
 	private static final Set<UnitState> BEFORE_ROUTING = EnumSet.of(DEPLETED, OK, RALLIED);
-	private static final Set<UnitState> BEFORE_ELIMINATED = EnumSet.of(DEPLETED, OK, RALLIED,ROUTED);
+	private static final Set<UnitState> BEFORE_ELIMINATED = EnumSet.of(DEPLETED, OK, RALLIED, ROUTED);
 	private static final Set<UnitState> BEFORE_RALLIED = EnumSet.of(ROUTED);
 	private Map<UnitState, Set<UnitState>> stateTransitions = new HashMap<>();
 
@@ -100,11 +101,11 @@ public class UnitChanger {
 
 	public void changeState(final Unit u, final Integer hits, final UnitState state,
 			final MissileStatus missileStatus) {
-		changeStateInternal(u, hits, state, missileStatus, false);
+		changeStateInternal(u, hits, state, missileStatus, null, null, false);
 	}
 
 	private void changeStateInternal(final Unit u, final Integer hits, final UnitState state,
-			final MissileStatus missileStatus, final boolean undo) {
+			final MissileStatus missileStatus, final String stackedOn, final String stackedUnder, final boolean undo) {
 		final UnitStatus status = u.getStatus();
 		final UnitStatus before = Helper.clone(status);
 		List<String> statusList = new ArrayList<>();
@@ -136,7 +137,7 @@ public class UnitChanger {
 
 		boolean stateChanged = false;
 		if (state != null && state != before.state) {
-			stateChanged=true;
+			stateChanged = true;
 			if (!undo) {
 				Preconditions.checkArgument(stateTransitions.get(state).contains(before.state),
 						"Unit must be in state " + Joiner.on(" or ").join(stateTransitions.get(state))
@@ -146,35 +147,59 @@ public class UnitChanger {
 			status.state = state;
 		}
 		String changeMessage = Joiner.on(" It ").join(statusList);
-		if(!Strings.isNullOrEmpty(changeMessage.trim())){
+		if (!Strings.isNullOrEmpty(changeMessage.trim())) {
 			console.logNL(Log.buildStaticDesc(u) + " " + changeMessage);
 		}
+		if (stackedOn != null) {
+			status.stackOn = stackedOn;
+		}
+		if (stackedUnder != null) {
+			status.stackUnder = stackedUnder;
+		}
+
 		gameStatus.recordChange(before, u);
 
 		if (stateChanged && state == ROUTED && u.isStacked()) {
 			final Unit stackedUnit = gameStatus.getStackedUnit(u);
 			Preconditions.checkNotNull(stackedUnit);
 			if (stackedUnit.getState() != ROUTED && stackedUnit.getState() != ELIMINATED) {
-				changeStateInternal(stackedUnit, stackedUnit.getOriginalTq(), ROUTED, null, undo);
+				changeStateInternal(stackedUnit, stackedUnit.getOriginalTq(), ROUTED, null, null, null, undo);
 			}
 		}
 	}
 
 	public void changeStateForUndo(final String unitCode, final UnitStatus status) {
 		final Unit u = gameStatus.findUnitByCode(unitCode);
-		changeStateInternal(u, status.hits, status.state, status.missileStatus, true);
+		changeStateInternal(u, status.hits, status.state, status.missileStatus, status.stackOn, status.stackUnder, true);
 	}
 
 	public void changeStateNoCheck(final Unit u, final int hits, final UnitState state,
 			final MissileStatus missileState) {
-		changeStateInternal(u, hits, state, missileState, true);
+		changeStateInternal(u, hits, state, missileState, null, null, true);
 	}
 
-	public Rules getCurrentRules(){
+	public Rules getCurrentRules() {
 		return gameStatus.getRules();
 	}
 
 	public GameStatus getGameStatus() {
 		return gameStatus;
 	}
+
+	public void stack(final String on, final String under) {
+		Unit onUnit = gameStatus.findUnitByCode(on);
+		Unit underUnit = gameStatus.findUnitByCode(under);
+
+		changeStateInternal(onUnit, null, null, null, under, null, false);
+		changeStateInternal(underUnit, null, null, null, null, on, false);
+	}
+
+	public void unStack(final String on, final String under) {
+		Unit onUnit = gameStatus.findUnitByCode(on);
+		Unit underUnit = gameStatus.findUnitByCode(under);
+
+		changeStateInternal(onUnit, null, null, null, NONE, null, false);
+		changeStateInternal(underUnit, null, null, null, null, NONE, false);
+	}
+
 }

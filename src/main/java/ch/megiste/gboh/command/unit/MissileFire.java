@@ -65,7 +65,7 @@ public class MissileFire extends UnitCommand {
 		}
 		Unit attacker = attackers.get(0);
 		Unit target = defenders.get(0);
-		if (back && target.getStackedOn() != null) {
+		if (back && target.isStackedOn()) {
 			target = unitChanger.getGameStatus().getUnitFromCode(target.getStackedOn());
 		}
 
