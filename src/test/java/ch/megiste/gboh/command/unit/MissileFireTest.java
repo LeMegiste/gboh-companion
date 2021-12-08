@@ -67,9 +67,9 @@ public class MissileFireTest {
 		cmd.execute(Arrays.asList(sk), Arrays.asList(lg), null);
 
 		String s = Joiner.on("\n").join(logLines);
-		Assert.assertEquals("Balearic SK 1 is firing at Legio XII Hastati a\n" + "Dice rolls: 8! Missed! \n"
+		Assert.assertEquals("Balearic SK 1 is firing at Legio XII Hastati a\n" + "Dice rolls: [8]! Missed! \n"
 				+ "Legio XII Hastati a is firing in reaction at Balearic SK 1\n"
-				+ "Dice rolls: 8! Missed! (modifiers: +2 because target is SK)", s);
+				+ "Dice rolls: [8]! Missed! (modifiers: +2 because target is SK)", s);
 		verify(unitChanger, never()).addHit(any());
 		logLines.clear();
 
@@ -77,9 +77,9 @@ public class MissileFireTest {
 
 		s = Joiner.on("\n").join(logLines);
 		Assert.assertEquals(
-				"Balearic SK 1 is firing at Legio XII Hastati a\n" + "Dice rolls: 3! Legio XII Hastati a is hit! \n"
+				"Balearic SK 1 is firing at Legio XII Hastati a\n" + "Dice rolls: [3]! Legio XII Hastati a is hit! \n"
 						+ "Legio XII Hastati a is firing in reaction at Balearic SK 1\n"
-						+ "Dice rolls: 3! Balearic SK 1 is hit! (modifiers: +2 because target is SK)", s);
+						+ "Dice rolls: [3]! Balearic SK 1 is hit! (modifiers: +2 because target is SK)", s);
 		verify(unitChanger).addHit(eq(lg));
 
 	}

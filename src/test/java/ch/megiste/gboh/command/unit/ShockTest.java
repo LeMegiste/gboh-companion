@@ -95,11 +95,11 @@ public class ShockTest {
 
 		Unit hi1 = createUnit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
 
-		//First roll: missile fire 5 (hit)
+		//First roll: missile fire 4 (hit)
 		//Second roll: TQ check. Roman 9, carth 8
 		//Fight. 9
 		//Near collapse carth:8
-		when(dice.roll()).thenReturn(5, 9, 8, 9, 5);
+		when(dice.roll()).thenReturn(4, 9, 8, 9, 5);
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), null);
 		Mockito.verify(unitChanger, Mockito.times(2)).addHits(eq(lg1), eq(2));
@@ -137,9 +137,9 @@ public class ShockTest {
 		Unit hi1 = createUnit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
 		hi1.getStatus().state = UnitState.ROUTED;
 
-		//First roll: missile fire 5 (hit). Hi collapses.
+		//First roll: missile fire 4 (hit). Hi collapses.
 		//Combat is over
-		when(dice.roll()).thenReturn(5, 9, 8, 9);
+		when(dice.roll()).thenReturn(4, 9, 8, 9);
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), null);
 		Mockito.verify(unitChanger, Mockito.never()).addHits(eq(lg1), anyInt());
@@ -286,11 +286,11 @@ public class ShockTest {
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), Collections.singletonList("cs-1"));
 
 		List<String> expectedLines = Splitter.on("\n").splitToList(
-				"Legio XII Hastati a is firing at Mercenary HI 1\n" + "Dice rolls: 5! Mercenary HI 1 is hit! \n"
-						+ "Mercenary HI 1 took 1 hit.\n" + "Pre-shock for Legio XII Hastati a. Dice rolls 8! (TQ=7).\n"
-						+ "Pre-shock for Mercenary HI 1. Dice rolls 3! (TQ=8).\n" + "Legio XII Hastati a took 1 hit.\n"
+				"Legio XII Hastati a is firing at Mercenary HI 1\n" + "Dice rolls: [5]! Mercenary HI 1 is hit! \n"
+						+ "Mercenary HI 1 took 1 hit.\n" + "Pre-shock for Legio XII Hastati a. Dice rolls [8]! (TQ=7).\n"
+						+ "Pre-shock for Mercenary HI 1. Dice rolls [3]! (TQ=8).\n" + "Legio XII Hastati a took 1 hit.\n"
 						+ "Legio XII Hastati a is AS for better weapon system.\n"
-						+ "Shock! Dice rolls 7 on column 4 (column 6, -1 due to size ratio 3/7, -1 additional). Result 4/2\n"
+						+ "Shock! Dice rolls [7] on column 4 (column 6, -1 due to size ratio 3/7, -1 additional). Result 4/2\n"
 						+ "Legio XII Hastati a took 2 hits.\n" + "Mercenary HI 1 took 4 hits.\n"
 						+ "Final status: [Legio XII Hastati a] TQ=7 size=3 - 3 hits\n"
 						+ "Final status: [Mercenary HI 1] TQ=8 size=7 - 5 hits");
@@ -311,19 +311,19 @@ public class ShockTest {
 
 		Unit hi1 = createUnit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
 		hi1.getStatus().hits = 6;
-		//First roll: missile fire 5 (hit)
-		//Second roll: TQ check. Roman 8, carth 8
+		//First roll: missile fire 4 (hit)
+		//Second roll: TQ check. Roman 8, carth 3
 		//Fight. 9
 
-		when(dice.roll()).thenReturn(5, 8, 3, 7);
+		when(dice.roll()).thenReturn(4, 8, 3, 7);
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), null);
 
 		List<String> expectedLines = Splitter.on("\n").splitToList(
-				"Legio XII Hastati a is firing at Mercenary HI 1\n" + "Dice rolls: 5! Mercenary HI 1 is hit! \n"
-						+ "Mercenary HI 1 took 1 hit.\n" + "Pre-shock for Legio XII Hastati a. Dice rolls 8! (TQ=7).\n"
-						+ "Pre-shock for Mercenary HI 1. Dice rolls 3! (TQ=8).\n" + "Legio XII Hastati a took 1 hit.\n"
+				"Legio XII Hastati a is firing at Mercenary HI 1\n" + "Dice rolls: [4]! Mercenary HI 1 is hit! (modifiers: +1 because target is heavy infantry)\n"
+						+ "Mercenary HI 1 took 1 hit.\n" + "Pre-shock for Legio XII Hastati a. Dice rolls [8]! (TQ=7).\n"
+						+ "Pre-shock for Mercenary HI 1. Dice rolls [3]! (TQ=8).\n" + "Legio XII Hastati a took 1 hit.\n"
 						+ "Legio XII Hastati a is AS for better weapon system.\n"
-						+ "Shock! Dice rolls 7 on column 5 (column 6, -1 due to size ratio 3/7). Result 4/2\n"
+						+ "Shock! Dice rolls [7] on column 5 (column 6, -1 due to size ratio 3/7). Result 4/2\n"
 						+ "Legio XII Hastati a took 2 hits.\n" + "Mercenary HI 1 took 4 hits. It is ROUTED\n"
 						+ "Legio XII Hastati a is missile NO\n"
 						+ "Final status: [Legio XII Hastati a] TQ=7 size=3 - 3 hits is MISSILE NO\n"

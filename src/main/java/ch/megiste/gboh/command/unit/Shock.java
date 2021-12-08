@@ -263,7 +263,7 @@ public class Shock extends UnitCommand {
 				diff = unit.getTq() - 1 - unit.getHits();
 			}
 			console.logNL(
-					String.format("Double units tries to hold. Dice rolls %d, %s%s. %s", d, modif, modif2, result));
+					String.format("Double sized units tries to hold. Dice rolls [%d], %s%s. %s", d, modif, modif2, result));
 
 		}
 		return diff;
@@ -272,7 +272,7 @@ public class Shock extends UnitCommand {
 	private void logPreshock(final Unit u, final int roll, final List<String> diceModifiers) {
 		final String rollModifiers = Helper.buildModifiersLog("", diceModifiers);
 
-		String m = String.format("Pre-shock for %s. Dice rolls %d%s! (TQ=%d).", Log.buildStaticDesc(u), roll,
+		String m = String.format("Pre-shock for %s. Dice rolls [%d]%s! (TQ=%d).", Log.buildStaticDesc(u), roll,
 				rollModifiers, u.getTq());
 		console.logNL(m);
 	}

@@ -17,6 +17,6 @@ public class DiceThrow extends GameCommand {
 	@Override
 	public void execute(final GameStatus gs, final List<String> commandArgs) {
 		int r = dice.roll();
-		console.logNL("Dice rolled: " + r);
+		console.logNL("Dice rolled: [" + r+"]");
 	}
 }

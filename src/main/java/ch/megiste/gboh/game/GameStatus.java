@@ -55,7 +55,7 @@ public class GameStatus {
 
 	private XStream xStream = null;
 	private String commandText;
-	private Properties generalProperties;
+	private Properties generalProperties = new Properties();
 	private Properties battleProperties;
 
 	public Unit getStackedUnit(final Unit u) {
@@ -104,6 +104,7 @@ public class GameStatus {
 					battleDir = Paths.get(battleDirString);
 				}
 			}
+
 			final Stream<Path> children = Files.list(battleDir);
 			final List<Path> armyFiles = children.filter(p -> p.getFileName().toString().startsWith("Army_")).sorted()
 					.collect(Collectors.toList());
@@ -146,7 +147,7 @@ public class GameStatus {
 			currentDir = battleDir;
 			battleName = battleDir.getFileName().toString();
 
-			Path gamePropsPath = getGamePropertiesPath();
+			Path gamePropsPath = getGameBackupFile();
 			if (Files.exists(gamePropsPath)) {
 
 				state = (PersistableGameState) xStream.fromXML(gamePropsPath.toFile());
@@ -195,8 +196,15 @@ public class GameStatus {
 		return candidates.get(0);
 	}
 
-	private Path getGamePropertiesPath() {
-		return currentDir.resolve("game.xml");
+	private Path getGameBackupFile() {
+		String backupDirString = generalProperties.getProperty("backupDir");
+		Path backupPath;
+		if (backupDirString == null) {
+			backupPath = Paths.get(".").resolve("backup").resolve(battleName);
+		} else {
+			backupPath = Paths.get(backupDirString).resolve(battleName);
+		}
+		return backupPath.resolve("game.xml");
 	}
 
 	private Army loadArmy(final Path path) throws IOException {
@@ -278,19 +286,22 @@ public class GameStatus {
 
 	public void persistGame(boolean newFile) {
 		try {
-			final Path gamePropertiesPath;
+			final Path backupFile;
 			if (newFile) {
-				final Path basicFile = getGamePropertiesPath();
-				gamePropertiesPath = basicFile.getParent()
+				final Path basicFile = getGameBackupFile();
+				backupFile = basicFile.getParent()
 						.resolve("backup." + state.currentTurn + "." + state.currentCommand + ".xml");
-				if (Files.exists(gamePropertiesPath)) {
-					Files.deleteIfExists(gamePropertiesPath);
+				if (Files.exists(backupFile)) {
+					Files.deleteIfExists(backupFile);
 				}
 			} else {
-				gamePropertiesPath = getGamePropertiesPath();
+				backupFile = getGameBackupFile();
+			}
+			if(!Files.exists(backupFile)){
+				Files.createDirectories(backupFile.getParent());
 			}
 
-			xStream.toXML(state, Files.newBufferedWriter(gamePropertiesPath));
+			xStream.toXML(state, Files.newBufferedWriter(backupFile));
 		} catch (IOException e) {
 			throw new GbohError(e);
 		}

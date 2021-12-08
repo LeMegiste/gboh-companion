@@ -77,30 +77,43 @@ public class Unit {
 		return isStacked() && (Objects.equals(getStackedOn(),other.getStackedUnder()) || Objects.equals(getStackedUnder(),other.getStackedOn()));
 	}
 
+	public enum MissileWeapon {
+		Bows,Slings,Artillery,Javelin,none;
+
+
+	}
+
 	public enum MissileType {
-		NONE(""), S("Slings", true), BS("Slings", true), J("Javelins", 7), MJ("Javelins", 7), A("Bows"), MA("Bows"), O(
-				"Oxybeles");
+		NONE(MissileWeapon.none), S(MissileWeapon.Slings), BS(MissileWeapon.Slings), J(MissileWeapon.Javelin, 7,false), MJ(
+				MissileWeapon.Javelin, 7,false), A(MissileWeapon.Bows), MA(MissileWeapon.Bows), O(MissileWeapon.Artillery), IA(MissileWeapon.Bows);
 
-		private String description;
-		private boolean lessPreciseAfterMovement = false;
+
+		private boolean lessPreciseAfterMovement = true;
 		private int missileShortageLevel = 9;
+		private  final MissileWeapon weapon;
 
-		MissileType(final String description) {
-			this.description = description;
+		MissileType(final MissileWeapon weapon) {
+
+			this.weapon = weapon;
 		}
 
-		MissileType(final String description, final boolean lessPreciseAfterMovement) {
-			this.description = description;
+		MissileType(final MissileWeapon weapon,  final boolean lessPreciseAfterMovement) {
+			this(weapon);
 			this.lessPreciseAfterMovement = lessPreciseAfterMovement;
 		}
 
-		MissileType(final String description, final int missileShortageLevel) {
-			this.description = description;
+		MissileType(final MissileWeapon weapon, final int missileShortageLevel,final boolean lessPreciseAfterMovement) {
+			this(weapon);
+			this.lessPreciseAfterMovement=lessPreciseAfterMovement;
 			this.missileShortageLevel = missileShortageLevel;
 		}
 
 		public String getDescription() {
-			return description;
+			if (weapon != MissileWeapon.none) {
+				return weapon.name();
+			} else {
+				return "";
+			}
 		}
 
 		public boolean lessPreciseAfterMovement() {
@@ -109,6 +122,10 @@ public class Unit {
 
 		public int getMissileShortageLevel() {
 			return missileShortageLevel;
+		}
+
+		public MissileWeapon getWeapon() {
+			return weapon;
 		}
 	}
 

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.List;
 import java.util.zip.CheckedOutputStream;
@@ -23,6 +24,7 @@ import ch.megiste.gboh.util.Console;
 
 public class GameStatusTest {
 
+	public static final String MY_BATTLE = "My battle";
 	private GameStatus gs;
 	private Path baseDir;
 
@@ -30,10 +32,16 @@ public class GameStatusTest {
 	public void init() throws IOException {
 		gs = new GameStatus();
 		final Path p = Files.createTempFile("Test_", ".txt");
-		baseDir = p.getParent().resolve("" + System.currentTimeMillis()).resolve("My battle");
+		baseDir = p.getParent().resolve("" + System.currentTimeMillis()).resolve(MY_BATTLE);
 		Files.createDirectories(baseDir);
 		Files.walk(baseDir).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 		Files.createDirectories(baseDir);
+		final Path backupPath = Paths.get(".").resolve("backup").resolve(MY_BATTLE);
+		Files.createDirectories(backupPath);
+		Files.walk(backupPath).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+		Files.createDirectories(backupPath);
+
+
 		copyArmyFile("Army_Roman.tsv");
 		copyArmyFile("Army_Carthaginian.tsv");
 

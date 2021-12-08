@@ -3,6 +3,7 @@ package ch.megiste.gboh.command.unit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import org.apache.commons.csv.CSVRecord;
 import ch.megiste.gboh.army.Combat;
 import ch.megiste.gboh.army.Unit;
 import ch.megiste.gboh.army.Unit.MissileType;
+import ch.megiste.gboh.army.Unit.SubClass;
 import ch.megiste.gboh.army.Unit.UnitCategory;
 import ch.megiste.gboh.army.Unit.UnitKind;
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
@@ -276,6 +278,14 @@ public class Fight extends UnitCommand {
 			columnShift++;
 			colModifiers.add("+1 defender depleted");
 		}
+		if(mainAttacker.getSubclass()== SubClass.CAT){
+			columnShift++;
+			colModifiers.add("+2 attacker is cataphracted cavalry");
+		}
+		if(mainDefender.getSubclass()== SubClass.CAT){
+			columnShift--;
+			colModifiers.add("-2 defender is cataphracted cavalry");
+		}
 
 		int manualColumShift = getIntModifier(modifiers, CommandModifier.cs, 0);
 		if (manualColumShift != 0) {
@@ -333,7 +343,7 @@ public class Fight extends UnitCommand {
 		String rollModifiersString = Helper.buildModifiersLog("", rollModifiers);
 		String columnModifiersString = Helper.buildModifiersLog("column " + originalColumn, colModifiers);
 		console.logNL(
-				String.format("Shock! Dice rolls %d%s on column %d%s. Result %d/%d", originalRoll, rollModifiersString,
+				String.format("Shock! Dice rolls [%d]%s on column %d%s. Result %d/%d", originalRoll, rollModifiersString,
 						column, columnModifiersString, defenderImpact, attackerImpact));
 
 		//Repartition of impact
@@ -385,7 +395,7 @@ public class Fight extends UnitCommand {
 	}
 
 	protected Map<Unit, Integer> dispatchImpact(final int impactToDispatch, List<Unit> impactedUnits) {
-		Map<Unit, Integer> impactPerUnit = new HashMap<>();
+		Map<Unit, Integer> impactPerUnit = new LinkedHashMap<>();
 
 		int impactDispatched = impactToDispatch / impactedUnits.size();
 		int remainder = impactToDispatch % impactedUnits.size();
@@ -407,7 +417,7 @@ public class Fight extends UnitCommand {
 		boolean attackerCollapses = false;
 		boolean defenderCollapses = false;
 
-		Map<Unit, Integer> impactPerUnit = new HashMap<>();
+		Map<Unit, Integer> impactPerUnit = new LinkedHashMap<>();
 		impactPerUnit.putAll(dispatchImpact(attackerImpact, c.getAttackersCountingStacks()));
 		impactPerUnit.putAll(dispatchImpact(defenderImpact, c.getDefendersCountingStacks()));
 
@@ -453,7 +463,7 @@ public class Fight extends UnitCommand {
 		if (postCollaposeRoll <= u.getTq()) {
 			defenderImpact = Math.max(0, u.getTq() - 2 - u.getHits());
 			impactPerUnit.put(u, defenderImpact);
-			String msg = String.format("%s is nearly collapsing. Dice rolls: %d. Holds firm!", Log.buildStaticDesc(u),
+			String msg = String.format("%s is nearly collapsing. Dice rolls: [%d]. Holds firm!", Log.buildStaticDesc(u),
 					postCollaposeRoll);
 			console.logNL(msg);
 			return false;
@@ -461,7 +471,7 @@ public class Fight extends UnitCommand {
 		} else {
 			defenderImpact = impactPerUnit.get(u) + 2;
 			impactPerUnit.put(u, defenderImpact);
-			String msg = String.format("%s is nearly collapsing. Dice rolls: %d. collapses!", Log.buildStaticDesc(u),
+			String msg = String.format("%s is nearly collapsing. Dice rolls: [%d]. collapses!", Log.buildStaticDesc(u),
 					postCollaposeRoll);
 			console.logNL(msg);
 			return true;

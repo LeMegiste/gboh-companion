@@ -27,7 +27,7 @@ public abstract class AbstractTqCheck extends UnitCommand {
 			} else {
 				modifierText="";
 			}
-			console.logNL("Dice rolled: " + r +modifierText);
+			console.logNL("Dice rolled: [" + r +"]"+modifierText);
 
 			int hits = Math.max(r - u.getOriginalTq(), 0);
 

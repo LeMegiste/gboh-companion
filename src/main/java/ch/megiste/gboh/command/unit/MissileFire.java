@@ -11,6 +11,8 @@ import com.google.common.base.Joiner;
 
 import ch.megiste.gboh.army.Unit;
 import ch.megiste.gboh.army.Unit.MissileType;
+import ch.megiste.gboh.army.Unit.MissileWeapon;
+import ch.megiste.gboh.army.Unit.SubClass;
 import ch.megiste.gboh.army.Unit.UnitKind;
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
@@ -95,18 +97,18 @@ public class MissileFire extends UnitCommand {
 			return;
 		}
 
-		fire(attacker, target, range, moved, false);
+		fire(attacker, target, range, moved, !back && !flank, false);
 
 		//Reaction fire
 		if (range == 1 && target.getMissile() != MissileType.NONE
 				&& target.getStatus().missileStatus != MissileStatus.NO && !flank && !back && !norf) {
-			fire(target, attacker, 1, false, true);
+			fire(target, attacker, 1, false, true, true);
 		}
 
 	}
 
 	private void fire(final Unit attacker, final Unit target, final int range, final boolean moved,
-			final boolean reaction) {
+			final boolean frontFire, final boolean reaction) {
 		if (attacker.getMissile() == MissileType.NONE || attacker.getMissileStatus() == MissileStatus.NO
 				|| attacker.getMissileStatus() == MissileStatus.NEVER || attacker.getState() == UnitState.ROUTED
 				|| attacker.getState() == UnitState.RALLIED || attacker.getState() == UnitState.ELIMINATED) {
@@ -132,6 +134,15 @@ public class MissileFire extends UnitCommand {
 			modifiers.add("+2 because target is SK");
 			finalRoll = finalRoll + 2;
 		}
+		final MissileWeapon weapon = attacker.getMissile().getWeapon();
+		if (isHeavyInfantry(target) && frontFire && (
+				weapon == MissileWeapon.Bows || weapon ==MissileWeapon.Slings)) {
+			modifiers.add("+3 because firing on  heavy infantry through the front");
+			finalRoll = finalRoll + 3;
+		} else 	if (isHeavyInfantry(target)) {
+			modifiers.add("+1 because target is heavy infantry");
+			finalRoll = finalRoll + 1;
+		}
 		if (moved && attacker.getMissile().lessPreciseAfterMovement()) {
 			modifiers.add("+1 because movement");
 			finalRoll = finalRoll + 1;
@@ -139,6 +150,17 @@ public class MissileFire extends UnitCommand {
 		if (attacker.getState() == UnitState.DEPLETED) {
 			modifiers.add("+1 because " + attackerName + " depleted");
 			finalRoll = finalRoll + 1;
+		}
+		if (target.getSubclass() == SubClass.CAT) {
+			if (weapon ==MissileWeapon.Bows) {
+				modifiers.add("+2 because target is cataphracted");
+				finalRoll = finalRoll + 2;
+
+			} else if (weapon ==MissileWeapon.Slings) {
+				modifiers.add("+1 because target is cataphracted");
+				finalRoll = finalRoll + 1;
+
+			}
 		}
 
 		final String resultText;
@@ -152,7 +174,7 @@ public class MissileFire extends UnitCommand {
 		}
 
 		final String modifiersText = modifiers.size() == 0 ? "" : "(modifiers: " + Joiner.on(",").join(modifiers) + ")";
-		String conclusionText = String.format("Dice rolls: %d! %s! %s", roll, resultText, modifiersText);
+		String conclusionText = String.format("Dice rolls: [%d]! %s! %s", roll, resultText, modifiersText);
 		console.logNL(conclusionText);
 		if (success) {
 			unitChanger.addHit(target);
@@ -162,6 +184,10 @@ public class MissileFire extends UnitCommand {
 				.getMissileShortageLevel()) {
 			unitChanger.missileDepletion(attacker);
 		}
+	}
+
+	private boolean isHeavyInfantry(final Unit target) {
+		return target.getKind() == UnitKind.HI || target.getKind() == UnitKind.PH;
 	}
 
 }
