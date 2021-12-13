@@ -22,6 +22,8 @@ import org.apache.logging.log4j.util.Strings;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 
+import ch.megiste.gboh.army.LeaderStatus;
+
 public class Helper {
 
 	private final static TreeMap<Integer, String> map = new TreeMap<>();
@@ -100,6 +102,7 @@ public class Helper {
 		}
 
 	}
+
 
 	// get a file from the resources folder
 	// works everywhere, IDEA, unit test and JAR file.

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ch.megiste.gboh.command.Command;
 import ch.megiste.gboh.game.GameStatus;
 import ch.megiste.gboh.game.PersistableGameState.CommandHistory;
 import ch.megiste.gboh.game.PersistableGameState.UnitChange;
@@ -23,7 +22,8 @@ public class Undo extends GameCommand {
 	}
 
 	@Override
-	public void execute(final GameStatus gs, final List<String> commandArgs) {
+	public void execute(final List<String> commandArgs) {
+		final GameStatus gs = getGameStatus();
 		final List<CommandHistory> commands = gs.getState().commandHistories;
 		int maxDepth = commands.size();
 

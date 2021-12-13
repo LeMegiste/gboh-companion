@@ -16,7 +16,8 @@ public class Exit extends GameCommand {
 	}
 
 	@Override
-	public void execute(final GameStatus gs, final List<String> commandArgs) {
+	public void execute(final List<String> commandArgs) {
+		final GameStatus gs = getGameStatus();
 		gs.persistGame();
 		gs.persistGeneralProperties();
 		System.exit(0);

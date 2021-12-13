@@ -18,6 +18,11 @@ public class TerminalConsole implements Console {
 	}
 
 	@Override
+	public void logFormat(final String str, Object... var) {
+		terminal.writer().println("\t" + String.format(str,var));
+	}
+
+	@Override
 	public String readLine(final String prompt) {
 		return reader.readLine("\t"+prompt);
 	}

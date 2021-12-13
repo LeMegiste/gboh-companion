@@ -231,14 +231,14 @@ public class Fight extends UnitCommand {
 
 		if (position != Position.FRONT && !ignorePositionSuperiority) {
 			sup = Superiority.AS;
-			console.logNL(String.format("%s is AS for better position.", Log.buildStaticDesc(mainAttacker)));
+			console.logNL(String.format("%s is AS for better position.", Log.lotUnit(mainAttacker)));
 		} else {
 
 			sup = findSuperiority(mainAttacker, mainDefender);
 			if (sup == Superiority.AS) {
-				console.logNL(String.format("%s is AS for better weapon system.", Log.buildStaticDesc(mainAttacker)));
+				console.logNL(String.format("%s is AS for better weapon system.", Log.lotUnit(mainAttacker)));
 			} else if (sup == Superiority.DS) {
-				console.logNL(String.format("%s is DS for better weapon system.", Log.buildStaticDesc(mainDefender)));
+				console.logNL(String.format("%s is DS for better weapon system.", Log.lotUnit(mainDefender)));
 			}
 		}
 
@@ -463,7 +463,7 @@ public class Fight extends UnitCommand {
 		if (postCollaposeRoll <= u.getTq()) {
 			defenderImpact = Math.max(0, u.getTq() - 2 - u.getHits());
 			impactPerUnit.put(u, defenderImpact);
-			String msg = String.format("%s is nearly collapsing. Dice rolls: [%d]. Holds firm!", Log.buildStaticDesc(u),
+			String msg = String.format("%s is nearly collapsing. Dice rolls: [%d]. Holds firm!", Log.lotUnit(u),
 					postCollaposeRoll);
 			console.logNL(msg);
 			return false;
@@ -471,7 +471,7 @@ public class Fight extends UnitCommand {
 		} else {
 			defenderImpact = impactPerUnit.get(u) + 2;
 			impactPerUnit.put(u, defenderImpact);
-			String msg = String.format("%s is nearly collapsing. Dice rolls: [%d]. collapses!", Log.buildStaticDesc(u),
+			String msg = String.format("%s is nearly collapsing. Dice rolls: [%d]. collapses!", Log.lotUnit(u),
 					postCollaposeRoll);
 			console.logNL(msg);
 			return true;

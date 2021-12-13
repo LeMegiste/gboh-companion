@@ -18,7 +18,8 @@ public class Load extends GameCommand {
 	}
 
 	@Override
-	public void execute(final GameStatus gs, final List<String> commandArgs) {
+	public void execute(final List<String> commandArgs) {
+		final GameStatus gs = getGameStatus();
 		if (commandArgs.isEmpty() || commandArgs.get(0).length() == 0) {
 			console.logNL("Provide a battle path as parameter");
 			return;

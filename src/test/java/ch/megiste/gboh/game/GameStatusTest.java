@@ -1,6 +1,7 @@
 package ch.megiste.gboh.game;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,25 +9,29 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.zip.CheckedOutputStream;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.megiste.gboh.army.Leader;
 import ch.megiste.gboh.army.Unit;
 import ch.megiste.gboh.army.Unit.MissileType;
 import ch.megiste.gboh.army.Unit.SubClass;
 import ch.megiste.gboh.army.Unit.UnitKind;
+import ch.megiste.gboh.game.GameStatus.FindUnitsFiletr;
 import ch.megiste.gboh.util.Console;
+import ch.megiste.gboh.util.Dice;
 
 public class GameStatusTest {
 
 	public static final String MY_BATTLE = "My battle";
 	private GameStatus gs;
 	private Path baseDir;
+	private Dice dice;
 
 	@Before
 	public void init() throws IOException {
@@ -44,6 +49,9 @@ public class GameStatusTest {
 
 		copyArmyFile("Army_Roman.tsv");
 		copyArmyFile("Army_Carthaginian.tsv");
+
+		dice = mock(Dice.class);
+		gs.setDice(dice);
 
 		return;
 
@@ -85,10 +93,30 @@ public class GameStatusTest {
 	@Test
 	public void unitIsMatchingQuery(){
 		Unit u = new Unit(UnitKind.LG, SubClass.Co,"12","a","12Coa",6,3, MissileType.NONE);
-		Assert.assertTrue(gs.unitIsMatchingQuery("12Coa",u));
-		Assert.assertTrue(gs.unitIsMatchingQuery("12.*",u));
-		Assert.assertTrue(gs.unitIsMatchingQuery(".*Co.*",u));
-		Assert.assertFalse(gs.unitIsMatchingQuery(".*Cx.*",u));
+		Assert.assertTrue(gs.unitIsMatchingQuery("12Coa",u, FindUnitsFiletr.UNITS_ONLY));
+		Assert.assertTrue(gs.unitIsMatchingQuery("12.*",u, FindUnitsFiletr.UNITS_ONLY));
+		Assert.assertTrue(gs.unitIsMatchingQuery(".*Co.*",u, FindUnitsFiletr.UNITS_ONLY));
+		Assert.assertFalse(gs.unitIsMatchingQuery(".*Cx.*",u, FindUnitsFiletr.UNITS_ONLY));
+
+	}
+
+	@Test
+	public void orderLeaders() {
+		Leader l1 = new Leader("LEO","Leonidas",5,5);
+		Leader l2 = new Leader("JAQ","Jacquos",3,5);
+		Leader l2b = new Leader("TBR","Thomasses",3,5);
+		Leader l3 = new Leader("PTO","Ptolemy",5,5);
+		Leader l3b = new Leader("PHI","Philip",5,5);
+		Leader l4 = new Leader("ALE","Alex",7,9);
+
+		when(dice.roll()).thenReturn(1);
+		final List<Leader> res = gs.orderLeaders(Arrays.asList(l1, l2,l2b), Arrays.asList(l3, l3b,l4));
+		Assert.assertEquals(Arrays.asList(l2,l2b,l3,l1,l3b,l4),res);
+		when(dice.roll()).thenReturn(2);
+		final List<Leader> res2 = gs.orderLeaders(Arrays.asList(l1, l2,l2b), Arrays.asList(l3, l3b,l4));
+		Assert.assertEquals(Arrays.asList(l2,l2b,l1,l3,l3b,l4),res2);
+
+
 
 	}
 }

@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import ch.megiste.gboh.command.unit.UnitCommand;
-import ch.megiste.gboh.game.GameStatus;
 
 public class Help extends GameCommand {
 	public Help() {
@@ -18,7 +17,7 @@ public class Help extends GameCommand {
 	}
 
 	@Override
-	public void execute(final GameStatus gs, final List<String> commandArgs) {
+	public void execute(final List<String> commandArgs) {
 		console.logNL("List of generic game commands");
 		final List<GameCommand> sortedGameCommands =  new ArrayList<>( commandsHolder.getGameCommands());
 		Collections.sort(sortedGameCommands);

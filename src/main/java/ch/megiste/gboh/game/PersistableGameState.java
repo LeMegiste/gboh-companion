@@ -1,6 +1,7 @@
 package ch.megiste.gboh.game;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,6 +11,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
+import ch.megiste.gboh.army.Leader;
+import ch.megiste.gboh.army.LeaderStatus;
 import ch.megiste.gboh.army.UnitStatus;
 
 @XStreamAlias("GameState")
@@ -35,6 +38,8 @@ public class PersistableGameState {
 
 		@XStreamImplicit
 		private List<UnitChange> changes = new ArrayList<>();
+		@XStreamImplicit
+		private List<LeaderChange> leaderChanges = new ArrayList<>();
 
 		public CommandHistory(final int commandNumber, final String commandText, int turn) {
 			this.commandNumber = commandNumber;
@@ -54,7 +59,16 @@ public class PersistableGameState {
 		public String description() {
 			final List<String> affectedUnits =
 					getChanges().stream().map(UnitChange::getUnitCode).distinct().collect(Collectors.toList());
-			return "Command " + commandNumber + ": " + commandText + " affecting " + Joiner.on(",").join(affectedUnits);
+			final List<String> affectedLeaders =
+					getLeaderChanges().stream().map(LeaderChange::getLeaderCode).distinct().collect(Collectors.toList());
+			final List<String> affected = new ArrayList<>();
+			affected.addAll(affectedUnits);
+			affected.addAll(affectedLeaders);
+			return "Command " + commandNumber + ": " + commandText + " affecting " + Joiner.on(",").join(affected);
+		}
+
+		public List<LeaderChange> getLeaderChanges() {
+			return leaderChanges;
 		}
 	}
 
@@ -85,6 +99,35 @@ public class PersistableGameState {
 			return after;
 		}
 	}
+
+	@XStreamAlias("LeaderChange")
+	public static class LeaderChange {
+
+		@XStreamAsAttribute
+		private String leaderCode;
+
+		private LeaderStatus before;
+		private LeaderStatus after;
+
+		public LeaderChange(final String code, final LeaderStatus before, final LeaderStatus after) {
+			this.leaderCode = code;
+			this.before = before;
+			this.after = after;
+		}
+
+		public String getLeaderCode() {
+			return leaderCode;
+		}
+
+		public LeaderStatus getBefore() {
+			return before;
+		}
+
+		public LeaderStatus getAfter() {
+			return after;
+		}
+	}
+
 
 	public Optional<CommandHistory> getCommandForIndex(int idx) {
 		if(commandHistories==null){

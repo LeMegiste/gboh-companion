@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ch.megiste.gboh.army.Unit;
 import ch.megiste.gboh.command.game.GameCommand;
+import ch.megiste.gboh.command.leader.LeaderCommand;
 import ch.megiste.gboh.command.unit.UnitCommand;
+import ch.megiste.gboh.game.LeadersHandler;
 import ch.megiste.gboh.game.UnitChanger;
 import ch.megiste.gboh.util.ClassLocation;
 import ch.megiste.gboh.util.ClassLocator;
@@ -39,12 +40,12 @@ public class CommandResolver {
 		return classLocations;
 	}
 
-	public CommandResolver(Console console, UnitChanger uc) {
+	public CommandResolver(Console console, UnitChanger uc, final LeadersHandler leadersHandler) {
 		try {
 
 			final Set<ClassLocation> classLocations =
 					getAllClassLocations("ch.megiste.gboh.command", "ch.megiste.gboh.command.game",
-							"ch.megiste.gboh.command.unit");
+							"ch.megiste.gboh.command.unit","ch.megiste.gboh.command.leader");
 			Dice dice = new Dice();
 			for (ClassLocation cl : classLocations) {
 				Class<?> clazz = Class.forName(cl.getClassName());
@@ -56,6 +57,8 @@ public class CommandResolver {
 					c.setConsole(console);
 					c.setUnitChanger(uc);
 					c.setDice(dice);
+					c.setLeadersHandler(leadersHandler);
+					c.setGameStatus(uc.getGameStatus());
 					commandsHolder.getUnitCommands().add(c);
 
 				}
@@ -65,10 +68,24 @@ public class CommandResolver {
 					c.setConsole(console);
 					c.setUnitChanger(uc);
 					c.setDice(dice);
+					c.setLeadersHandler(leadersHandler);
+					c.setGameStatus(uc.getGameStatus());
 					commandsHolder.getGameCommands().add(c);
 					c.setCommandsHolder(commandsHolder);
 
 				}
+				if (LeaderCommand.class.isAssignableFrom(clazz)) {
+					LeaderCommand c = (LeaderCommand) clazz.getConstructor().newInstance();
+					c.setConsole(console);
+					c.setUnitChanger(uc);
+					c.setDice(dice);
+					c.setLeadersHandler(leadersHandler);
+					c.setGameStatus(uc.getGameStatus());
+					commandsHolder.getLeaderCommands().add(c);
+					c.setCommandsHolder(commandsHolder);
+
+				}
+
 				checkLetters();
 
 			}
@@ -79,7 +96,7 @@ public class CommandResolver {
 
 	private void checkLetters() {
 		List<String> keys = new ArrayList<>();
-		for (UnitCommand uc : commandsHolder.getUnitCommands()) {
+		for (Command uc : commandsHolder.getAllCommands()) {
 			if (keys.contains(uc.getKey())) {
 				throw new GbohError("Another command already uses the key " + uc.getKey());
 			} else {
@@ -87,13 +104,6 @@ public class CommandResolver {
 			}
 		}
 
-		for (GameCommand uc : commandsHolder.getGameCommands()) {
-			if (keys.contains(uc.getKey())) {
-				throw new GbohError("Another command already uses the key " + uc.getKey());
-			} else {
-				keys.add(uc.getKey());
-			}
-		}
 
 	}
 
@@ -120,5 +130,9 @@ public class CommandResolver {
 
 	public UnitCommand resolveUnitCommand(final String command) {
 		return commandsHolder.getUnitCommands().stream().filter(c -> c.getKey().equals(command)).findFirst().orElse(null);
+	}
+
+	public LeaderCommand resolveLeaderCommand(final String command) {
+		return commandsHolder.getLeaderCommands().stream().filter(c -> c.getKey().equals(command)).findFirst().orElse(null);
 	}
 }

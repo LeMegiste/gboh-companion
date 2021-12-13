@@ -71,7 +71,7 @@ public class MissileFire extends UnitCommand {
 			target = unitChanger.getGameStatus().getUnitFromCode(target.getStackedOn());
 		}
 
-		final String attackerName = Log.buildStaticDesc(attacker);
+		final String attackerName = Log.lotUnit(attacker);
 
 		if (attacker.getMissile() == MissileType.NONE) {
 			console.logNL("Unit " + attackerName + " cannot missile fire");
@@ -114,8 +114,8 @@ public class MissileFire extends UnitCommand {
 				|| attacker.getState() == UnitState.RALLIED || attacker.getState() == UnitState.ELIMINATED) {
 			return;
 		}
-		String attackerName = Log.buildStaticDesc(attacker);
-		String targetName = Log.buildStaticDesc(target);
+		String attackerName = Log.lotUnit(attacker);
+		String targetName = Log.lotUnit(target);
 
 		int threshold = table.get(attacker.getMissile()).get(range - 1);
 

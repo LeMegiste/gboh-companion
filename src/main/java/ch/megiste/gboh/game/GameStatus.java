@@ -15,10 +15,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.Stack;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
@@ -30,6 +32,8 @@ import com.google.common.base.Splitter;
 import com.thoughtworks.xstream.XStream;
 
 import ch.megiste.gboh.army.Army;
+import ch.megiste.gboh.army.Leader;
+import ch.megiste.gboh.army.LeaderStatus;
 import ch.megiste.gboh.army.Unit;
 import ch.megiste.gboh.army.Unit.MissileType;
 import ch.megiste.gboh.army.Unit.SubClass;
@@ -38,7 +42,9 @@ import ch.megiste.gboh.army.UnitStatus;
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
 import ch.megiste.gboh.game.PersistableGameState.CommandHistory;
+import ch.megiste.gboh.game.PersistableGameState.LeaderChange;
 import ch.megiste.gboh.game.PersistableGameState.UnitChange;
+import ch.megiste.gboh.util.Dice;
 import ch.megiste.gboh.util.GbohError;
 import ch.megiste.gboh.util.Helper;
 
@@ -56,7 +62,9 @@ public class GameStatus {
 	private XStream xStream = null;
 	private String commandText;
 	private Properties generalProperties = new Properties();
-	private Properties battleProperties;
+	private Leader currentLeader;
+
+	private Dice dice = new Dice();
 
 	public Unit getStackedUnit(final Unit u) {
 		if (u.isStackedOn()) {
@@ -70,7 +78,48 @@ public class GameStatus {
 	}
 
 	public void stack(final String top, final String under) {
-		stack(top,under,getAllUnits());
+		stack(top, under, getAllUnits());
+	}
+
+	public boolean areLeadersUsed() {
+		return CollectionUtils.isNotEmpty(army1.getLeaders()) && CollectionUtils.isNotEmpty(army2.getLeaders());
+	}
+
+	public void recordChange(final LeaderStatus before, final Leader leader) {
+		Preconditions.checkArgument(before != leader.getStatus(), "Status before should be different than after");
+		Preconditions.checkArgument(!before.equals(leader.getStatus()), "Unit should have changed");
+
+		LeaderChange uc = new LeaderChange(leader.getCode(), before, Helper.clone(leader.getStatus()));
+
+		final Optional<CommandHistory> optHist = state.getCommandForIndex(state.currentCommand);
+		CommandHistory hist;
+		if (!optHist.isPresent()) {
+			hist = new CommandHistory(state.currentCommand, commandText, state.currentTurn);
+			if (state.commandHistories == null) {
+				state.commandHistories = new ArrayList<>();
+			}
+			state.commandHistories.add(hist);
+		} else {
+			hist = optHist.get();
+		}
+		hist.getLeaderChanges().add(uc);
+
+	}
+
+	public void activateNextLeader() {
+		currentLeader = computeNextLeader();
+	}
+
+	public Leader findLeaderByCode(final String code) {
+		final Optional<Leader> first = getAllLeaders().stream().filter(l -> l.getCode().equals(code)).findFirst();
+		if (!first.isPresent()) {
+			throw new GbohError("Leader:" + code + " should be present.");
+		}
+		return first.get();
+	}
+
+	public void setCurrentLeader(final Leader l) {
+		currentLeader = l;
 	}
 
 	public enum Rules {
@@ -82,7 +131,8 @@ public class GameStatus {
 	public GameStatus() {
 		xStream = new XStream();
 		Class<?>[] classes =
-				new Class[] { PersistableGameState.class, UnitStatus.class, UnitChange.class, CommandHistory.class };
+				new Class[] { PersistableGameState.class, UnitStatus.class, UnitChange.class, CommandHistory.class,
+						LeaderChange.class };
 		XStream.setupDefaultSecurity(xStream);
 		xStream.allowTypes(classes);
 
@@ -91,7 +141,22 @@ public class GameStatus {
 	}
 
 	public String getPromptString() {
-		return battleName + " " + Helper.toRoman(state.currentTurn) + "." + state.currentCommand;
+		String prompt = battleName + " " + Helper.toRoman(state.currentTurn) + "." + state.currentCommand;
+
+		if (areLeadersUsed()) {
+			if (currentLeader == null) {
+				currentLeader = computeNextLeader();
+			}
+			final String name;
+			if (currentLeader != null) {
+				name = currentLeader.getName();
+			} else {
+				name = "<No Active Leader - please end turn>";
+			}
+			prompt = prompt + " [" + name + "]";
+		}
+		return prompt;
+
 	}
 
 	public void load(Path battleDir) {
@@ -114,7 +179,7 @@ public class GameStatus {
 			army1 = loadArmy(armyFiles.get(0));
 			army2 = loadArmy(armyFiles.get(1));
 
-			battleProperties = Helper.loadPropertiesFromPath(battleDir.resolve("battle.properties"));
+			final Properties battleProperties = Helper.loadPropertiesFromPath(battleDir.resolve("battle.properties"));
 
 			if (battleProperties.getProperty("rules") == null) {
 				rules = Rules.SPQR;
@@ -159,14 +224,24 @@ public class GameStatus {
 						continue;
 					}
 
+					final List<UnitChange> unitChanges = optHist.get().getChanges();
+					if (unitChanges != null) {
+						for (UnitChange uc : unitChanges) {
+							//setting default values
+							setDefaultValues(uc.getAfter());
 
-					for (UnitChange uc : optHist.get().getChanges()) {
-						//setting default values
-						setDefaultValues(uc.getAfter());
-
-						Unit u = findUnitByCode(uc.getUnitCode());
-						u.setStatus(uc.getAfter());
+							Unit u = findUnitByCode(uc.getUnitCode());
+							u.setStatus(uc.getAfter());
+						}
 					}
+					final List<LeaderChange> leaderChanges = optHist.get().getLeaderChanges();
+					if (leaderChanges != null) {
+						for (LeaderChange lc : leaderChanges) {
+							Leader l = findLeaderByCode(lc.getLeaderCode());
+							l.setStatus(lc.getAfter());
+						}
+					}
+
 				}
 
 			}
@@ -185,8 +260,9 @@ public class GameStatus {
 	}
 
 	Unit findUnitByCode(final String unitCode) {
-		return findUnitByCode(unitCode,getAllUnits());
+		return findUnitByCode(unitCode, getAllUnits());
 	}
+
 	public Unit findUnitByCode(final String unitCode, List<Unit> units) {
 		final List<Unit> candidates =
 				units.stream().filter(u -> u.getUnitCode().equals(unitCode)).collect(Collectors.toList());
@@ -211,29 +287,44 @@ public class GameStatus {
 		String name = path.getFileName().toString().split("\\.")[0].split("_")[1];
 
 		CSVFormat format = buildCsvFormat();
+		final List<CSVRecord> records;
 		try (Reader r = Files.newBufferedReader(path)) {
-			final List<CSVRecord> records = format.parse(r).getRecords();
-			List<Unit> units = records.stream().map(this::fromRecordToUnit).collect(Collectors.toList());
-
-			//Handle the stacked on column (needs pre-loading)
-			records.forEach(rec -> {
-				String originalUnitCode = rec.get(Head.UnitCode);
-
-				if (rec.isSet("StackedOn")) {
-					String stackedOnCode = rec.get("StackedOn");
-					if (Strings.isNotEmpty(stackedOnCode)) {
-						stack(originalUnitCode, stackedOnCode, units);
-					}
-				}
-			});
-
-			return new Army(name, units);
+			records = format.parse(r).getRecords();
 		}
+		List<Unit> units = records.stream().map(this::fromRecordToUnit).collect(Collectors.toList());
+
+		//Handle the stacked on column (needs pre-loading)
+		records.forEach(rec -> {
+			String originalUnitCode = rec.get(Head.UnitCode);
+
+			if (rec.isSet("StackedOn")) {
+				String stackedOnCode = rec.get("StackedOn");
+				if (Strings.isNotEmpty(stackedOnCode)) {
+					stack(originalUnitCode, stackedOnCode, units);
+				}
+			}
+		});
+
+		//Loading leaders (when they exist)
+		Path leadersFile = path.getParent().resolve("Leaders_" + name + ".tsv");
+		final Army army = new Army(name, units);
+
+		if (Files.exists(leadersFile)) {
+			final List<CSVRecord> records2;
+			try (Reader r = Files.newBufferedReader(leadersFile)) {
+				records2 = format.parse(r).getRecords();
+			}
+			List<Leader> leaders = records2.stream().map(this::fromRecordToLeader).collect(Collectors.toList());
+			army.getLeaders().addAll(leaders);
+
+		}
+
+		return army;
 
 	}
 
 	public void stack(String unitCodeOn, String unitCodeUnder, List<Unit> units) {
-		Unit originalUnit = findUnitByCode(unitCodeOn,units);
+		Unit originalUnit = findUnitByCode(unitCodeOn, units);
 		Optional<Unit> optStackedUnit = units.stream().filter(u -> u.getUnitCode().equals(unitCodeUnder)).findFirst();
 		if (!optStackedUnit.isPresent()) {
 			throw new RuntimeException("Unable to find unit with code:" + unitCodeUnder);
@@ -280,6 +371,16 @@ public class GameStatus {
 		return unit;
 	}
 
+	private Leader fromRecordToLeader(final CSVRecord r) {
+
+		String code = r.get("Code");
+		String name = r.get("Name");
+		final int initiative = Integer.parseInt(r.get("Initiative"));
+		final int range = Integer.parseInt(r.get("Range"));
+
+		return new Leader(code, name, initiative, range);
+	}
+
 	public void persistGame() {
 		persistGame(false);
 	}
@@ -297,7 +398,7 @@ public class GameStatus {
 			} else {
 				backupFile = getGameBackupFile();
 			}
-			if(!Files.exists(backupFile)){
+			if (!Files.exists(backupFile)) {
 				Files.createDirectories(backupFile.getParent());
 			}
 
@@ -317,6 +418,24 @@ public class GameStatus {
 	public void nextCommand(String nextCommandText) {
 		state.currentCommand++;
 		this.commandText = nextCommandText;
+		if (this.currentLeader == null && areLeadersUsed()) {
+			this.currentLeader = computeNextLeader();
+		}
+	}
+
+	public Leader getCurrentLeader() {
+		return currentLeader;
+	}
+
+	public Leader computeNextLeader() {
+		List<Leader> nextLeaders =
+				getAllLeaders().stream().filter(l -> !l.getStatus().finished).collect(Collectors.toList());
+		if (nextLeaders.size() > 0) {
+			return nextLeaders.get(0);
+		} else {
+			return null;
+		}
+
 	}
 
 	public void persistGeneralProperties() {
@@ -376,10 +495,37 @@ public class GameStatus {
 
 	public static class FindUnitsResult {
 		public List<Unit> foundUnits = new ArrayList<>();
+		public List<Leader> foundLeaders = new ArrayList<>();
 		public List<String> unknownValues = new ArrayList<>();
 	}
 
+	public enum FindUnitsFiletr {
+
+		UNITS_ONLY(true, false), LEADERS_ONLY(false, true), ALL(true, true);
+
+		final boolean acceptsUnits;
+		final boolean acceptsLeaders;
+
+		private FindUnitsFiletr(boolean acceptsUnits, boolean acceptsLeaders) {
+			this.acceptsLeaders = acceptsLeaders;
+			this.acceptsUnits = acceptsUnits;
+		}
+
+	}
+
 	public FindUnitsResult findUnits(final String unitsQuery) {
+		return findUnits(unitsQuery, FindUnitsFiletr.UNITS_ONLY);
+	}
+
+	public FindUnitsResult findLeaders(final String unitsQuery) {
+		return findUnits(unitsQuery, FindUnitsFiletr.LEADERS_ONLY);
+	}
+
+	public FindUnitsResult findCounters(final String unitsQuery) {
+		return findUnits(unitsQuery, FindUnitsFiletr.ALL);
+	}
+
+	private FindUnitsResult findUnits(final String unitsQuery, FindUnitsFiletr filter) {
 		final List<String> queries = Splitter.on(",").omitEmptyStrings().trimResults().splitToList(unitsQuery);
 
 		FindUnitsResult res = new FindUnitsResult();
@@ -394,34 +540,119 @@ public class GameStatus {
 				continue;
 			}
 
+			if ("Leaders".equals(q)) {
+				res.foundLeaders.addAll(getAllLeaders());
+				continue;
+			}
+
 			final List<Unit> foundUnits =
-					getAllUnits().stream().filter(u -> unitIsMatchingQuery(q, u)).collect(Collectors.toList());
+					getAllUnits().stream().filter(u -> unitIsMatchingQuery(q, u, filter)).collect(Collectors.toList());
 			if (!foundUnits.isEmpty()) {
 				res.foundUnits.addAll(foundUnits);
 			} else {
-				res.unknownValues.add(q);
+				final List<Leader> foundLeaders =
+						getAllLeaders().stream().filter(u -> leaderIsMatchingQuery(q, u, filter))
+								.collect(Collectors.toList());
+				if (!foundLeaders.isEmpty()) {
+					res.foundLeaders.addAll(foundLeaders);
+				} else {
+					res.unknownValues.add(q);
+				}
+
 			}
 		}
 
 		return res;
 	}
 
+	boolean areLeadersOrdered = false;
+
+	private List<Leader> orderedLeaders = new ArrayList<>();
+
+	public List<Leader> getAllLeaders() {
+		if (!areLeadersOrdered) {
+			orderedLeaders = orderLeaders(army1.getLeaders(), army2.getLeaders());
+		}
+		return orderedLeaders;
+	}
+
+	private static class Node<T> {
+		final T value;
+
+		public Node(final T value) {
+			this.value = value;
+		}
+
+		public Node<T> nextNode;
+	}
+
+	List<Leader> orderLeaders(final List<Leader> leaders1, final List<Leader> leaders2) {
+		List<Leader> out = new ArrayList<>();
+		for (int i = 1; i <= 8; i++) {
+			final int init = i;
+			List<Leader> l1 = leaders1.stream().filter(l -> l.getInitiative() == init).collect(Collectors.toList());
+			List<Leader> l2 = leaders2.stream().filter(l -> l.getInitiative() == init).collect(Collectors.toList());
+			Collections.reverse(l1);
+			Collections.reverse(l2);
+
+			Stack<Leader> s1 = new Stack<>();
+			s1.addAll(l1);
+			Stack<Leader> s2 = new Stack<>();
+			s2.addAll(l2);
+			Node<Stack<Leader>> n1 = new Node(s1);
+			Node<Stack<Leader>> n2 = new Node(s2);
+			n1.nextNode = n2;
+			n2.nextNode = n1;
+			int flip = dice.roll() % 2;
+			Node<Stack<Leader>> n;
+			if (flip == 0) {
+				n = n1;
+			} else {
+				n = n2;
+			}
+			while (s1.size() > 0 && s2.size() > 0) {
+				out.add(n.value.pop());
+				n = n.nextNode;
+			}
+			while (s1.size() > 0) {
+				out.add(s1.pop());
+			}
+			while (s2.size() > 0) {
+				out.add(s2.pop());
+			}
+
+		}
+
+		areLeadersOrdered = true;
+		return out;
+	}
+
 	public Unit getUnitFromCode(String unitCode) {
 		return getAllUnits().stream().filter(u -> u.getUnitCode().equals(unitCode)).findFirst().orElse(null);
 	}
 
-	boolean unitIsMatchingQuery(final String q, final Unit u) {
+	boolean unitIsMatchingQuery(final String q, final Unit u, final FindUnitsFiletr filter) {
+		if (!filter.acceptsUnits) {
+			return false;
+		}
 		String regex = q.replace(".*", "*").replace("*", ".*");
 
 		return Pattern.matches(regex.toLowerCase(), u.getUnitCode().toLowerCase());
 	}
 
+	boolean leaderIsMatchingQuery(final String q, final Leader leader, final FindUnitsFiletr filter) {
+		if (!filter.acceptsLeaders || !areLeadersUsed()) {
+			return false;
+		}
+		String regex = q.replace(".*", "*").replace("*", ".*");
+
+		return Pattern.matches(regex.toLowerCase(), leader.getCode().toLowerCase());
+	}
+
 	public void endOfTurn() {
-		//Routing count
-
-		//Rally unit
-
+		areLeadersOrdered = false;
 		state.currentTurn++;
+		currentLeader = computeNextLeader();
 	}
 
 	public void recordChange(UnitStatus before, Unit u) {
@@ -500,4 +731,11 @@ public class GameStatus {
 		}
 	}
 
+	public Dice getDice() {
+		return dice;
+	}
+
+	public void setDice(final Dice dice) {
+		this.dice = dice;
+	}
 }

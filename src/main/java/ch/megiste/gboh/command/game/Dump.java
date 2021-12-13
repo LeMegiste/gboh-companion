@@ -16,7 +16,8 @@ public class Dump extends GameCommand {
 	}
 
 	@Override
-	public void execute(final GameStatus gs, final List<String> commandArgs) {
+	public void execute(final List<String> commandArgs) {
+		final GameStatus gs = getGameStatus();
 gs.dump();
 	}
 }

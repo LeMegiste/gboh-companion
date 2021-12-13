@@ -16,7 +16,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
-import java.util.function.Supplier;
 
 import org.jline.keymap.KeyMap;
 import org.jline.reader.Binding;
@@ -39,9 +38,9 @@ import com.google.common.base.Splitter;
 
 import ch.megiste.gboh.command.CommandResolver;
 import ch.megiste.gboh.game.GameStatus;
+import ch.megiste.gboh.game.LeadersHandler;
 import ch.megiste.gboh.game.UnitChanger;
 import ch.megiste.gboh.util.Console;
-import ch.megiste.gboh.util.Helper;
 import ch.megiste.gboh.util.TerminalConsole;
 
 /**
@@ -113,7 +112,8 @@ public class Repl {
 			UnitChanger unitChanger = new UnitChanger(console, gs);
 			Properties p = gs.loadProperties();
 
-			CommandResolver resolver = new CommandResolver(console, unitChanger);
+			final LeadersHandler leadersHandler = new LeadersHandler(console, gs);
+			CommandResolver resolver = new CommandResolver(console, unitChanger, leadersHandler);
 
 			List<String> lArgs = Arrays.asList(args);
 			boolean explicitSave = lArgs.stream().anyMatch(s -> s.equals("-explicitSave"));

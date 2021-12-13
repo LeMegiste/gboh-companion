@@ -24,13 +24,13 @@ public class Log extends UnitCommand {
 	@Override
 	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<String> modifiers) {
 
-		attackers.stream().map(Log::logUnit).forEach(s -> console.logNL(s));
+		attackers.stream().map(Log::logUnitDetailed).forEach(s -> console.logNL(s));
 
 	}
 
-	public static String logUnit(Unit u) {
+	public static String logUnitDetailed(Unit u) {
 
-		final String s = u.getUnitCode() + " [" + buildStaticDesc(u) + "] " + buildStats(u);
+		final String s = u.getUnitCode() + " [" + lotUnit(u) + "] " + buildStats(u);
 		StringBuilder add = new StringBuilder();
 		switch (u.getState()) {
 
@@ -82,7 +82,7 @@ public class Log extends UnitCommand {
 		}
 	}
 
-	public static String buildStaticDesc(final Unit u) {
+	public static String lotUnit(final Unit u) {
 		if (u.getLegio() != null && u.getSubclass() != null) {
 			return String.format("%s %s %s", u.getLegio(), u.getSubclass().getDescription(), u.getNumber());
 		} else if (u.getLegio() != null) {

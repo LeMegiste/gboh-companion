@@ -9,6 +9,7 @@ public class Army {
 
 	private String name;
 	private List<Unit> units;
+	private List<Leader> leaders = new ArrayList<>();
 
 	public Army(final String name, final List<Unit> units) {
 		this.name = name;
@@ -21,6 +22,10 @@ public class Army {
 
 	public List<Unit> getUnits() {
 		return units;
+	}
+
+	public List<Leader> getLeaders() {
+		return leaders;
 	}
 }
 

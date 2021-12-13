@@ -30,14 +30,14 @@ public class Stack extends UnitCommand {
 		}
 		Unit top = defenders.get(0);
 		if(under.isStacked()){
-			console.logNL(""+Log.logUnit(under)+ " is already stacked. Cannot be stacked again.");
+			console.logNL(""+Log.logUnitDetailed(under)+ " is already stacked. Cannot be stacked again.");
 			return;
 		}
 		if(top.isStacked()){
-			console.logNL(""+Log.logUnit(top)+ " is already stacked. Cannot be stacked again.");
+			console.logNL(""+Log.logUnitDetailed(top)+ " is already stacked. Cannot be stacked again.");
 			return;
 		}
-		console.logNL("Stacking "+Log.logUnit(under) + " under " + Log.logUnit(top));
+		console.logNL("Stacking "+Log.logUnitDetailed(under) + " under " + Log.logUnitDetailed(top));
 
 		unitChanger.stack(top.getUnitCode(),under.getUnitCode());
 	}

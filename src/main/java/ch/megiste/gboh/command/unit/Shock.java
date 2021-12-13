@@ -272,7 +272,7 @@ public class Shock extends UnitCommand {
 	private void logPreshock(final Unit u, final int roll, final List<String> diceModifiers) {
 		final String rollModifiers = Helper.buildModifiersLog("", diceModifiers);
 
-		String m = String.format("Pre-shock for %s. Dice rolls [%d]%s! (TQ=%d).", Log.buildStaticDesc(u), roll,
+		String m = String.format("Pre-shock for %s. Dice rolls [%d]%s! (TQ=%d).", Log.lotUnit(u), roll,
 				rollModifiers, u.getTq());
 		console.logNL(m);
 	}

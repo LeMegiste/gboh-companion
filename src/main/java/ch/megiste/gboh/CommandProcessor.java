@@ -8,11 +8,17 @@ import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
 
 import ch.megiste.gboh.army.Unit;
+import ch.megiste.gboh.command.Command;
+import ch.megiste.gboh.command.CommandExecutor;
 import ch.megiste.gboh.command.CommandResolver;
+import ch.megiste.gboh.command.GameCommandExecutor;
+import ch.megiste.gboh.command.LeaderCommandExecutor;
+import ch.megiste.gboh.command.UnitCommandExecutor;
 import ch.megiste.gboh.command.game.GameCommand;
+import ch.megiste.gboh.command.leader.LeaderCommand;
+import ch.megiste.gboh.command.leader.LogLeader;
 import ch.megiste.gboh.command.unit.Log;
 import ch.megiste.gboh.command.unit.UnitCommand;
 import ch.megiste.gboh.game.GameStatus;
@@ -41,70 +47,51 @@ public class CommandProcessor {
 			return;
 		}
 
-		String firstPart = inputs.get(0);
-
-		GameCommand gc = commandResolver.resolveGameCommand(firstPart);
-		if (gc != null) {
-
-			final List<String> commandArgs;
-			if (inputs.size() > 1) {
-				commandArgs = inputs.subList(1, inputs.size() );
-			} else {
-				commandArgs = new ArrayList<>();
-			}
-			gc.execute(gameStatus, commandArgs);
-			persistGameIfNeeded();
+		CommandExecutor<?> executor = resolveCommandExecutor(inputs);
+		if (executor == null) {
+			console.logNL("Unable to understand <" + userInput + ">. Type HELP to get help on existing commands.");
 			return;
 		}
-
-		//Else we are designating units
-		final String unitCommand;
-		if (inputs.size() > 1) {
-			unitCommand = inputs.get(1);
-		} else {
-			unitCommand = Log.LOG;
-		}
-
-		UnitCommand uc = commandResolver.resolveUnitCommand(unitCommand);
-		if (uc == null) {
-			console.logNL("Unknown command: " + unitCommand);
-			return;
-		}
-
-		final FindUnitsResult res = gameStatus.findUnits(firstPart);
-		if (res.unknownValues.size() > 0) {
-			console.logNL("Those units are unknown: " + Joiner.on(", ").join(res.unknownValues));
-			return;
-		}
-		final List<String> modifiers = new ArrayList<>();
-		List<Unit> destinationUnits = new ArrayList<>();
-		if (inputs.size() > 2) {
-			final List<String> inputsAfterCommand = inputs.subList(2, inputs.size());
-			Optional<String> optDestinationUnitsQuery =
-					inputsAfterCommand.stream().filter(s -> !s.startsWith("-")).findFirst();
-			if (optDestinationUnitsQuery.isPresent()) {
-				final FindUnitsResult res2 = gameStatus.findUnits(optDestinationUnitsQuery.get());
-				if (res2.unknownValues.size() > 0) {
-					console.logNL("Those units are unknown: " + Joiner.on(", ").join(res2.unknownValues));
-					return;
-				}
-				destinationUnits.addAll(res2.foundUnits);
-			}
-
-			final List<String> mods = inputsAfterCommand.stream().filter(s -> s.startsWith("-")).map(s -> s.substring(1))
-					.collect(Collectors.toList());
-			modifiers.addAll(mods);
-
-		}
-
-		uc.execute(res.foundUnits, destinationUnits, modifiers);
-		uc.logAfterCommand(res.foundUnits, destinationUnits);
+		executor.executeCommand();
 		persistGameIfNeeded();
+
+
 
 	}
 
+	private CommandExecutor<? extends Command> resolveCommandExecutor(final List<String> inputs) {
+		String firstPart = inputs.get(0);
+		GameCommand gc = commandResolver.resolveGameCommand(firstPart);
+		if (gc != null) {
+			return new GameCommandExecutor(inputs, gc, console);
+		}
+		final String secondPart;
+		if (inputs.size() == 1) {
+			final FindUnitsResult foundUnits = gameStatus.findCounters(firstPart);
+			if (foundUnits.foundUnits.size() > 0) {
+				secondPart = Log.LOG;
+			} else if (foundUnits.foundLeaders.size() > 0) {
+				secondPart = LogLeader.LL;
+			} else {
+				return null;
+			}
+		} else {
+			secondPart = inputs.get(1);
+		}
+
+		UnitCommand uc = commandResolver.resolveUnitCommand(secondPart);
+		if (uc != null) {
+			return new UnitCommandExecutor(inputs, uc, console);
+		}
+		LeaderCommand lc = commandResolver.resolveLeaderCommand(secondPart);
+		if (lc != null) {
+			return new LeaderCommandExecutor(inputs, lc, console);
+		}
+		return null;
+	}
+
 	public void persistGameIfNeeded() {
-		if(!explicitSave){
+		if (!explicitSave) {
 			gameStatus.persistGame();
 		}
 	}
@@ -168,8 +155,7 @@ public class CommandProcessor {
 		}
 
 		if (state == inQuote || state == inDoubleQuote) {
-			throw new IllegalArgumentException("Unbalanced quotes in "
-					+ toProcess);
+			throw new IllegalArgumentException("Unbalanced quotes in " + toProcess);
 		}
 
 		final String[] args = new String[list.size()];
@@ -177,6 +163,6 @@ public class CommandProcessor {
 	}
 
 	public void setExplicitSave(final boolean explicitSave) {
-		this.explicitSave =explicitSave;
+		this.explicitSave = explicitSave;
 	}
 }

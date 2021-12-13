@@ -1,7 +1,9 @@
 package ch.megiste.gboh.command;
 
 import ch.megiste.gboh.command.unit.UnitCommand;
+import ch.megiste.gboh.game.GameStatus;
 import ch.megiste.gboh.game.GameStatus.Rules;
+import ch.megiste.gboh.game.LeadersHandler;
 import ch.megiste.gboh.game.UnitChanger;
 import ch.megiste.gboh.util.Console;
 import ch.megiste.gboh.util.Dice;
@@ -15,6 +17,10 @@ public abstract class Command implements Comparable {
 	protected Console console;
 
 	protected UnitChanger unitChanger;
+
+	protected LeadersHandler leadersHandler;
+
+	protected GameStatus gameStatus;
 
 	public void setUnitChanger(final UnitChanger unitChanger) {
 		this.unitChanger = unitChanger;
@@ -53,5 +59,17 @@ public abstract class Command implements Comparable {
 
 	public Rules getCurrentRules(){
 		return unitChanger.getCurrentRules();
+	}
+
+	public void setLeadersHandler(final LeadersHandler leadersHandler) {
+		this.leadersHandler = leadersHandler;
+	}
+
+	public GameStatus getGameStatus() {
+		return gameStatus;
+	}
+
+	public void setGameStatus(final GameStatus gameStatus) {
+		this.gameStatus = gameStatus;
 	}
 }

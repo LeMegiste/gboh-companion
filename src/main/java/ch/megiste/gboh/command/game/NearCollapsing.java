@@ -22,8 +22,9 @@ public class NearCollapsing extends GameCommand {
 	}
 
 	@Override
-	public void execute(final GameStatus gs, final List<String> commandArgs) {
+	public void execute(final List<String> commandArgs) {
 		console.logNL("Listing nearly collapsing units:");
+		final GameStatus gs = getGameStatus();
 		List<Unit> filteredUnits;
 		if (CollectionUtils.isNotEmpty(commandArgs)) {
 			filteredUnits = gs.findUnits(commandArgs.get(0)).foundUnits;
@@ -40,7 +41,7 @@ public class NearCollapsing extends GameCommand {
 			console.logNL("No units found.");
 		}
 		for (Unit u : unitsNearlyCollapsing) {
-			console.logNL(Log.logUnit(u));
+			console.logNL(Log.logUnitDetailed(u));
 		}
 	}
 

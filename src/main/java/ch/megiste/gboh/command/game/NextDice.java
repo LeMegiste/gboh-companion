@@ -5,8 +5,6 @@ import java.util.List;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
-import ch.megiste.gboh.game.GameStatus;
-
 public class NextDice extends GameCommand {
 	public NextDice() {
 		super("records the next values as the next dice throws");
@@ -18,7 +16,7 @@ public class NextDice extends GameCommand {
 	}
 
 	@Override
-	public void execute(final GameStatus gs, final List<String> commandArgs) {
+	public void execute(final List<String> commandArgs) {
 		if (commandArgs.isEmpty()) {
 			console.logNL("No dice throw to record. Please provide the numbers between 0 and 9 separated by commas");
 			return;

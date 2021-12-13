@@ -41,6 +41,7 @@ public class UndoTest {
 
 		gs = spy(new GameStatus());
 		u.setUnitChanger(new UnitChanger(mockedConsole, gs));
+		u.setGameStatus(gs);
 	}
 
 	@Test
@@ -78,7 +79,7 @@ public class UndoTest {
 		Assert.assertEquals(2, sk.getHits());
 		when(mockedConsole.readLine(Undo.WHICH_COMMAND_TO_UNDO)).thenReturn("U1");
 
-		u.execute(gs, null);
+		u.execute(null);
 
 		Assert.assertEquals(1, sk.getHits());
 

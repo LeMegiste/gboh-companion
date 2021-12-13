@@ -47,6 +47,7 @@ public class Unit {
 	public String getStackedOn() {
 		return status.stackOn;
 	}
+
 	public void stackUnder(final String unitCode) {
 		if (Strings.isEmpty(unitCode)) {
 			status.stackUnder = NONE;
@@ -67,6 +68,7 @@ public class Unit {
 		return !NONE.equals(str) && Strings.isNotEmpty(str);
 
 	}
+
 	public boolean isStackedUnder() {
 		String str = status.stackUnder;
 		return !NONE.equals(str) && Strings.isNotEmpty(str);
@@ -74,37 +76,42 @@ public class Unit {
 	}
 
 	public boolean isStackedWith(final Unit other) {
-		return isStacked() && (Objects.equals(getStackedOn(),other.getStackedUnder()) || Objects.equals(getStackedUnder(),other.getStackedOn()));
+		return isStacked() && (Objects.equals(getStackedOn(), other.getStackedUnder()) || Objects
+				.equals(getStackedUnder(), other.getStackedOn()));
+	}
+
+	public boolean isDepleted() {
+		return getState() == UnitState.DEPLETED;
 	}
 
 	public enum MissileWeapon {
-		Bows,Slings,Artillery,Javelin,none;
-
+		Bows, Slings, Artillery, Javelin, none;
 
 	}
 
 	public enum MissileType {
-		NONE(MissileWeapon.none), S(MissileWeapon.Slings), BS(MissileWeapon.Slings), J(MissileWeapon.Javelin, 7,false), MJ(
-				MissileWeapon.Javelin, 7,false), A(MissileWeapon.Bows), MA(MissileWeapon.Bows), O(MissileWeapon.Artillery), IA(MissileWeapon.Bows);
-
+		NONE(MissileWeapon.none), S(MissileWeapon.Slings), BS(MissileWeapon.Slings), J(MissileWeapon.Javelin, 7,
+				false), MJ(MissileWeapon.Javelin, 7, false), A(MissileWeapon.Bows), MA(MissileWeapon.Bows), O(
+				MissileWeapon.Artillery), IA(MissileWeapon.Bows);
 
 		private boolean lessPreciseAfterMovement = true;
 		private int missileShortageLevel = 9;
-		private  final MissileWeapon weapon;
+		private final MissileWeapon weapon;
 
 		MissileType(final MissileWeapon weapon) {
 
 			this.weapon = weapon;
 		}
 
-		MissileType(final MissileWeapon weapon,  final boolean lessPreciseAfterMovement) {
+		MissileType(final MissileWeapon weapon, final boolean lessPreciseAfterMovement) {
 			this(weapon);
 			this.lessPreciseAfterMovement = lessPreciseAfterMovement;
 		}
 
-		MissileType(final MissileWeapon weapon, final int missileShortageLevel,final boolean lessPreciseAfterMovement) {
+		MissileType(final MissileWeapon weapon, final int missileShortageLevel,
+				final boolean lessPreciseAfterMovement) {
 			this(weapon);
-			this.lessPreciseAfterMovement=lessPreciseAfterMovement;
+			this.lessPreciseAfterMovement = lessPreciseAfterMovement;
 			this.missileShortageLevel = missileShortageLevel;
 		}
 
@@ -150,7 +157,6 @@ public class Unit {
 
 	public enum UnitCategory {
 		Infantry, Cavalry, Skirmishers, Chariots, Elephants, Artillery;
-
 
 	}
 
@@ -272,6 +278,6 @@ public class Unit {
 
 	@Override
 	public String toString() {
-		return Log.buildStaticDesc(this);
+		return Log.lotUnit(this);
 	}
 }

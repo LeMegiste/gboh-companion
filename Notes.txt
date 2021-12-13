@@ -1,3 +1,13 @@
+<Leader> TRUMP
+<Leader> ACT
+<Leader> FINISH
+<Leader> MOMENTUM
+
+<Unit> R (if current leader defined)
+
+
+
+
 Implement preloaded battles
 OK - DUMP army feature
 Autocomplete unit searching

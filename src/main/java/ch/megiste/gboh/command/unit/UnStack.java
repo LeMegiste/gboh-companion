@@ -30,18 +30,18 @@ public class UnStack extends UnitCommand {
 		}
 		Unit top = defenders.get(0);
 		if(!under.isStacked()){
-			console.logNL(""+Log.logUnit(under)+ " is not stacked. Cannot be unstacked.");
+			console.logNL(""+Log.logUnitDetailed(under)+ " is not stacked. Cannot be unstacked.");
 			return;
 		}
 		if(!top.isStacked()){
-			console.logNL(""+Log.logUnit(top)+ " is not stacked. Cannot be unstacked.");
+			console.logNL(""+Log.logUnitDetailed(top)+ " is not stacked. Cannot be unstacked.");
 			return;
 		}
 		if(!under.isStackedWith(top)){
-			console.logNL(""+Log.logUnit(under)+ " and "+Log.logUnit(top)+" are not stacked together. Cannot be unstacked.");
+			console.logNL(""+Log.logUnitDetailed(under)+ " and "+Log.logUnitDetailed(top)+" are not stacked together. Cannot be unstacked.");
 			return;
 		}
-		console.logNL("Unstacking "+Log.logUnit(under) + " and " + Log.logUnit(top));
+		console.logNL("Unstacking "+Log.logUnitDetailed(under) + " and " + Log.logUnitDetailed(top));
 
 
 		unitChanger.unStack(top.getUnitCode(),under.getUnitCode());

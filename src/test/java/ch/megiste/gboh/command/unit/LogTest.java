@@ -19,44 +19,44 @@ public class LogTest {
 		Unit u = new Unit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
 
 		String expecting = "1Haa [Legio XII Hastati a] TQ=7 size=3";
-		Assert.assertEquals(expecting, Log.logUnit(u));
+		Assert.assertEquals(expecting, Log.logUnitDetailed(u));
 
 		u = new Unit(UnitKind.RC, null, "12", "a", "12RCa", 5, 3, MissileType.NONE);
 		expecting = "12RCa [Legio XII RC a] TQ=5 size=3";
-		Assert.assertEquals(expecting, Log.logUnit(u));
+		Assert.assertEquals(expecting, Log.logUnitDetailed(u));
 
 		u = new Unit(UnitKind.RC, null, "12A", "a", "12ARCa", 5, 3, MissileType.NONE);
 		expecting = "12ARCa [Legio XII (Allies) RC a] TQ=5 size=3";
-		Assert.assertEquals(expecting, Log.logUnit(u));
+		Assert.assertEquals(expecting, Log.logUnitDetailed(u));
 
 		u = new Unit(UnitKind.HI, SubClass.TR, "12", "c", "1Trc", 8, 2, MissileType.NONE);
 		expecting = "1Trc [Legio XII Triarii c] TQ=8 size=2";
-		Assert.assertEquals(expecting, Log.logUnit(u));
+		Assert.assertEquals(expecting, Log.logUnitDetailed(u));
 	}
 
 	@Test
 	public void logBasicUnit() {
 		Unit u = new Unit(UnitKind.SK, SubClass.NONE, "Balearic", "1", "BSK1", 5, 1, MissileType.S);
 
-		Assert.assertEquals("BSK1 [Balearic SK 1] TQ=5 size=1 (Slings)", lc.logUnit(u));
+		Assert.assertEquals("BSK1 [Balearic SK 1] TQ=5 size=1 (Slings)", lc.logUnitDetailed(u));
 
 		u.getStatus().hits=1;
 
-		Assert.assertEquals("BSK1 [Balearic SK 1] TQ=5 size=1 (Slings) - 1 hit", lc.logUnit(u));
+		Assert.assertEquals("BSK1 [Balearic SK 1] TQ=5 size=1 (Slings) - 1 hit", lc.logUnitDetailed(u));
 
 		u.getStatus().hits=3;
 
-		Assert.assertEquals("BSK1 [Balearic SK 1] TQ=5 size=1 (Slings) - 3 hits", lc.logUnit(u));
+		Assert.assertEquals("BSK1 [Balearic SK 1] TQ=5 size=1 (Slings) - 3 hits", lc.logUnitDetailed(u));
 
 		u.getStatus().hits=0;
 		u.getStatus().missileStatus=MissileStatus.LOW;
 
-		Assert.assertEquals("BSK1 [Balearic SK 1] TQ=5 size=1 (Slings) - is MISSILE LOW", lc.logUnit(u));
+		Assert.assertEquals("BSK1 [Balearic SK 1] TQ=5 size=1 (Slings) - is MISSILE LOW", lc.logUnitDetailed(u));
 		u.getStatus().state=UnitState.DEPLETED;
-		Assert.assertEquals("BSK1 [Balearic SK 1] TQ=5 size=1 (Slings) - is MISSILE LOW depleted", lc.logUnit(u));
+		Assert.assertEquals("BSK1 [Balearic SK 1] TQ=5 size=1 (Slings) - is MISSILE LOW depleted", lc.logUnitDetailed(u));
 
 		u.getStatus().state=UnitState.ROUTED;
-		Assert.assertEquals("BSK1 [Balearic SK 1] TQ=5 size=1 (Slings) - ROUTED", lc.logUnit(u));
+		Assert.assertEquals("BSK1 [Balearic SK 1] TQ=5 size=1 (Slings) - ROUTED", lc.logUnitDetailed(u));
 
 	}
 

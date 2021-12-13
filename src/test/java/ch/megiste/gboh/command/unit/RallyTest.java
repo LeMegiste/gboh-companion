@@ -35,6 +35,7 @@ public class RallyTest {
 		r.setUnitChanger(unitChanger);
 		r.setConsole(console);
 		r.setDice(dice);
+		r.setGameStatus(gs);
 	}
 
 	@Test

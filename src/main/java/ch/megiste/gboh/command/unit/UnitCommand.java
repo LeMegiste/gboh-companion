@@ -75,11 +75,11 @@ public abstract class UnitCommand extends Command {
 
 	public void logAfterCommand(final List<Unit> attackers, final List<Unit> defenders) {
 		for (Unit u : attackers) {
-			console.logNL("Final status: " + Log.logUnit(u));
+			console.logNL("Final status: " + Log.logUnitDetailed(u));
 		}
 		if (defenders != null) {
 			for (Unit u : defenders) {
-				console.logNL("Final status: " + Log.logUnit(u));
+				console.logNL("Final status: " + Log.logUnitDetailed(u));
 			}
 		}
 	}

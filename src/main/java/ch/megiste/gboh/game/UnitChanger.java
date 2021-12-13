@@ -148,7 +148,7 @@ public class UnitChanger {
 		}
 		String changeMessage = Joiner.on(" It ").join(statusList);
 		if (!Strings.isNullOrEmpty(changeMessage.trim())) {
-			console.logNL(Log.buildStaticDesc(u) + " " + changeMessage);
+			console.logNL(Log.lotUnit(u) + " " + changeMessage);
 		}
 		if (stackedOn != null) {
 			status.stackOn = stackedOn;
@@ -202,4 +202,7 @@ public class UnitChanger {
 		changeStateInternal(underUnit, null, null, null, null, NONE, false);
 	}
 
+	public void eliminated(final Unit u) {
+		changeStateInternal(u,null,ELIMINATED,null,null,null,false);
+	}
 }
