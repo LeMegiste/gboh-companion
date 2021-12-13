@@ -12,7 +12,8 @@ import ch.megiste.gboh.army.Unit.MissileType;
 import ch.megiste.gboh.army.Unit.UnitKind;
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
-import ch.megiste.gboh.command.CommandModifier;
+import ch.megiste.gboh.command.Modifier;
+import ch.megiste.gboh.command.ModifierDefinition;
 import ch.megiste.gboh.command.unit.Fight.Position;
 import ch.megiste.gboh.util.Helper;
 
@@ -39,25 +40,25 @@ public class Shock extends UnitCommand {
 	}
 
 	@Override
-	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<String> modifiers) {
+	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<Modifier<?>> modifiers) {
 		Position position = fight.computePosition(modifiers);
 		final List<Combat> combats = fight.buildCombats(attackers, defenders,position);
 		for (Combat c : combats) {
 
 
-			boolean noMissiles = getBooleanModifier(modifiers, CommandModifier.nmf);
+			boolean noMissiles = getBooleanModifier(modifiers, ModifierDefinition.nmf);
 			Unit mainAttacker = c.getMainAttacker();
 			Unit mainDefender = c.getMainDefender();
 
 			if (!noMissiles) {
 				//Missile fire if possible.
-				final List<String> modifiersForMissile;
+				final List<Modifier<?>> modifiersForMissile;
 				if (modifiers != null) {
 					modifiersForMissile = new ArrayList<>(modifiers);
 				} else {
 					modifiersForMissile = new ArrayList<>();
 				}
-				modifiersForMissile.add("norf");
+				modifiersForMissile.add(new Modifier<Boolean>(ModifierDefinition.norf,true));
 				for (Unit attacker : c.getAttackers()) {
 					if (attacker.getMissile() != MissileType.NONE
 							&& attacker.getStatus().missileStatus != MissileStatus.NO) {
@@ -102,7 +103,7 @@ public class Shock extends UnitCommand {
 			//Pre shock TQ check
 			//Attacker checks
 			final boolean ferociousBarbarians =
-					mainAttacker.getKind() == UnitKind.BI && getBooleanModifier(modifiers, CommandModifier.fury);
+					mainAttacker.getKind() == UnitKind.BI && getBooleanModifier(modifiers, ModifierDefinition.fury);
 			boolean allDefendersRouted = c.getDefenders().stream().allMatch(u -> u.getState() == UnitState.ROUTED);
 
 			Map<Unit, Integer> diffPerUnit = new HashMap<>();
@@ -161,13 +162,13 @@ public class Shock extends UnitCommand {
 			}
 
 			//Fight
-			List<String> modifiersForFight;
+			List<Modifier<?>> modifiersForFight;
 			if (modifiers == null) {
 				modifiersForFight = new ArrayList<>();
 			} else {
 				modifiersForFight = new ArrayList<>(modifiers);
 			}
-			modifiersForFight.add("m");
+			modifiersForFight.add(new Modifier<>(ModifierDefinition.m,true));
 			fight.fightCombat(modifiers,position,c);
 
 		}
@@ -276,4 +277,10 @@ public class Shock extends UnitCommand {
 				rollModifiers, u.getTq());
 		console.logNL(m);
 	}
+
+	@Override
+	public boolean hasTargetUnits() {
+		return true;
+	}
+
 }

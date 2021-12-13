@@ -3,7 +3,8 @@ package ch.megiste.gboh.command.unit;
 import java.util.List;
 
 import ch.megiste.gboh.army.Unit;
-import ch.megiste.gboh.command.CommandModifier;
+import ch.megiste.gboh.command.Modifier;
+import ch.megiste.gboh.command.ModifierDefinition;
 
 public abstract class AbstractTqCheck extends UnitCommand {
 	protected AbstractTqCheck(final String description) {
@@ -14,11 +15,11 @@ public abstract class AbstractTqCheck extends UnitCommand {
 	protected int maxHits = Integer.MAX_VALUE;
 
 	@Override
-	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<String> modifiers) {
+	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<Modifier<?>> modifiers) {
 		for (Unit u : attackers) {
 			int r = dice.roll();
 
-			int mod = getIntModifier(modifiers, CommandModifier.mod,0);
+			int mod = getIntModifier(modifiers, ModifierDefinition.mod,0);
 			final String modifierText;
 			if(mod>0){
 				modifierText=" (+"+mod+")";

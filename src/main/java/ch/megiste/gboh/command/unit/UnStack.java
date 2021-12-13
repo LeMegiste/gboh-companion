@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 
 import ch.megiste.gboh.army.Unit;
+import ch.megiste.gboh.command.Modifier;
 
 public class UnStack extends UnitCommand {
 	private static final String KEY = "US";
@@ -21,7 +22,7 @@ public class UnStack extends UnitCommand {
 	}
 
 	@Override
-	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<String> modifiers) {
+	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<Modifier<?>> modifiers) {
 		Unit under = attackers.get(0);
 		if (CollectionUtils.isEmpty(defenders)) {
 			console.logNL("Usage is: <firstUnit> " + KEY
@@ -46,4 +47,10 @@ public class UnStack extends UnitCommand {
 
 		unitChanger.unStack(top.getUnitCode(),under.getUnitCode());
 	}
+
+	@Override
+	public boolean hasTargetUnits() {
+		return true;
+	}
+
 }

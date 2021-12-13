@@ -27,10 +27,15 @@ import ch.megiste.gboh.army.Unit.SubClass;
 import ch.megiste.gboh.army.Unit.UnitKind;
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
+import ch.megiste.gboh.command.Modifier;
+import ch.megiste.gboh.command.ModifierDefinition;
 import ch.megiste.gboh.game.GameStatus;
 import ch.megiste.gboh.game.UnitChanger;
 import ch.megiste.gboh.util.Console;
 import ch.megiste.gboh.util.Dice;
+import static ch.megiste.gboh.command.Modifiers.boolMod;
+import static ch.megiste.gboh.command.Modifiers.intMod;
+import static ch.megiste.gboh.command.ModifierDefinition.*;
 
 public class ShockTest {
 
@@ -243,7 +248,8 @@ public class ShockTest {
 		//4. roll fight. 5 (2/4)
 		when(dice.roll()).thenReturn(5, 5, 4, 3);
 
-		sh.execute(Collections.singletonList(lg1), Collections.singletonList(samnite), Collections.singletonList("f"));
+		sh.execute(Collections.singletonList(lg1), Collections.singletonList(samnite), Collections.singletonList(new Modifier<>(
+				ModifierDefinition.f,true)));
 		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(lg1), eq(2));
 		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(samnite), eq(1));
 		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(samnite), eq(4));
@@ -283,7 +289,8 @@ public class ShockTest {
 		//Fight. 9
 		//Near collapse carth:8
 		when(dice.roll()).thenReturn(5, 8, 3, 7, 5);
-		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), Collections.singletonList("cs-1"));
+		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1),
+				Collections.singletonList(new Modifier<>(ModifierDefinition.cs, -1)));
 
 		List<String> expectedLines = Splitter.on("\n").splitToList(
 				"Legio XII Hastati a is firing at Mercenary HI 1\n" + "Dice rolls: [5]! Mercenary HI 1 is hit! \n"
@@ -364,7 +371,7 @@ public class ShockTest {
 
 		when(dice.roll()).thenReturn(9, 9, 9, 5, 4, 7, 8);
 
-		sh.execute(Arrays.asList(sk1, sk2), Collections.singletonList(ch), Arrays.asList("f"));
+		sh.execute(Arrays.asList(sk1, sk2), Collections.singletonList(ch), Collections.singletonList(boolMod(f)));
 		Mockito.verify(unitChanger).addHits(eq(sk1), eq(2));
 		Mockito.verify(unitChanger, times(2)).addHits(eq(sk2), eq(1));
 		Mockito.verify(unitChanger).addHits(eq(ch), eq(3));
@@ -391,7 +398,7 @@ public class ShockTest {
 		Unit li = createUnit(UnitKind.LP, null, "Athens", "1", "ALC", 5, 5, MissileType.J);
 		gs.stack(ph1.getUnitCode(), ph2.getUnitCode(), Arrays.asList(ph1, ph2));
 		when(dice.roll()).thenReturn(0, 3, 2, 4);
-		sh.execute(Collections.singletonList(li), Collections.singletonList(ph1), Collections.singletonList("b"));
+		sh.execute(Collections.singletonList(li), Collections.singletonList(ph1), Collections.singletonList(new Modifier<>(ModifierDefinition.b,true)));
 		Mockito.verify(unitChanger, times(1)).addHits(eq(ph2), eq(1));
 
 		Mockito.verify(unitChanger, times(1)).addHits(eq(ph1), eq(3));

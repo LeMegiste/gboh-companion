@@ -8,6 +8,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static ch.megiste.gboh.command.Modifiers.boolMod;
+import static ch.megiste.gboh.command.Modifiers.intMod;
+import static ch.megiste.gboh.command.ModifierDefinition.*;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +29,8 @@ import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.Unit.MissileType;
 import ch.megiste.gboh.army.Unit.SubClass;
 import ch.megiste.gboh.army.Unit.UnitKind;
+import ch.megiste.gboh.command.Modifier;
+import ch.megiste.gboh.command.ModifierDefinition;
 import ch.megiste.gboh.command.unit.MissileFire;
 import ch.megiste.gboh.game.GameStatus;
 import ch.megiste.gboh.game.UnitChanger;
@@ -90,9 +96,11 @@ public class MissileFireTest {
 		Unit lg = new Unit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
 		when(dice.roll()).thenReturn(2, 2);
 
-		cmd.execute(Collections.singletonList(sk), Collections.singletonList(lg), Arrays.asList("m", "r=2"));
+		cmd.execute(Collections.singletonList(sk), Collections.singletonList(lg), Arrays.asList(new Modifier<>(
+				ModifierDefinition.m,true),new Modifier<>(ModifierDefinition.r,2)));
 		verify(unitChanger, never()).addHit(any());
-		cmd.execute(Collections.singletonList(sk), Collections.singletonList(lg), Collections.singletonList("m"));
+		cmd.execute(Collections.singletonList(sk), Collections.singletonList(lg), Collections.singletonList(new Modifier(
+				m,true)));
 		verify(unitChanger).addHit(eq(lg));
 
 	}
@@ -107,11 +115,11 @@ public class MissileFireTest {
 		cmd.setUnitChanger(changer);
 
 
-		cmd.execute(Collections.singletonList(sk), Collections.singletonList(lg), Arrays.asList("m", "r1"));
+		cmd.execute(Collections.singletonList(sk), Collections.singletonList(lg), Arrays.asList(boolMod(m), intMod(r,1)));
 		verify(unitChanger, never()).addHit(any());
 		Assert.assertEquals(MissileStatus.LOW, sk.getMissileStatus());
 
-		cmd.execute(Collections.singletonList(sk), Collections.singletonList(lg), Collections.singletonList("m"));
+		cmd.execute(Collections.singletonList(sk), Collections.singletonList(lg), Collections.singletonList(boolMod(m)));
 		verify(unitChanger, never()).addHit(any());
 		Assert.assertEquals(MissileStatus.NO, sk.getMissileStatus());
 

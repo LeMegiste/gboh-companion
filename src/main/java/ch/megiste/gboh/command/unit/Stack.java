@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 
 import ch.megiste.gboh.army.Unit;
+import ch.megiste.gboh.command.Modifier;
 
 public class Stack extends UnitCommand {
 	private static final String KEY = "ST";
@@ -21,7 +22,7 @@ public class Stack extends UnitCommand {
 	}
 
 	@Override
-	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<String> modifiers) {
+	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<Modifier<?>> modifiers) {
 		Unit under = attackers.get(0);
 		if (CollectionUtils.isEmpty(defenders)) {
 			console.logNL("Usage is: <firstUnit> " + KEY
@@ -40,5 +41,10 @@ public class Stack extends UnitCommand {
 		console.logNL("Stacking "+Log.logUnitDetailed(under) + " under " + Log.logUnitDetailed(top));
 
 		unitChanger.stack(top.getUnitCode(),under.getUnitCode());
+	}
+
+	@Override
+	public boolean hasTargetUnits() {
+		return true;
 	}
 }

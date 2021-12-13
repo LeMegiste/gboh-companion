@@ -7,6 +7,7 @@ import ch.megiste.gboh.army.Leader;
 import ch.megiste.gboh.army.Unit;
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
+import ch.megiste.gboh.command.Modifier;
 import ch.megiste.gboh.command.leader.LogLeader;
 
 public class Rally extends UnitCommand {
@@ -24,7 +25,7 @@ public class Rally extends UnitCommand {
 	}
 
 	@Override
-	public void execute(final List<Unit> candidatesToRally, final List<Unit> defenders, final List<String> modifiers) {
+	public void execute(final List<Unit> candidatesToRally, final List<Unit> defenders, final List<Modifier<?>> modifiers) {
 		for (Unit u : candidatesToRally) {
 			if (u.getStatus().state != UnitState.ROUTED) {
 				console.logNL("Impossible to rally " + Log.lotUnit(u) + " as it is not in state ROUTED");

@@ -18,7 +18,8 @@ import ch.megiste.gboh.army.Unit.UnitCategory;
 import ch.megiste.gboh.army.Unit.UnitKind;
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
-import ch.megiste.gboh.command.CommandModifier;
+import ch.megiste.gboh.command.Modifier;
+import ch.megiste.gboh.command.ModifierDefinition;
 import ch.megiste.gboh.util.GbohError;
 import ch.megiste.gboh.util.Helper;
 
@@ -69,22 +70,22 @@ public class Fight extends UnitCommand {
 			for (UnitKind defender : UnitKind.values()) {
 				final Optional<CSVRecord> optSource = records.stream().filter(r -> {
 					String defName = defender.name();
-					if (defName == "RC") {
+					if (defName.equals("RC")) {
 						defName = "HC";
 					}
-					if (defName == "SKp") {
+					if (defName.equals("SKp")) {
 						defName = "SK";
 					}
-					if (defName == "LP") {
+					if (defName.equals("LP")) {
 						defName = "LI";
 					}
-					if (defName == "OX") {
+					if (defName.equals("OX")) {
 						defName = "LI";
 					}
 					return r.get("Source").equals(defName);
 				}).findFirst();
 				if (!optSource.isPresent()) {
-					throw new RuntimeException("Unable to find defender:" + defender.name());
+					throw new GbohError("Unable to find defender:" + defender.name());
 				}
 				CSVRecord rec = optSource.get();
 
@@ -183,7 +184,7 @@ public class Fight extends UnitCommand {
 	}
 
 	@Override
-	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<String> modifiers) {
+	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<Modifier<?>> modifiers) {
 		Position position = computePosition(modifiers);
 		List<Combat> combats = buildCombats(attackers, defenders, position);
 
@@ -193,7 +194,7 @@ public class Fight extends UnitCommand {
 
 	}
 
-	void fightCombat(final List<String> modifiers, final Position position, final Combat c) {
+	void fightCombat(final List<Modifier<?>> modifiers, final Position position, final Combat c) {
 		Superiority sup;
 		final Unit mainAttacker = c.getMainAttacker();
 		final Unit mainDefender = c.getMainDefender();
@@ -287,7 +288,7 @@ public class Fight extends UnitCommand {
 			colModifiers.add("-2 defender is cataphracted cavalry");
 		}
 
-		int manualColumShift = getIntModifier(modifiers, CommandModifier.cs, 0);
+		int manualColumShift = getIntModifier(modifiers, ModifierDefinition.cs, 0);
 		if (manualColumShift != 0) {
 			columnShift += manualColumShift;
 			colModifiers.add(String.format("%d additional", manualColumShift));
@@ -303,7 +304,7 @@ public class Fight extends UnitCommand {
 		//
 		List<String> rollModifiers = new ArrayList<>();
 
-		int leaderShift = getIntModifier(modifiers, CommandModifier.ls, 0);
+		int leaderShift = getIntModifier(modifiers, ModifierDefinition.ls, 0);
 		if (leaderShift != 0) {
 			rollModifiers.add("" + leaderShift + " for leader influence");
 		}
@@ -362,9 +363,9 @@ public class Fight extends UnitCommand {
 
 	}
 
-	protected Position computePosition(final List<String> modifiers) {
-		boolean flank = getBooleanModifier(modifiers, CommandModifier.f);
-		boolean back = getBooleanModifier(modifiers, CommandModifier.b);
+	protected Position computePosition(final List<Modifier<?>> modifiers) {
+		boolean flank = getBooleanModifier(modifiers, ModifierDefinition.f);
+		boolean back = getBooleanModifier(modifiers, ModifierDefinition.b);
 		Position position;
 		if (back) {
 			position = Position.BACK;
@@ -565,4 +566,10 @@ public class Fight extends UnitCommand {
 			}
 		}
 	}
+
+	@Override
+	public boolean hasTargetUnits() {
+		return true;
+	}
+
 }

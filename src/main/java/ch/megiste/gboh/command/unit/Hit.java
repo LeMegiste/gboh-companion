@@ -3,6 +3,7 @@ package ch.megiste.gboh.command.unit;
 import java.util.List;
 
 import ch.megiste.gboh.army.Unit;
+import ch.megiste.gboh.command.Modifier;
 
 public abstract class Hit extends UnitCommand {
 
@@ -14,7 +15,7 @@ public abstract class Hit extends UnitCommand {
 	private final int count;
 
 	@Override
-	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<String> modifiers) {
+	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<Modifier<?>> modifiers) {
 		attackers.forEach(u -> unitChanger.addHits(u, count));
 	}
 }

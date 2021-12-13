@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.google.common.base.Joiner;
-
 import ch.megiste.gboh.army.Unit;
 import ch.megiste.gboh.command.Command;
-import ch.megiste.gboh.command.CommandModifier;
+import ch.megiste.gboh.command.Modifier;
+import ch.megiste.gboh.command.ModifierDefinition;
 
 public abstract class UnitCommand extends Command {
 
@@ -18,59 +17,34 @@ public abstract class UnitCommand extends Command {
 
 	public abstract String getKey();
 
-	public abstract void execute(List<Unit> attackers, List<Unit> defenders, final List<String> modifiers);
+	public abstract void execute(List<Unit> attackers, List<Unit> defenders, final List<Modifier<?>> modifiers);
 
-	protected int getIntModifier(final List<String> modifiers, final CommandModifier key, final int defaultValue) {
+	protected int getIntModifier(final List<Modifier<?>> modifiers, final ModifierDefinition key, final int defaultValue) {
 		if (modifiers == null) {
 			return defaultValue;
 		}
-		final Optional<String> optMod = modifiers.stream().filter(m -> m.startsWith(key.name() + "=")).findFirst();
-		if (optMod.isPresent()) {
-			String strNumb = optMod.get().substring(key.name().length());
-			final String[] elems = strNumb.split("=");
-			if (elems.length != 2) {
-				console.logNL("Invalid int value:" + elems[1] + ".");
+		return modifiers.stream().filter(m->m.getDefinition()==key).mapToInt(m->(Integer)m.getValue()).findFirst().orElse(defaultValue);
 
-				return defaultValue;
-			}
 
-			return Integer.parseInt(elems[1]);
-		}
-
-		return defaultValue;
 	}
 
-	protected <T extends Enum<T>> T getEnumModifier(final List<String> modifiers, final CommandModifier key,
-			Class<T> clazz, final T defaultValue) {
+	protected <T extends Enum<T>> T getEnumModifier(final List<Modifier<?>> modifiers, final ModifierDefinition key,
+			final T defaultValue) {
+
 		if (modifiers == null) {
 			return defaultValue;
 		}
-		final Optional<String> optMod = modifiers.stream().filter(m -> m.startsWith(key.name() + "=")).findFirst();
-		if (optMod.isPresent()) {
-			String str = optMod.get().substring(key.name().length());
-			final String[] elems = str.split("=");
-			if (elems.length != 2) {
-				return defaultValue;
-			}
-			try {
-				return Enum.valueOf(clazz, elems[1]);
-			} catch (Exception e) {
-				console.logNL("Invalid value:" + elems[1] + ". Possible values: " + Joiner.on(", ")
-						.join(clazz.getEnumConstants()) + ".");
+		return modifiers.stream().filter(m->m.getDefinition()==key).map(m->(T)m.getValue()).findFirst().orElse(defaultValue);
 
-				return defaultValue;
-			}
-		}
-		return defaultValue;
+
 
 	}
 
-	protected boolean getBooleanModifier(final List<String> modifiers, final CommandModifier key) {
+	protected boolean getBooleanModifier(final List<Modifier<?>> modifiers, final ModifierDefinition key) {
 		if (modifiers == null) {
 			return false;
 		}
-		final Optional<String> optMod = modifiers.stream().filter(m -> m.equals(key.name())).findFirst();
-		return optMod.isPresent();
+		return modifiers.stream().anyMatch(m -> m.getDefinition() == key);
 	}
 
 	public void logAfterCommand(final List<Unit> attackers, final List<Unit> defenders) {
@@ -84,9 +58,17 @@ public abstract class UnitCommand extends Command {
 		}
 	}
 
-	protected List<CommandModifier> possibleModifiers = new ArrayList<>();
+	protected List<ModifierDefinition> possibleModifiers = new ArrayList<>();
 
-	public List<CommandModifier> getPossibleModifiers() {
+	public List<ModifierDefinition> getPossibleModifiers() {
 		return possibleModifiers;
+	}
+
+	/**
+	 * Returns true if the command has a target.
+	 * @return
+	 */
+	public boolean hasTargetUnits(){
+		return false;
 	}
 }

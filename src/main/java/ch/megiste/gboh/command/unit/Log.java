@@ -7,6 +7,7 @@ import ch.megiste.gboh.army.Unit.MissileType;
 import ch.megiste.gboh.army.Unit.UnitKind;
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
+import ch.megiste.gboh.command.Modifier;
 
 public class Log extends UnitCommand {
 
@@ -22,7 +23,7 @@ public class Log extends UnitCommand {
 	}
 
 	@Override
-	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<String> modifiers) {
+	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<Modifier<?>> modifiers) {
 
 		attackers.stream().map(Log::logUnitDetailed).forEach(s -> console.logNL(s));
 

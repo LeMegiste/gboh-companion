@@ -48,6 +48,9 @@ public class PersistableGameState {
 		}
 
 		public List<UnitChange> getChanges() {
+			if(changes==null){
+				changes = new ArrayList<>();
+			}
 			return changes;
 		}
 
@@ -68,7 +71,11 @@ public class PersistableGameState {
 		}
 
 		public List<LeaderChange> getLeaderChanges() {
+			if(leaderChanges==null){
+				leaderChanges = new ArrayList<>();
+			}
 			return leaderChanges;
+
 		}
 	}
 

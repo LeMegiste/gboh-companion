@@ -16,7 +16,8 @@ import ch.megiste.gboh.army.Unit.SubClass;
 import ch.megiste.gboh.army.Unit.UnitKind;
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
-import ch.megiste.gboh.command.CommandModifier;
+import ch.megiste.gboh.command.Modifier;
+import ch.megiste.gboh.command.ModifierDefinition;
 import ch.megiste.gboh.util.Helper;
 
 public class MissileFire extends UnitCommand {
@@ -51,11 +52,11 @@ public class MissileFire extends UnitCommand {
 	}
 
 	@Override
-	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<String> modifiers) {
-		boolean moved = getBooleanModifier(modifiers, CommandModifier.m);
-		boolean flank = getBooleanModifier(modifiers, CommandModifier.f);
-		boolean back = getBooleanModifier(modifiers, CommandModifier.b);
-		boolean norf = getBooleanModifier(modifiers, CommandModifier.norf);
+	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<Modifier<?>> modifiers) {
+		boolean moved = getBooleanModifier(modifiers, ModifierDefinition.m);
+		boolean flank = getBooleanModifier(modifiers, ModifierDefinition.f);
+		boolean back = getBooleanModifier(modifiers, ModifierDefinition.b);
+		boolean norf = getBooleanModifier(modifiers, ModifierDefinition.norf);
 
 		if (attackers.size() != 1) {
 			console.logNL("Only 1 unit can missile fire.");
@@ -90,7 +91,7 @@ public class MissileFire extends UnitCommand {
 			return;
 		}
 
-		int range = getIntModifier(modifiers, CommandModifier.r, 1);
+		int range = getIntModifier(modifiers, ModifierDefinition.r, 1);
 		int maxRange = table.get(attacker.getMissile()).size();
 		if (range > maxRange) {
 			console.logNL("Unit " + attackerName + " cannot fire at this distance");
@@ -188,6 +189,11 @@ public class MissileFire extends UnitCommand {
 
 	private boolean isHeavyInfantry(final Unit target) {
 		return target.getKind() == UnitKind.HI || target.getKind() == UnitKind.PH;
+	}
+
+	@Override
+	public boolean hasTargetUnits() {
+		return true;
 	}
 
 }
