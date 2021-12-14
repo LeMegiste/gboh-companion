@@ -36,7 +36,6 @@ public class Log extends UnitCommand {
 		switch (u.getState()) {
 
 		case OK:
-		case DEPLETED:
 		case RALLIED:
 			if (u.getHits() == 1) {
 				add.append(" ").append(u.getHits()).append(" hit");
@@ -48,7 +47,7 @@ public class Log extends UnitCommand {
 			} else if (u.getMissileStatus() == MissileStatus.LOW) {
 				add.append(" is MISSILE LOW");
 			}
-			if (u.getState() == UnitState.DEPLETED) {
+			if (u.isDepleted()) {
 				add.append(" depleted");
 			}
 

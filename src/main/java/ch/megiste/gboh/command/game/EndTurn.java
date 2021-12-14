@@ -36,7 +36,7 @@ public class EndTurn extends GameCommand {
 		final List<Unit> ralliedUnits =
 				gs.getAllUnits().stream().filter(u -> u.getState() == UnitState.RALLIED).collect(Collectors.toList());
 		for (Unit u : ralliedUnits) {
-			unitChanger.changeState(u, null, UnitState.DEPLETED, null);
+			unitChanger.changeState(u, null, UnitState.OK, null);
 			console.logNL(Log.logUnitDetailed(u));
 		}
 		final Predicate<Unit> forRefill =

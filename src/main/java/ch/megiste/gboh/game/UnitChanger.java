@@ -1,7 +1,6 @@
 package ch.megiste.gboh.game;
 
 import static ch.megiste.gboh.army.UnitStatus.NONE;
-import static ch.megiste.gboh.army.UnitStatus.UnitState.DEPLETED;
 import static ch.megiste.gboh.army.UnitStatus.UnitState.ELIMINATED;
 import static ch.megiste.gboh.army.UnitStatus.UnitState.OK;
 import static ch.megiste.gboh.army.UnitStatus.UnitState.RALLIED;
@@ -31,8 +30,8 @@ import ch.megiste.gboh.util.Console;
 import ch.megiste.gboh.util.Helper;
 
 public class UnitChanger {
-	private static final Set<UnitState> BEFORE_ROUTING = EnumSet.of(DEPLETED, OK, RALLIED);
-	private static final Set<UnitState> BEFORE_ELIMINATED = EnumSet.of(DEPLETED, OK, RALLIED, ROUTED);
+	private static final Set<UnitState> BEFORE_ROUTING = EnumSet.of( OK, RALLIED);
+	private static final Set<UnitState> BEFORE_ELIMINATED = EnumSet.of( OK, RALLIED, ROUTED);
 	private static final Set<UnitState> BEFORE_RALLIED = EnumSet.of(ROUTED);
 	private Map<UnitState, Set<UnitState>> stateTransitions = new HashMap<>();
 
@@ -41,7 +40,6 @@ public class UnitChanger {
 		stateTransitions.put(ROUTED, BEFORE_ROUTING);
 		stateTransitions.put(OK, EnumSet.of(ROUTED, UnitState.values()));
 		stateTransitions.put(ELIMINATED, BEFORE_ELIMINATED);
-		stateTransitions.put(DEPLETED, EnumSet.of(RALLIED));
 
 	}
 
@@ -145,6 +143,9 @@ public class UnitChanger {
 			}
 			statusList.add("is " + state.name());
 			status.state = state;
+			if (state == RALLIED) {
+				status.depleted = true;
+			}
 		}
 		String changeMessage = Joiner.on(" It ").join(statusList);
 		if (!Strings.isNullOrEmpty(changeMessage.trim())) {

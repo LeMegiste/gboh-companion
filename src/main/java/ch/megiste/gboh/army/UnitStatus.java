@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 @XStreamAlias("UnitStatus")
 public class UnitStatus implements Serializable {
@@ -14,7 +15,7 @@ public class UnitStatus implements Serializable {
 
 
 	public enum UnitState {
-		OK, DEPLETED, RALLIED, ROUTED, ELIMINATED;
+		OK, RALLIED, ROUTED, ELIMINATED;
 
 	}
 
@@ -34,6 +35,7 @@ public class UnitStatus implements Serializable {
 	@XStreamAsAttribute
 	public String stackUnder = NONE;
 
-
+	@XStreamOmitField
+	public boolean depleted = false;
 
 }

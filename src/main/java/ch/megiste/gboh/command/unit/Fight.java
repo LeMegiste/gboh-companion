@@ -271,11 +271,11 @@ public class Fight extends UnitCommand {
 					.add(String.format("%d due to size ratio %d/%d", columnShift, sumSizeAttackers, sumSizeDefenders));
 		}
 
-		if (mainAttacker.getState() == UnitState.DEPLETED) {
+		if (mainAttacker.isDepleted()) {
 			columnShift--;
 			colModifiers.add("-1 attacker depleted");
 		}
-		if (mainDefender.getState() == UnitState.DEPLETED) {
+		if (mainDefender.isDepleted()) {
 			columnShift++;
 			colModifiers.add("+1 defender depleted");
 		}

@@ -81,7 +81,7 @@ public class Unit {
 	}
 
 	public boolean isDepleted() {
-		return getState() == UnitState.DEPLETED;
+		return status.depleted;
 	}
 
 	public enum MissileWeapon {
@@ -280,4 +280,5 @@ public class Unit {
 	public String toString() {
 		return Log.lotUnit(this);
 	}
+
 }

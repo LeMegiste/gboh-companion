@@ -148,7 +148,7 @@ public class MissileFire extends UnitCommand {
 			modifiers.add("+1 because movement");
 			finalRoll = finalRoll + 1;
 		}
-		if (attacker.getState() == UnitState.DEPLETED) {
+		if (attacker.isDepleted()) {
 			modifiers.add("+1 because " + attackerName + " depleted");
 			finalRoll = finalRoll + 1;
 		}

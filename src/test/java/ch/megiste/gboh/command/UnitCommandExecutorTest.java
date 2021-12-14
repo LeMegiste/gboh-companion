@@ -65,13 +65,13 @@ public class UnitCommandExecutorTest {
 		Assert.assertEquals(2,res.get(1).getValue());
 
 
-		res = buildExecAndComputeModifiers(Arrays.asList("LIA4","SET","hits=4","state=DEPLETED"), false);
+		res = buildExecAndComputeModifiers(Arrays.asList("LIA4","SET","hits=4","state=RALLIED"), false);
 		Assert.assertEquals(2,res.size());
 		Assert.assertEquals(ModifierDefinition.hits,res.get(0).getDefinition());
 		Assert.assertEquals(4,res.get(0).getValue());
 
 		Assert.assertEquals(ModifierDefinition.state,res.get(1).getDefinition());
-		Assert.assertEquals(UnitState.DEPLETED,res.get(1).getValue());
+		Assert.assertEquals(UnitState.RALLIED,res.get(1).getValue());
 
 		try {
 			buildExecAndComputeModifiers(Arrays.asList("HHIA","M","r=x","PH4"), true);
@@ -82,7 +82,7 @@ public class UnitCommandExecutorTest {
 		try {
 			buildExecAndComputeModifiers(Arrays.asList("LIA4","SET","hits=4","state=DEPLETXED"), false);
 		} catch (CommandLineParsingException e) {
-			Assert.assertEquals("Pattern is state=V or stateV where V is value in the fallowing list (OK,DEPLETED,RALLIED,ROUTED,ELIMINATED)",e.getMessage());
+			Assert.assertEquals("Pattern is state=V or stateV where V is value in the fallowing list (OK,RALLIED,ROUTED,ELIMINATED)",e.getMessage());
 		}
 
 
