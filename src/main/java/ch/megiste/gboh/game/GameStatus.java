@@ -216,6 +216,7 @@ public class GameStatus {
 			currentDir = battleDir;
 			battleName = battleDir.getFileName().toString();
 
+
 			Path gamePropsPath = getGameBackupFile();
 			if (Files.exists(gamePropsPath)) {
 
@@ -248,7 +249,11 @@ public class GameStatus {
 
 				}
 
+			} else {
+				state.currentTurn=1;
+				state.currentCommand=1;
 			}
+
 		} catch (IOException e) {
 			throw new GbohError(e);
 		}

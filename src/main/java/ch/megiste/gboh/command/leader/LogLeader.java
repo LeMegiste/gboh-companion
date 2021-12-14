@@ -16,8 +16,8 @@ public class LogLeader extends LeaderCommand {
 
 	public static String logLeader(final Leader leader) {
 		StringBuffer sb = new StringBuffer();
-		sb.append(leader.getCode()).append(" ").append(leader.getName()).append(" [").append(leader.getInitiative())
-				.append("]");
+		sb.append(leader.getCode()).append(" ").append(leader.getName()).append(" (").append(leader.getInitiative())
+				.append(")");
 		return sb.toString();
 	}
 
