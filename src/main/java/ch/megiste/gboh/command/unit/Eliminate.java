@@ -19,7 +19,7 @@ public class Eliminate extends UnitCommand {
 	@Override
 	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<Modifier<?>> modifiers) {
 		for(Unit u: attackers){
-			unitChanger.changeState(u,null, UnitState.ELIMINATED,null);
+			unitChanger.changeState(u,null, UnitState.ELIMINATED);
 		}
 	}
 }

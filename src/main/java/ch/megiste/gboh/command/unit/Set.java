@@ -1,5 +1,6 @@
 package ch.megiste.gboh.command.unit;
 
+import java.util.Collections;
 import java.util.List;
 
 import ch.megiste.gboh.army.Unit;
@@ -24,8 +25,8 @@ public class Set extends UnitCommand {
 			int hits = getIntModifier(modifiers, ModifierDefinition.hits, u.getHits());
 			UnitState state = getEnumModifier(modifiers, ModifierDefinition.state, u.getState());
 			MissileStatus missileState =
-					getEnumModifier(modifiers, ModifierDefinition.missile, u.getMissileStatus());
-			unitChanger.changeStateNoCheck(u, hits, state, missileState);
+					getEnumModifier(modifiers, ModifierDefinition.missile, u.getMainMissileStatus());
+			unitChanger.changeStateNoCheck(u, hits, state, Collections.singletonMap(u.getMainMissile(),missileState));
 		}
 
 	}

@@ -6,7 +6,6 @@ import ch.megiste.gboh.army.Unit;
 import ch.megiste.gboh.army.Unit.MissileType;
 import ch.megiste.gboh.army.Unit.UnitKind;
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
-import ch.megiste.gboh.army.UnitStatus.UnitState;
 import ch.megiste.gboh.command.Modifier;
 
 public class Log extends UnitCommand {
@@ -42,9 +41,9 @@ public class Log extends UnitCommand {
 			} else if (u.getHits() > 1) {
 				add.append(" ").append(u.getHits()).append(" hits");
 			}
-			if (u.getMissileStatus() == MissileStatus.NO) {
+			if (u.getMainMissileStatus() == MissileStatus.NO) {
 				add.append(" is MISSILE NO");
-			} else if (u.getMissileStatus() == MissileStatus.LOW) {
+			} else if (u.getMainMissileStatus() == MissileStatus.LOW) {
 				add.append(" is MISSILE LOW");
 			}
 			if (u.isDepleted()) {
@@ -75,10 +74,10 @@ public class Log extends UnitCommand {
 	}
 
 	private static String buildStats(final Unit u) {
-		if (u.getMissile() == MissileType.NONE || u.getKind() == UnitKind.LG) {
+		if (u.getMainMissile() == MissileType.NONE || u.getKind() == UnitKind.LG) {
 			return String.format("TQ=%d size=%d", u.getOriginalTq(), u.getSize());
 		} else {
-			return String.format("TQ=%d size=%d (%s)", u.getOriginalTq(), u.getSize(), u.getMissile().getDescription());
+			return String.format("TQ=%d size=%d (%s)", u.getOriginalTq(), u.getSize(), u.getMainMissile().getDescription());
 		}
 	}
 
@@ -87,7 +86,7 @@ public class Log extends UnitCommand {
 			return String.format("%s %s %s", u.getLegio(), u.getSubclass().getDescription(), u.getNumber());
 		} else if (u.getLegio() != null) {
 			return String.format("%s %s %s", u.getLegio(), u.getKind().name(), u.getNumber());
-		} else if (u.getMissile() != MissileType.NONE) {
+		} else if (u.getMainMissile() != MissileType.NONE) {
 			return String.format("%s %s %s", u.getOrigin(), u.getKind().name(), u.getNumber());
 		} else {
 			return String.format("%s %s %s", u.getOrigin(), u.getKind().name(), u.getNumber());

@@ -1,6 +1,7 @@
 package ch.megiste.gboh.command.unit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +57,7 @@ public class MissileFire extends UnitCommand {
 		boolean moved = getBooleanModifier(modifiers, ModifierDefinition.m);
 		boolean flank = getBooleanModifier(modifiers, ModifierDefinition.f);
 		boolean back = getBooleanModifier(modifiers, ModifierDefinition.b);
-		boolean norf = getBooleanModifier(modifiers, ModifierDefinition.norf);
+		boolean noReactionFire = getBooleanModifier(modifiers, ModifierDefinition.norf);
 
 		if (attackers.size() != 1) {
 			console.logNL("Only 1 unit can missile fire.");
@@ -74,25 +75,25 @@ public class MissileFire extends UnitCommand {
 
 		final String attackerName = Log.lotUnit(attacker);
 
-		if (attacker.getMissile() == MissileType.NONE) {
-			console.logNL("Unit " + attackerName + " cannot missile fire");
+		if (attacker.getMainMissile() == MissileType.NONE) {
+			console.logNL(attackerName + " cannot missile fire");
 			return;
 		}
 		if (attacker.getState() == UnitState.ROUTED) {
-			console.logNL("Unit " + attackerName + " cannot missile fire as it is routed");
+			console.logNL(attackerName + " cannot missile fire as it is routed");
 			return;
 		}
-		if (attacker.getMissileStatus() == MissileStatus.NO) {
-			console.logNL("Unit " + attackerName + " cannot missile fire as it is missile no");
+		if (attacker.getMainMissileStatus() == MissileStatus.NO) {
+			console.logNL(attackerName + " cannot missile fire as it is missile no");
 			return;
 		}
-		if (attacker.getMissileStatus() == MissileStatus.NO) {
-			console.logNL("Unit " + attackerName + " cannot missile fire as it is missile NEVER");
+		if (attacker.getMainMissileStatus() == MissileStatus.NEVER) {
+			console.logNL(attackerName + " cannot missile fire as it is missile NEVER");
 			return;
 		}
 
 		int range = getIntModifier(modifiers, ModifierDefinition.r, 1);
-		int maxRange = table.get(attacker.getMissile()).size();
+		int maxRange = table.get(attacker.getMainMissile()).size();
 		if (range > maxRange) {
 			console.logNL("Unit " + attackerName + " cannot fire at this distance");
 			return;
@@ -101,8 +102,8 @@ public class MissileFire extends UnitCommand {
 		fire(attacker, target, range, moved, !back && !flank, false);
 
 		//Reaction fire
-		if (range == 1 && target.getMissile() != MissileType.NONE
-				&& target.getStatus().missileStatus != MissileStatus.NO && !flank && !back && !norf) {
+		if (range == 1 && target.getMainMissile() != MissileType.NONE
+				&& target.getMainMissileStatus() != MissileStatus.NO && !flank && !back && !noReactionFire) {
 			fire(target, attacker, 1, false, true, true);
 		}
 
@@ -110,81 +111,96 @@ public class MissileFire extends UnitCommand {
 
 	private void fire(final Unit attacker, final Unit target, final int range, final boolean moved,
 			final boolean frontFire, final boolean reaction) {
-		if (attacker.getMissile() == MissileType.NONE || attacker.getMissileStatus() == MissileStatus.NO
-				|| attacker.getMissileStatus() == MissileStatus.NEVER || attacker.getState() == UnitState.ROUTED
-				|| attacker.getState() == UnitState.RALLIED || attacker.getState() == UnitState.ELIMINATED) {
+		if (attacker.getMainMissile() == MissileType.NONE || attacker.getMainMissileStatus() == MissileStatus.NO
+				|| attacker.getMainMissileStatus() == MissileStatus.NEVER || attacker.getState() != UnitState.OK) {
 			return;
 		}
 		String attackerName = Log.lotUnit(attacker);
 		String targetName = Log.lotUnit(target);
 
-		int threshold = table.get(attacker.getMissile()).get(range - 1);
-
-		int roll = dice.roll();
-
-		final String reactionString = reaction ? " in reaction" : "";
-		final String rangeText = range == 1 ? "" : " at range " + range;
-		String announcementText =
-				String.format("%s is firing%s at %s%s", attackerName, reactionString, targetName, rangeText);
-		console.logNL(announcementText);
-
-		List<String> modifiers = new ArrayList<>();
-
-		int finalRoll = roll;
-		if (target.getKind() == UnitKind.SK) {
-			modifiers.add("+2 because target is SK");
-			finalRoll = finalRoll + 2;
+		List<MissileType> missilesFired;
+		if(!reaction){
+			missilesFired = Collections.singletonList(attacker.getMainMissile());
+		} else {
+			missilesFired = attacker.getMissiles();
 		}
-		final MissileWeapon weapon = attacker.getMissile().getWeapon();
-		if (isHeavyInfantry(target) && frontFire && (
-				weapon == MissileWeapon.Bows || weapon ==MissileWeapon.Slings)) {
-			modifiers.add("+3 because firing on  heavy infantry through the front");
-			finalRoll = finalRoll + 3;
-		} else 	if (isHeavyInfantry(target)) {
-			modifiers.add("+1 because target is heavy infantry");
-			finalRoll = finalRoll + 1;
-		}
-		if (moved && attacker.getMissile().lessPreciseAfterMovement()) {
-			modifiers.add("+1 because movement");
-			finalRoll = finalRoll + 1;
-		}
-		if (attacker.isDepleted()) {
-			modifiers.add("+1 because " + attackerName + " depleted");
-			finalRoll = finalRoll + 1;
-		}
-		if (target.getSubclass() == SubClass.CAT) {
-			if (weapon ==MissileWeapon.Bows) {
-				modifiers.add("+2 because target is cataphracted");
+
+		for(MissileType missile : missilesFired){
+			int threshold = table.get(missile).get(range - 1);
+
+			int roll = dice.roll();
+
+			final String reactionString = reaction ? " in reaction" : "";
+			final String rangeText = range == 1 ? "" : " at range " + range;
+			String announcementText =
+					String.format("%s is firing%s at %s%s", attackerName, reactionString, targetName, rangeText);
+			console.logNL(announcementText);
+
+			List<String> modifiers = new ArrayList<>();
+
+			int finalRoll = roll;
+			if (target.getKind() == UnitKind.SK) {
+				modifiers.add("+2 because target is SK");
 				finalRoll = finalRoll + 2;
-
-			} else if (weapon ==MissileWeapon.Slings) {
-				modifiers.add("+1 because target is cataphracted");
+			}
+			final MissileWeapon weapon = attacker.getMainMissile().getWeapon();
+			if (isHeavyInfantry(target) && frontFire && (weapon == MissileWeapon.Bows || weapon == MissileWeapon.Slings)) {
+				modifiers.add("+3 because firing on  heavy infantry through the front");
+				finalRoll = finalRoll + 3;
+			} else if (isHeavyInfantry(target)) {
+				modifiers.add("+1 because target is heavy infantry");
 				finalRoll = finalRoll + 1;
+			}
+			if (moved && attacker.getMainMissile().lessPreciseAfterMovement()) {
+				modifiers.add("+1 because movement");
+				finalRoll = finalRoll + 1;
+			}
+			if (attacker.isDepleted()) {
+				modifiers.add("+1 because " + attackerName + " depleted");
+				finalRoll = finalRoll + 1;
+			}
+			if (target.getSubclass() == SubClass.CAT) {
+				if (weapon == MissileWeapon.Bows) {
+					modifiers.add("+2 because target is cataphracted");
+					finalRoll = finalRoll + 2;
 
+				} else if (weapon == MissileWeapon.Slings) {
+					modifiers.add("+1 because target is cataphracted");
+					finalRoll = finalRoll + 1;
+
+				}
+			}
+
+			final String resultText;
+			final boolean success;
+			if (finalRoll <= threshold) {
+				resultText = targetName + " is hit";
+				success = true;
+			} else {
+				success = false;
+				resultText = "Missed";
+			}
+
+			final String modifiersText = modifiers.size() == 0 ? "" : "(modifiers: " + Joiner.on(",").join(modifiers) + ")";
+			String conclusionText = String.format("Dice rolls: [%d]! %s! %s", roll, resultText, modifiersText);
+			console.logNL(conclusionText);
+
+			int nbHits = 1;
+			if(target.getKind()==UnitKind.EL && attacker.getKind()!=UnitKind.EL){
+				nbHits=2;
+			}
+
+			if (success) {
+				unitChanger.addHits(target,nbHits);
+			}
+
+			if (attacker.getMainMissileStatus() == MissileStatus.LOW || roll >= attacker.getMainMissile()
+					.getMissileShortageLevel()) {
+				unitChanger.missileDepletion(attacker, missile);
 			}
 		}
 
-		final String resultText;
-		final boolean success;
-		if (finalRoll <= threshold) {
-			resultText = targetName + " is hit";
-			success = true;
-		} else {
-			success = false;
-			resultText = "Missed";
-		}
 
-		final String modifiersText = modifiers.size() == 0 ? "" : "(modifiers: " + Joiner.on(",").join(modifiers) + ")";
-		String conclusionText = String.format("Dice rolls: [%d]! %s! %s", roll, resultText, modifiersText);
-		console.logNL(conclusionText);
-		if (success) {
-			unitChanger.addHit(target);
-		}
-
-		if (attacker.getMissileStatus() == MissileStatus.LOW || roll >= attacker.getMissile()
-				.getMissileShortageLevel()) {
-			unitChanger.missileDepletion(attacker);
-		}
 	}
 
 	private boolean isHeavyInfantry(final Unit target) {

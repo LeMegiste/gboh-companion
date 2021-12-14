@@ -2,13 +2,16 @@ package ch.megiste.gboh.command.unit;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import ch.megiste.gboh.army.Leader;
 import ch.megiste.gboh.army.Unit;
+import ch.megiste.gboh.army.Unit.MissileType;
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
 import ch.megiste.gboh.command.Modifier;
 import ch.megiste.gboh.command.leader.LogLeader;
+import ch.megiste.gboh.util.MissileStatusHelper;
 
 public class Rally extends UnitCommand {
 
@@ -77,7 +80,10 @@ public class Rally extends UnitCommand {
 		} else {
 			hits = rallyValuesStrongUnits.get(roll);
 		}
+		final MissileStatus ms = MissileStatus.NO;
+		final Map<MissileType, MissileStatus> missileStatus = MissileStatusHelper.putMissileStatusToState(u, ms);
 
-		unitChanger.changeState(u, hits, UnitState.RALLIED, MissileStatus.NO);
+		unitChanger.changeState(u, hits, UnitState.RALLIED, missileStatus);
 	}
+
 }

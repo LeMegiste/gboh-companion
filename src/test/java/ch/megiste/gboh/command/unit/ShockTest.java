@@ -34,7 +34,6 @@ import ch.megiste.gboh.game.UnitChanger;
 import ch.megiste.gboh.util.Console;
 import ch.megiste.gboh.util.Dice;
 import static ch.megiste.gboh.command.Modifiers.boolMod;
-import static ch.megiste.gboh.command.Modifiers.intMod;
 import static ch.megiste.gboh.command.ModifierDefinition.*;
 
 public class ShockTest {
@@ -258,7 +257,7 @@ public class ShockTest {
 	@Test
 	public void shockWithReactionFireOnly() {
 		Unit lg1 = createUnit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
-		lg1.getStatus().missileStatus = MissileStatus.NO;
+		lg1.getStatus().missileStatus = "J=NO";
 		Unit samnite = createUnit(UnitKind.LG, SubClass.NONE, "Samnite Main", "a", "SMaa", 7, 7, MissileType.NONE);
 
 		//1. roll defender: missile fire 3 (hit)
@@ -273,7 +272,7 @@ public class ShockTest {
 
 		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(samnite), eq(2));
 		Assert.assertEquals("After shock combat, missile capable units are missile no", MissileStatus.NO,
-				samnite.getMissileStatus());
+				samnite.getMainMissileStatus());
 	}
 
 	@Test

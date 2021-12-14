@@ -80,7 +80,7 @@ public class GameStatusTest {
 		Assert.assertEquals(102, allUnits.size());
 		UnitChanger uc = new UnitChanger(mock(Console.class), gs);
 		final Unit u = allUnits.get(1);
-		uc.addHit(u);
+		uc.addHits(u, 1);
 		gs.persistGame();
 
 		gs.load(baseDir);

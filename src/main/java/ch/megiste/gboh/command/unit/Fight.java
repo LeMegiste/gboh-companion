@@ -17,11 +17,11 @@ import ch.megiste.gboh.army.Unit.SubClass;
 import ch.megiste.gboh.army.Unit.UnitCategory;
 import ch.megiste.gboh.army.Unit.UnitKind;
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
-import ch.megiste.gboh.army.UnitStatus.UnitState;
 import ch.megiste.gboh.command.Modifier;
 import ch.megiste.gboh.command.ModifierDefinition;
 import ch.megiste.gboh.util.GbohError;
 import ch.megiste.gboh.util.Helper;
+import ch.megiste.gboh.util.MissileStatusHelper;
 
 public class Fight extends UnitCommand {
 
@@ -382,8 +382,8 @@ public class Fight extends UnitCommand {
 	}
 
 	private void missileDepletionForUnitsInvolvedInShock(final Unit u) {
-		if (u.getMissile() != MissileType.NONE) {
-			unitChanger.changeState(u, null, null, MissileStatus.NO);
+		if (u.getMainMissile() != MissileType.NONE) {
+			unitChanger.changeState(u, null, null, MissileStatusHelper.putMissileStatusToState(u,MissileStatus.NO));
 		}
 	}
 
@@ -559,7 +559,7 @@ public class Fight extends UnitCommand {
 		if (tmpSup != Superiority.DSp) {
 			return tmpSup;
 		} else { //In case of DSp
-			if (defender.getMissile() != MissileType.NONE && defender.getMissileStatus() != MissileStatus.NO) {
+			if (defender.getMainMissile() != MissileType.NONE && defender.getMainMissileStatus() != MissileStatus.NO) {
 				return Superiority.DS;
 			} else {
 				return Superiority.NONE;

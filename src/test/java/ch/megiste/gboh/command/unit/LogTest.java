@@ -49,7 +49,7 @@ public class LogTest {
 		Assert.assertEquals("BSK1 [Balearic SK 1] TQ=5 size=1 (Slings) - 3 hits", lc.logUnitDetailed(u));
 
 		u.getStatus().hits=0;
-		u.getStatus().missileStatus=MissileStatus.LOW;
+		u.getStatus().missileStatus="S=LOW";
 
 		Assert.assertEquals("BSK1 [Balearic SK 1] TQ=5 size=1 (Slings) - is MISSILE LOW", lc.logUnitDetailed(u));
 		u.getStatus().depleted=true;

@@ -39,7 +39,6 @@ import ch.megiste.gboh.army.Unit.MissileType;
 import ch.megiste.gboh.army.Unit.SubClass;
 import ch.megiste.gboh.army.Unit.UnitKind;
 import ch.megiste.gboh.army.UnitStatus;
-import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
 import ch.megiste.gboh.game.PersistableGameState.CommandHistory;
 import ch.megiste.gboh.game.PersistableGameState.LeaderChange;
@@ -129,7 +128,12 @@ public class GameStatus {
 	private Rules rules = Rules.SPQR;
 
 	public GameStatus() {
-		xStream = new XStream();
+		xStream = initXStream();
+
+	}
+
+	public static XStream initXStream() {
+		XStream xStream = new XStream();
 		Class<?>[] classes =
 				new Class[] { PersistableGameState.class, UnitStatus.class, UnitChange.class, CommandHistory.class,
 						LeaderChange.class };
@@ -137,7 +141,7 @@ public class GameStatus {
 		xStream.allowTypes(classes);
 
 		xStream.processAnnotations(classes);
-
+		return xStream;
 	}
 
 	public String getPromptString() {
@@ -355,10 +359,19 @@ public class GameStatus {
 
 		final UnitKind kind = Helper.readEnum(r.get(Head.Kind), UnitKind.class, UnitKind.LG);
 		final SubClass sc = Helper.readEnum(r.get(Head.Subclass), SubClass.class, SubClass.NONE);
-		final MissileType missileType = Helper.readEnum(r.get(Head.Missile), MissileType.class, MissileType.NONE);
+		final String strValue = r.get(Head.Missile);
+		List<MissileType> missileTypes = new ArrayList<>();
+		if (Strings.isNotEmpty(strValue)) {
+			final List<String> elements = Splitter.on(",").splitToList(strValue);
+			elements.forEach(s -> {
+				final MissileType missileType = Helper.readEnum(s, MissileType.class, MissileType.NONE);
+				missileTypes.add(missileType);
+			});
+
+		}
 
 		final Unit unit =
-				new Unit(kind, sc, r.get(Head.Origin), r.get(Head.Number), r.get(Head.UnitCode), tq, size, missileType);
+				new Unit(kind, sc, r.get(Head.Origin), r.get(Head.Number), r.get(Head.UnitCode), tq, size, missileTypes);
 		if (r.isSet(Head.Hits.toString()) && Strings.isNotEmpty(r.get(Head.Hits))) {
 			unit.getStatus().hits = Integer.parseInt(r.get(Head.Hits));
 		}
@@ -366,7 +379,8 @@ public class GameStatus {
 			unit.getStatus().state = UnitState.valueOf(r.get(Head.State));
 		}
 		if (r.isSet(Head.MissileStatus.toString()) && Strings.isNotEmpty(r.get(Head.MissileStatus))) {
-			unit.getStatus().missileStatus = MissileStatus.valueOf(r.get(Head.MissileStatus));
+			final String val = r.get(Head.MissileStatus);
+			unit.getStatus().missileStatus = val;
 		}
 		return unit;
 	}
@@ -483,8 +497,8 @@ public class GameStatus {
 
 			for (Unit u : army.getUnits()) {
 				printer.printRecord(u.getKind(), u.getSubclass(), u.getOrigin(), u.getNumber(), u.getUnitCode(),
-						u.getOriginalTq(), u.getSize(), u.getMissile(), u.getHits(), u.getState(),
-						u.getMissileStatus());
+						u.getOriginalTq(), u.getSize(), u.getMainMissile(), u.getHits(), u.getState(),
+						u.getMainMissileStatus());
 
 			}
 

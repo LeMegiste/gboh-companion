@@ -1,5 +1,6 @@
 package ch.megiste.gboh.command.game;
 
+import java.nio.file.Files;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
 import ch.megiste.gboh.command.unit.Log;
 import ch.megiste.gboh.game.GameStatus;
+import ch.megiste.gboh.util.MissileStatusHelper;
 
 public class EndTurn extends GameCommand {
 
@@ -36,11 +38,11 @@ public class EndTurn extends GameCommand {
 		final List<Unit> ralliedUnits =
 				gs.getAllUnits().stream().filter(u -> u.getState() == UnitState.RALLIED).collect(Collectors.toList());
 		for (Unit u : ralliedUnits) {
-			unitChanger.changeState(u, null, UnitState.OK, null);
+			unitChanger.changeState(u, null, UnitState.OK);
 			console.logNL(Log.logUnitDetailed(u));
 		}
 		final Predicate<Unit> forRefill =
-				u -> u.getMissile() != MissileType.NONE && u.getMissileStatus() != MissileStatus.FULL && u.getState()!=UnitState.ROUTED && u.getState()!=UnitState.ELIMINATED;
+				u -> u.getMainMissile() != MissileType.NONE && u.getMainMissileStatus() != MissileStatus.FULL && u.getState()!=UnitState.ROUTED && u.getState()!=UnitState.ELIMINATED;
 		final List<String> candidatesForRefill =
 				gs.getAllUnits().stream().filter(forRefill).map(Unit::getUnitCode).collect(Collectors.toList());
 		final String allRefills = Joiner.on(",").join(candidatesForRefill);
@@ -55,7 +57,7 @@ public class EndTurn extends GameCommand {
 				refill = gs.findUnits(query).foundUnits;
 			}
 			for (Unit u : refill) {
-				unitChanger.changeState(u, null, null, MissileStatus.FULL);
+				unitChanger.changeState(u, null, null, MissileStatusHelper.putMissileStatusToState(u, MissileStatus.FULL));
 			}
 		}
 		if(gs.areLeadersUsed()){

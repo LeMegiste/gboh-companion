@@ -54,7 +54,7 @@ public class FightTest {
 		Assert.assertEquals("LG is DS against HC only if it is not missile NO", Superiority.DS,
 				fc.findSuperiority(hc, lg1));
 
-		lg1.getStatus().missileStatus = MissileStatus.NO;
+		lg1.getStatus().missileStatus="J=NO";
 		Assert.assertEquals("LG is DS against HC only if it is not missile NO", Superiority.NONE,
 				fc.findSuperiority(hc, lg1));
 

@@ -60,8 +60,8 @@ public class Shock extends UnitCommand {
 				}
 				modifiersForMissile.add(new Modifier<Boolean>(ModifierDefinition.norf,true));
 				for (Unit attacker : c.getAttackers()) {
-					if (attacker.getMissile() != MissileType.NONE
-							&& attacker.getStatus().missileStatus != MissileStatus.NO) {
+					if (attacker.getMainMissile() != MissileType.NONE
+							&& attacker.getMainMissileStatus() != MissileStatus.NO) {
 						missileFire
 								.execute(Collections.singletonList(attacker), Collections.singletonList(mainDefender),
 										modifiersForMissile);
@@ -83,8 +83,8 @@ public class Shock extends UnitCommand {
 						reactionFireTarget = attackers.get(0);
 					}
 
-					if (defender.getMissile() != MissileType.NONE
-							&& defender.getStatus().missileStatus != MissileStatus.NO) {
+					if (defender.getMainMissile() != MissileType.NONE
+							&& defender.getMainMissileStatus() != MissileStatus.NO) {
 						missileFire.execute(Collections.singletonList(defender),
 								Collections.singletonList(reactionFireTarget), modifiersForMissile);
 					}

@@ -59,7 +59,7 @@ public class UndoTest {
 
 		final CommandHistory ch1 = new CommandHistory(1, "CMD1",1);
 		final UnitStatus before = new UnitStatus();
-		before.missileStatus = MissileStatus.FULL;
+		before.missileStatus = "S=FULL";
 		before.state = UnitState.OK;
 		before.hits = 0;
 		final UnitStatus after = Helper.clone(before);

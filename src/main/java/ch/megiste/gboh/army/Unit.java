@@ -2,16 +2,23 @@ package ch.megiste.gboh.army;
 
 import static ch.megiste.gboh.army.UnitStatus.NONE;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.util.Strings;
 
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
 import ch.megiste.gboh.command.unit.Log;
 import ch.megiste.gboh.util.Helper;
+import ch.megiste.gboh.util.MissileStatusHelper;
 
 public class Unit {
 	private UnitKind kind;
@@ -21,7 +28,7 @@ public class Unit {
 	private String unitCode;
 	private int tq;
 	private int size;
-	private MissileType missile;
+	private List<MissileType> missiles;
 
 	public UnitStatus getStatus() {
 		return status;
@@ -84,6 +91,10 @@ public class Unit {
 		return status.depleted;
 	}
 
+	public List<MissileType> getMissiles() {
+		return missiles;
+	}
+
 	public enum MissileWeapon {
 		Bows, Slings, Artillery, Javelin, none;
 
@@ -92,7 +103,7 @@ public class Unit {
 	public enum MissileType {
 		NONE(MissileWeapon.none), S(MissileWeapon.Slings), BS(MissileWeapon.Slings), J(MissileWeapon.Javelin, 7,
 				false), MJ(MissileWeapon.Javelin, 7, false), A(MissileWeapon.Bows), MA(MissileWeapon.Bows), O(
-				MissileWeapon.Artillery), IA(MissileWeapon.Bows);
+				MissileWeapon.Artillery), IA(MissileWeapon.Bows), ES(MissileWeapon.Bows);
 
 		private boolean lessPreciseAfterMovement = true;
 		private int missileShortageLevel = 9;
@@ -162,7 +173,8 @@ public class Unit {
 
 	public enum SubClass {
 		Ha("Hastati"), Pr("Principes"), CE("Cohorte Extraordinary"), Co("Cohorte"), TR("Triarii"), Ve("Velites"), RC(
-				"Roman cavalry"), HO("Hoplite"), CAT("Cataphracted"), CA("Cardaces"), NONE("");
+				"Roman cavalry"), HO("Hoplite"), CAT("Cataphracted"), CA("Cardaces"), NONE(""), Indian("Indian");
+
 		private String description;
 
 		SubClass(final String description) {
@@ -176,6 +188,12 @@ public class Unit {
 
 	public Unit(final UnitKind kind, final SubClass subclass, final String origin, final String number,
 			final String unitCode, final int tq, final int size, final MissileType missile) {
+		this(kind, subclass, origin, number, unitCode, tq, size,
+				missile == null ? Collections.emptyList() : Collections.singletonList(missile));
+	}
+
+	public Unit(final UnitKind kind, final SubClass subclass, final String origin, final String number,
+			final String unitCode, final int tq, final int size, final List<MissileType> missiles) {
 		this.kind = kind;
 		this.subclass = subclass;
 		this.origin = origin;
@@ -183,14 +201,26 @@ public class Unit {
 		this.unitCode = unitCode;
 		this.tq = tq;
 		this.size = size;
-		if (kind != UnitKind.LG) {
-			this.missile = missile;
+		if (CollectionUtils.isNotEmpty(missiles)) {
+			this.missiles = missiles;
 		} else {
-			this.missile = MissileType.J;
+			this.missiles = new ArrayList<>();
 		}
-		if (this.missile == MissileType.NONE) {
-			status.missileStatus = MissileStatus.NEVER;
+		if (kind == UnitKind.LG && (missiles.isEmpty() || missiles.contains(MissileType.NONE))) {
+			this.missiles = Collections.singletonList(MissileType.J);
 		}
+		status.missileStatus = null;
+		if (!this.missiles.isEmpty()) {
+			HashMap<MissileType, MissileStatus> ms = new HashMap<>();
+			for (MissileType missileType : this.missiles) {
+				ms.put(missileType, MissileStatus.FULL);
+			}
+			recordMissileStatus(ms);
+		}
+	}
+
+	private void recordMissileStatus(final HashMap<MissileType, MissileStatus> ms) {
+		status.missileStatus = MissileStatusHelper.missileStatusToString(ms);
 	}
 
 	public UnitKind getKind() {
@@ -224,8 +254,12 @@ public class Unit {
 		return size;
 	}
 
-	public MissileType getMissile() {
-		return missile;
+	public MissileType getMainMissile() {
+		if (missiles.isEmpty()) {
+			return MissileType.NONE;
+		} else {
+			return missiles.get(0);
+		}
 	}
 
 	public static Pattern LEGIO_ORIGIN_PATTERN = Pattern.compile("^(\\d+)(A?).*");
@@ -245,8 +279,16 @@ public class Unit {
 		return null;
 	}
 
-	public MissileStatus getMissileStatus() {
-		return status.missileStatus;
+	public MissileStatus getMainMissileStatus() {
+		if (missiles.isEmpty()) {
+			return MissileStatus.NEVER;
+		}
+		return getMissileStatus().get(missiles.get(0));
+	}
+
+	public Map<MissileType, MissileStatus> getMissileStatus() {
+		final String missileStatus = status.missileStatus;
+		return MissileStatusHelper.missileStatusFromString(missileStatus);
 	}
 
 	public int getHits() {
@@ -268,12 +310,12 @@ public class Unit {
 		final Unit unit = (Unit) o;
 		return tq == unit.tq && size == unit.size && kind == unit.kind && subclass == unit.subclass && Objects
 				.equals(origin, unit.origin) && Objects.equals(number, unit.number) && Objects
-				.equals(unitCode, unit.unitCode) && missile == unit.missile;
+				.equals(unitCode, unit.unitCode) && Objects.equals(missiles, unit.missiles);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(kind, subclass, origin, number, unitCode, tq, size, missile);
+		return Objects.hash(kind, subclass, origin, number, unitCode, tq, size, missiles);
 	}
 
 	@Override

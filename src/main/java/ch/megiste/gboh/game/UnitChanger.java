@@ -28,10 +28,11 @@ import ch.megiste.gboh.command.unit.Log;
 import ch.megiste.gboh.game.GameStatus.Rules;
 import ch.megiste.gboh.util.Console;
 import ch.megiste.gboh.util.Helper;
+import ch.megiste.gboh.util.MissileStatusHelper;
 
 public class UnitChanger {
-	private static final Set<UnitState> BEFORE_ROUTING = EnumSet.of( OK, RALLIED);
-	private static final Set<UnitState> BEFORE_ELIMINATED = EnumSet.of( OK, RALLIED, ROUTED);
+	private static final Set<UnitState> BEFORE_ROUTING = EnumSet.of(OK, RALLIED);
+	private static final Set<UnitState> BEFORE_ELIMINATED = EnumSet.of(OK, RALLIED, ROUTED);
 	private static final Set<UnitState> BEFORE_RALLIED = EnumSet.of(ROUTED);
 	private Map<UnitState, Set<UnitState>> stateTransitions = new HashMap<>();
 
@@ -50,10 +51,6 @@ public class UnitChanger {
 	public UnitChanger(final Console console, final GameStatus gameStatus) {
 		this.console = console;
 		this.gameStatus = gameStatus;
-	}
-
-	public void addHit(Unit u) {
-		addHits(u, 1);
 	}
 
 	public void addHits(final Unit u, final int c) {
@@ -78,32 +75,44 @@ public class UnitChanger {
 				newState = null;
 			}
 		}
-		changeState(u, newHits, newState, null);
+		changeState(u, newHits, newState);
 	}
 
-	public void missileDepletion(final Unit u) {
-		final UnitStatus status = u.getStatus();
+	public void changeState(final Unit u, final Integer newHits, final UnitState newState) {
+		changeState(u,newHits,newState,null);
+	}
+
+	public void missileDepletion(final Unit u, final MissileType missileType) {
+		final MissileStatus currentStatus = u.getMissileStatus().get(missileType);
 		final MissileStatus newStatus;
-		if (u.getMissileStatus() == MissileStatus.FULL && u.getKind() != UnitKind.LG) {
+		if (currentStatus == MissileStatus.FULL && u.getKind() != UnitKind.LG) {
 			newStatus = MissileStatus.LOW;
-		} else if (u.getMissileStatus() == MissileStatus.FULL && u.getKind() == UnitKind.LG) {
+		} else if (currentStatus == MissileStatus.FULL && u.getKind() == UnitKind.LG) {
 			newStatus = MissileStatus.NO;
-		} else if (u.getMissileStatus() == MissileStatus.LOW) {
+		} else if (currentStatus == MissileStatus.LOW) {
 			newStatus = MissileStatus.NO;
 		} else {
-			newStatus = status.missileStatus;
+
+			newStatus = u.getMissileStatus().get(missileType);
 		}
-		changeState(u, null, null, newStatus);
+
+		final Map<MissileType, MissileStatus> missileStatus = new HashMap<>();
+		missileStatus.put(missileType,newStatus);
+		changeState(u, null, null, missileStatus);
 
 	}
+
 
 	public void changeState(final Unit u, final Integer hits, final UnitState state,
-			final MissileStatus missileStatus) {
-		changeStateInternal(u, hits, state, missileStatus, null, null, false);
+			final Map<MissileType,MissileStatus> missileStatus) {
+		changeStateInternal(u, hits, state, missileStatus, null, null,
+				false);
 	}
 
+
 	private void changeStateInternal(final Unit u, final Integer hits, final UnitState state,
-			final MissileStatus missileStatus, final String stackedOn, final String stackedUnder, final boolean undo) {
+			final Map<MissileType, MissileStatus> missileStatus, final String stackedOn, final String stackedUnder,
+			final boolean undo) {
 		final UnitStatus status = u.getStatus();
 		final UnitStatus before = Helper.clone(status);
 		List<String> statusList = new ArrayList<>();
@@ -126,11 +135,13 @@ public class UnitChanger {
 			}
 
 		}
-		if (missileStatus != null && missileStatus != status.missileStatus) {
-			statusList.add("is missile " + missileStatus);
-			status.missileStatus = missileStatus;
-		} else if (u.getMissile() == MissileType.NONE) {
-			status.missileStatus = MissileStatus.NEVER;
+		if (missileStatus != null && !MissileStatusHelper.missileStatusToString(missileStatus).equals(status.missileStatus)) {
+			if (missileStatus.size() > 0) {
+				statusList.add("is missile " + missileStatus.values().iterator().next());
+			}
+			status.missileStatus = MissileStatusHelper.missileStatusToString(missileStatus);
+		} else if (u.getMainMissile() == MissileType.NONE) {
+			status.missileStatus = "";
 		}
 
 		boolean stateChanged = false;
@@ -171,12 +182,14 @@ public class UnitChanger {
 
 	public void changeStateForUndo(final String unitCode, final UnitStatus status) {
 		final Unit u = gameStatus.findUnitByCode(unitCode);
-		changeStateInternal(u, status.hits, status.state, status.missileStatus, status.stackOn, status.stackUnder, true);
+		changeStateInternal(u, status.hits, status.state, MissileStatusHelper.missileStatusFromString(status.missileStatus), status.stackOn, status.stackUnder,
+				true);
 	}
 
 	public void changeStateNoCheck(final Unit u, final int hits, final UnitState state,
-			final MissileStatus missileState) {
-		changeStateInternal(u, hits, state, missileState, null, null, true);
+			final Map<MissileType, MissileStatus> missileState) {
+		changeStateInternal(u, hits, state, missileState, null, null,
+				true);
 	}
 
 	public Rules getCurrentRules() {
@@ -204,6 +217,6 @@ public class UnitChanger {
 	}
 
 	public void eliminated(final Unit u) {
-		changeStateInternal(u,null,ELIMINATED,null,null,null,false);
+		changeStateInternal(u, null, ELIMINATED, null, null, null, false);
 	}
 }
