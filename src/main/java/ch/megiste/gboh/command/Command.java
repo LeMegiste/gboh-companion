@@ -1,5 +1,8 @@
 package ch.megiste.gboh.command;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.megiste.gboh.command.unit.UnitCommand;
 import ch.megiste.gboh.game.GameStatus;
 import ch.megiste.gboh.game.GameStatus.Rules;
@@ -48,6 +51,14 @@ public abstract class Command implements Comparable {
 
 	public abstract String getKey();
 
+	public List<String> getSynonyms() {
+		return new ArrayList<>();
+	}
+
+	public boolean isExecutableFrom(String c) {
+		return getKey().equals(c) || getSynonyms().contains(c);
+	}
+
 	@Override
 	public int compareTo(final Object o) {
 		if (o instanceof UnitCommand) {
@@ -57,7 +68,7 @@ public abstract class Command implements Comparable {
 		return 1;
 	}
 
-	public Rules getCurrentRules(){
+	public Rules getCurrentRules() {
 		return unitChanger.getCurrentRules();
 	}
 

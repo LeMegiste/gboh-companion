@@ -1,6 +1,9 @@
 package ch.megiste.gboh.command.game;
 
+import java.util.Collections;
 import java.util.List;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import ch.megiste.gboh.game.GameStatus;
 
@@ -11,7 +14,12 @@ public class RoutPoints extends GameCommand {
 
 	@Override
 	public String getKey() {
-		return "ROUT_POINTS";
+		return "RP";
+	}
+
+	@Override
+	public List<String> getSynonyms() {
+		return Collections.singletonList("ROUT_POINTS");
 	}
 
 	@Override

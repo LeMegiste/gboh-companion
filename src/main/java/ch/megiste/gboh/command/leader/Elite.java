@@ -2,6 +2,9 @@ package ch.megiste.gboh.command.leader;
 
 import static ch.megiste.gboh.command.leader.LogLeader.logLeader;
 
+import java.util.Arrays;
+import java.util.List;
+
 import ch.megiste.gboh.army.Leader;
 
 public class Elite extends LeaderCommand {
@@ -12,6 +15,11 @@ public class Elite extends LeaderCommand {
 	@Override
 	public String getKey() {
 		return "ELI";
+	}
+
+	@Override
+	public List<String> getSynonyms(){
+		return Arrays.asList("Elite","ELITE");
 	}
 
 	@Override

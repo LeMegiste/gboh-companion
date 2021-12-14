@@ -21,11 +21,11 @@ import ch.megiste.gboh.util.GbohError;
 
 public class CommandResolver {
 
-
 	private CommandsHolder commandsHolder = new CommandsHolder();
 
 	public GameCommand resolveGameCommand(final String command) {
-		return commandsHolder.getGameCommands().stream().filter(c -> c.getKey().equals(command)).findFirst().orElse(null);
+		return commandsHolder.getGameCommands().stream().filter(c -> c.isExecutableFrom(command)).findFirst()
+				.orElse(null);
 	}
 
 	public Set<ClassLocation> getAllClassLocations(String packageName, String... otherPackages) throws Exception {
@@ -45,7 +45,7 @@ public class CommandResolver {
 
 			final Set<ClassLocation> classLocations =
 					getAllClassLocations("ch.megiste.gboh.command", "ch.megiste.gboh.command.game",
-							"ch.megiste.gboh.command.unit","ch.megiste.gboh.command.leader");
+							"ch.megiste.gboh.command.unit", "ch.megiste.gboh.command.leader");
 			Dice dice = new Dice();
 			for (ClassLocation cl : classLocations) {
 				Class<?> clazz = Class.forName(cl.getClassName());
@@ -102,8 +102,15 @@ public class CommandResolver {
 			} else {
 				keys.add(uc.getKey());
 			}
-		}
+			for (String s : uc.getSynonyms()) {
+				if (keys.contains(s)) {
+					throw new GbohError("Another command already uses the synonym " + s);
+				} else {
+					keys.add(s);
+				}
 
+			}
+		}
 
 	}
 
@@ -129,10 +136,12 @@ public class CommandResolver {
 	}
 
 	public UnitCommand resolveUnitCommand(final String command) {
-		return commandsHolder.getUnitCommands().stream().filter(c -> c.getKey().equals(command)).findFirst().orElse(null);
+		return commandsHolder.getUnitCommands().stream().filter(c -> c.isExecutableFrom(command)).findFirst()
+				.orElse(null);
 	}
 
 	public LeaderCommand resolveLeaderCommand(final String command) {
-		return commandsHolder.getLeaderCommands().stream().filter(c -> c.getKey().equals(command)).findFirst().orElse(null);
+		return commandsHolder.getLeaderCommands().stream().filter(c -> c.isExecutableFrom(command)).findFirst()
+				.orElse(null);
 	}
 }

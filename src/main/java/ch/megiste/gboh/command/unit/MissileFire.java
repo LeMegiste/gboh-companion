@@ -212,4 +212,8 @@ public class MissileFire extends UnitCommand {
 		return true;
 	}
 
+	@Override
+	public List<String> getSynonyms() {
+		return Collections.singletonList("Fire");
+	}
 }
