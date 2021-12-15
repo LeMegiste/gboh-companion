@@ -3,22 +3,28 @@ PH		Macedonian	1	PH1	7	10						Infantry	1500
 PH		Macedonian	2	PH2	7	10						Infantry	1500
 PH		Macedonian	3	PH3	7	10						Infantry	1500
 PH		Macedonian	4	PH4	7	10						Infantry	1500
+PH		Macedonian	5	PH5	7	10						Infantry	1500
+LP		Mercenary	1	LP1	5	5	J					Infantry	750
+LP		Mercenary	2	LP2	5	5	J					Infantry	750
 SK		Macedonian	1	SK1	4	1	A					SK	0
-SK		Macedonian	2	SK2	4	1	A					SK	0
-SK		Mercenary	1	MSK1	4	1	S					SK	0
-SK		Mercenary	2	MSK2	4	1	S					SK	0
+SK		Cretan	1	SK1	4	1	A					SK	0
+SK		Macedonian	3	SK3	4	1	A					SK	0
 SKp		Agrianian	3	Ag1	6	1	J					SKp	0
 SKp		Agrianian	4	Ag2	6	1	J					SKp	0
-SK		Illyrian	1	ISK	5	1	J					SK	0
 HI		Hypaspists	Agema	HHIA	9	7						Infantry	1050
 HI		Hypaspists	1	HHI1	8	6						Infantry	900
 HI		Hypaspists	2	HHI2	8	6						Infantry	900
-LC		Dahae		DLC	5	5	J					Cavalry	500
-LC		Sacae		SLC	5	5	J					Cavalry	500
-LN		Prodromoi	2	PLN2	7	4						Cavalry	400
-LN		Prodromoi	3	PLN3	7	4						Cavalry	400
+LC		Dahae	1	DLC1	5	5	MA					Cavalry	500
+LC		Dahae	2	DLC2	5	5	MA					Cavalry	500
+LC		Sogdian	1	SLC1	6	5	MJ					Cavalry	500
+LC		Sacaen	2	SLC2	6	5	MA					Cavalry	500
+LC		Sacaen	3	SLC3	6	5	MA					Cavalry	500
 HC		Companion	Agema	CHCA	9	3						Cavalry	300
 HC		Companion	1	CHC1	8	5						Cavalry	500
 HC		Companion	2	CHC2	8	5						Cavalry	500
 HC		Companion	3	CHC3	8	5						Cavalry	500
 HC		Companion	4	CHC4	8	5						Cavalry	500
+HC	CAT	Bactrian	1	BHC1	7	4						Cavalry	400
+LC		Arachosian	1	ALC1	7	3	MJ					Cavalry	300
+LC		Parapamasidian	1	PLC1	7	3	MJ					Cavalry	300
+HC		Companion	5	CHC5	8	5						Cavalry	500

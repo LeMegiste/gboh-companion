@@ -1,28 +1,52 @@
 Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus	Unit global type	Nb mens
-LI		Indian Archer	1	LIA1	4	5	IA				Infantry	750
-LI		Indian Archer	2	LIA2	4	5	IA				Infantry	750
-LI		Indian Archer	3	LIA3	4	5	IA				Infantry	750
-LI		Indian Archer	4	LIA4	4	5	IA				Infantry	750
-LI		Indian Archer	5	LIA5	4	5	IA				Infantry	750
-LI		Indian Archer	6	LIA6	4	5	IA				Infantry	750
-LI		Indian Javelinist	1	LI1	5	5	J				Infantry	750
-LI		Indian Javelinist	2	LI2	5	5	J				Infantry	750
-LI		Indian Javelinist	3	LI3	5	5	J				Infantry	750
-LI		Indian Javelinist	4	LI4	5	5	J				Infantry	750
-LI		Indian Javelinist	5	LI5	5	5	J				Infantry	750
-LI		Indian Javelinist	6	LI6	5	5	J				Infantry	750
-LI		Indian Javelinist	7	LI7	5	5	J				Infantry	750
-LI		Indian Javelinist	8	LI8	5	5	J				Infantry	750
-LI		Indian Javelinist	9	LI9	5	5	J				Infantry	750
-LI		Indian Javelinist	10	LI10	5	5	J				Infantry	750
-LI		Indian Javelinist	11	LI11	5	5	J				Infantry	750
-LI		Indian Javelinist	12	LI12	5	5	J				Infantry	750
-LI		Indian Javelinist	13	LI13	5	5	J				Infantry	750
-LI		Indian Javelinist	14	LI14	5	5	J				Infantry	750
-LI		Indian Javelinist	15	LI15	5	5	J					
-LI		Indian Javelinist	16	LI16	5	5	J					
-LI		Indian Javelinist	17	LI17	5	5	J					
-LI		Indian Javelinist	18	LI18	5	5	J					
-LI		Indian Javelinist	19	LI19	5	5	J					
-LI		Indian Javelinist	20	LI20	5	5	J					
-LI		Indian Javelinist	21	LI21	5	5	J					
+CH		Chariots	1	CH1	4	5	J				CH	0
+CH		Chariots	2	CH2	4	5	J				CH	0
+CH		Chariots	3	CH3	4	5	J				CH	0
+CH		Chariots	4	CH4	4	5	J				CH	0
+CH		Chariots	5	CH5	4	5	J				CH	0
+CH		Chariots	6	CH6	4	5	J				CH	0
+CH		Chariots	7	CH7	4	5	J				CH	0
+CH		Chariots	8	CH8	4	5	J				CH	0
+EL		Indian	1	EL1	6	5	MJ,ES				EL	0
+EL		Indian	2	EL2	6	5	MJ,ES				EL	0
+EL		Indian	3	EL3	6	5	MJ,ES				EL	0
+EL		Indian	4	EL4	6	5	MJ,ES				EL	0
+EL		Indian	5	EL5	6	5	MJ,ES				EL	0
+EL		Indian	6	EL6	6	5	MJ,ES				EL	0
+EL		Indian	7	EL7	6	5	MJ,ES				EL	0
+EL		Indian	8	EL8	6	5	MJ,ES				EL	0
+EL		Indian	9	EL9	6	5	MJ,ES				EL	0
+EL		Indian	10	EL10	6	5	MJ,ES				EL	0
+EL		Indian	11	EL11	6	5	MJ,ES				EL	0
+EL		Indian	12	EL12	6	5	MJ,ES				EL	0
+EL		Indian	13	EL13	6	5	MJ,ES				EL	0
+EL		Indian	14	EL14	6	5	MJ,ES				EL	0
+EL		Indian	15	EL15	6	5	MJ,ES				EL	0
+EL		Indian	16	EL16	6	5	MJ,ES				EL	0
+EL		Indian	17	EL17	6	5	MJ,ES				EL	0
+EL		Indian	18	EL18	6	5	MJ,ES				EL	0
+EL		Indian	19	EL19	6	5	MJ,ES				EL	0
+EL		Indian	20	EL20	6	5	MJ,ES				EL	0
+EL		Indian	21	EL21	6	5	MJ,ES				EL	0
+LI		Indian	1	LIA1	4	5	IA				Infantry	750
+LI		Indian	2	LIA2	4	5	IA				Infantry	750
+LI		Indian	3	LIA3	4	5	IA				Infantry	750
+LI		Indian	4	LIA4	4	5	IA				Infantry	750
+LI		Indian	5	LIA5	4	5	IA				Infantry	750
+LI		Indian	6	LIA6	4	5	IA				Infantry	750
+LI		Indian	1	LI1	5	5	J				Infantry	750
+LI		Indian	2	LI2	5	5	J				Infantry	750
+LI		Indian	3	LI3	5	5	J				Infantry	750
+LI		Indian	4	LI4	5	5	J				Infantry	750
+LI		Indian	5	LI5	5	5	J				Infantry	750
+LI		Indian	6	LI6	5	5	J				Infantry	750
+LI		Indian	7	LI7	5	5	J				Infantry	750
+LI		Indian	8	LI8	5	5	J				Infantry	750
+LI		Indian	9	LI9	5	5	J				Infantry	750
+LI		Indian	10	LI10	5	5	J				Infantry	750
+LI		Indian	11	LI11	5	5	J				Infantry	750
+LI		Indian	12	LI12	5	5	J				Infantry	750
+LI		Indian	13	LI13	5	5	J				Infantry	750
+LI		Indian	14	LI14	5	5	J				Infantry	750
+LI		Indian	15	LI15	5	5	J				Infantry	750
+LI		Indian	16	LI16	5	5	J				Infantry	750

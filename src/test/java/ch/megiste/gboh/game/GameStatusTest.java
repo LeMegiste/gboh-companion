@@ -102,12 +102,12 @@ public class GameStatusTest {
 
 	@Test
 	public void orderLeaders() {
-		Leader l1 = new Leader("LEO","Leonidas",5,5);
-		Leader l2 = new Leader("JAQ","Jacquos",3,5);
-		Leader l2b = new Leader("TBR","Thomasses",3,5);
-		Leader l3 = new Leader("PTO","Ptolemy",5,5);
-		Leader l3b = new Leader("PHI","Philip",5,5);
-		Leader l4 = new Leader("ALE","Alex",7,9);
+		Leader l1 = new Leader("LEO","Leonidas",5,5, true);
+		Leader l2 = new Leader("JAQ","Jacquos",3,5, true);
+		Leader l2b = new Leader("TBR","Thomasses",3,5, true);
+		Leader l3 = new Leader("PTO","Ptolemy",5,5, true);
+		Leader l3b = new Leader("PHI","Philip",5,5, true);
+		Leader l4 = new Leader("ALE","Alex",7,9, true);
 
 		when(dice.roll()).thenReturn(1);
 		final List<Leader> res = gs.orderLeaders(Arrays.asList(l1, l2,l2b), Arrays.asList(l3, l3b,l4));

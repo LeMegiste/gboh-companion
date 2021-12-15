@@ -8,4 +8,5 @@ public class LeaderStatus implements Serializable {
 	public int nbOrdersGiven=0;
 	public boolean eliteUsed;
 	public boolean didTrump = false;
+	public boolean present = true;
 }

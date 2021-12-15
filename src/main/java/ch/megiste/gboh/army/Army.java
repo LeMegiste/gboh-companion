@@ -10,6 +10,7 @@ public class Army {
 	private String name;
 	private List<Unit> units;
 	private List<Leader> leaders = new ArrayList<>();
+	private Integer routPoints;
 
 	public Army(final String name, final List<Unit> units) {
 		this.name = name;
@@ -26,6 +27,14 @@ public class Army {
 
 	public List<Leader> getLeaders() {
 		return leaders;
+	}
+
+	public Integer getRoutPoints() {
+		return routPoints;
+	}
+
+	public void setRoutPoints(final Integer routPoints) {
+		this.routPoints = routPoints;
 	}
 }
 

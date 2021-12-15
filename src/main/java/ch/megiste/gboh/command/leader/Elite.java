@@ -24,7 +24,7 @@ public class Elite extends LeaderCommand {
 
 	@Override
 	public void execute(final Leader leader) {
-		if (gameStatus.getAllLeaders().stream().anyMatch(leader1 -> leader1.getStatus().eliteUsed)) {
+		if (gameStatus.getOrderedLeaders().stream().anyMatch(leader1 -> leader1.getStatus().eliteUsed)) {
 			console.logNL("Elite activation already used this turn.");
 			return;
 		}
@@ -32,8 +32,8 @@ public class Elite extends LeaderCommand {
 			console.logNL("No current leader");
 		}
 
-		if (gameStatus.getAllLeaders().stream().anyMatch(leader1 -> leader1.getNbActivations() > 0) || gameStatus
-				.getAllLeaders().stream().anyMatch(leader1 -> leader1.getStatus().nbOrdersGiven > 0)) {
+		if (gameStatus.getOrderedLeaders().stream().anyMatch(leader1 -> leader1.getNbActivations() > 0) || gameStatus
+				.getOrderedLeaders().stream().anyMatch(leader1 -> leader1.getStatus().nbOrdersGiven > 0)) {
 			console.logNL("At least one leader was already activated.");
 			return;
 		}

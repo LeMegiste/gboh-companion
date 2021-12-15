@@ -4,13 +4,11 @@ import static ch.megiste.gboh.command.leader.LogLeader.logLeader;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Joiner;
 
 import ch.megiste.gboh.army.Leader;
-import ch.megiste.gboh.command.leader.LogLeader;
 import ch.megiste.gboh.game.GameStatus;
 
 public class EndOrderPhase extends GameCommand {
@@ -44,7 +42,7 @@ public class EndOrderPhase extends GameCommand {
 		}
 		if (!l.isFinished()) {
 			final List<Leader> trumpingLeaders =
-					gameStatus.getAllLeaders().stream().filter(l2 -> l2.didTrump()).collect(Collectors.toList());
+					gameStatus.getOrderedLeaders().stream().filter(l2 -> l2.didTrump()).collect(Collectors.toList());
 			Collections.reverse(trumpingLeaders);
 			if(trumpingLeaders.size()>0 && l.getInitiative()<trumpingLeaders.get(0).getInitiative()){
 				console.logFormat("%s did trump. %s cannot use momentum and is finished", logLeader(trumpingLeaders.get(0)),logLeader(l));
@@ -80,9 +78,9 @@ public class EndOrderPhase extends GameCommand {
 						console.logFormat(
 								"Dice rolled [%d]. A leader of the opposing camp can be activated. %s is now finished. ",
 								doom, leaderName);
-						gs.getAllLeaders().forEach(ll->console.logNL(logLeader(ll)));
+						gs.getOrderedLeaders().forEach(ll->console.logNL(logLeader(ll)));
 						List<String> leaderCodes =
-								gs.getAllLeaders().stream().map(Leader::getCode).collect(Collectors.toList());
+								gs.getOrderedLeaders().stream().map(Leader::getCode).collect(Collectors.toList());
 						String leaderCodesString = Joiner.on(",").join(leaderCodes);
 						String code = console.readLine(
 								String.format("Please choose the leader to be activated now?[y/n]%n%s%n>>",

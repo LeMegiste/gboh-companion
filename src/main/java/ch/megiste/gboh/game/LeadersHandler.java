@@ -22,7 +22,19 @@ public class LeadersHandler {
 		changeLeaderInternal(leader,sc);
 	}
 
+	public void enter(final Leader leader) {
+		final LeaderStatusChange lsc = new LeaderStatusChange();
+		lsc.present=true;
+		changeLeaderInternal(leader,lsc);
+	}
+	public void exit(final Leader leader) {
+		final LeaderStatusChange lsc = new LeaderStatusChange();
+		lsc.present=false;
+		changeLeaderInternal(leader,lsc);
+	}
+
 	private static class LeaderStatusChange {
+		Boolean present;
 		Integer nbActivations;
 		Boolean finished;
 		Integer nbOrdersGiven;
@@ -52,6 +64,9 @@ public class LeadersHandler {
 		}
 		if (lsc.didTrump != null) {
 			leader.getStatus().didTrump = lsc.didTrump;
+		}
+		if (lsc.present != null) {
+			leader.getStatus().present = lsc.present;
 		}
 		gameStatus.recordChange(before, leader);
 	}

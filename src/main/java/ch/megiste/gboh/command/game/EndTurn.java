@@ -1,6 +1,5 @@
 package ch.megiste.gboh.command.game;
 
-import java.nio.file.Files;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -62,7 +61,7 @@ public class EndTurn extends GameCommand {
 		}
 		if(gs.areLeadersUsed()){
 			console.logFormat("--Un-finishing leaders");
-			for(Leader l : gs.getAllLeaders()){
+			for(Leader l : gs.getOrderedLeaders()){
 				leadersHandler.flipLeader(l);
 			}
 		}
@@ -81,8 +80,15 @@ public class EndTurn extends GameCommand {
 		for (Unit u : routingUnits) {
 			console.logNL(Log.logUnitDetailed(u));
 		}
-		console.logNL(String.format("%s - rout points: %d",gs.getArmy1().getName(),gs.computeArmy1RoutPoints()));
-		console.logNL(String.format("%s - rout points: %d",gs.getArmy2().getName(),gs.computeArmy2RoutPoints()));
+		console.logNL(gs.logRoutpointsForArmy(gs.getArmy1()));
+		if(gs.isArmyRouting(gs.getArmy1())){
+			console.logFormat("% army is ROUTING",gs.getArmy1().getName());
+		}
+		console.logNL(gs.logRoutpointsForArmy(gs.getArmy2()));
+		if(gs.isArmyRouting(gs.getArmy2())){
+			console.logFormat("% army is ROUTING",gs.getArmy2().getName());
+		}
+
 
 
 

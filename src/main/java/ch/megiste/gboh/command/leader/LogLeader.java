@@ -32,6 +32,9 @@ public class LogLeader extends LeaderCommand {
 		} else if (leader.getNbActivations() > 1) {
 			sb.append(leader.getNbActivations()).append(" activations");
 		}
+		if(!leader.isPresent()){
+			sb.append(" absent from the battlefield");
+		}
 
 		return sb.toString();
 	}

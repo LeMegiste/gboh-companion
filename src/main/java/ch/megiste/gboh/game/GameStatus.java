@@ -121,6 +121,10 @@ public class GameStatus {
 		currentLeader = l;
 	}
 
+	public boolean isArmyRouting(final Army a) {
+		return a.getRoutPoints() != null && a.getRoutPoints() <= computeRoutPoints(a);
+	}
+
 	public enum Rules {
 		SPQR, GBOA
 	}
@@ -191,6 +195,9 @@ public class GameStatus {
 				rules = Rules.valueOf(battleProperties.getProperty("rules"));
 			}
 
+			setRoutPointsForArmy(battleProperties, army1);
+			setRoutPointsForArmy(battleProperties, army2);
+
 			//Check armies consistency
 			List<String> processedCodes = new ArrayList<>();
 			boolean invalidArmies = false;
@@ -215,7 +222,6 @@ public class GameStatus {
 
 			currentDir = battleDir;
 			battleName = battleDir.getFileName().toString();
-
 
 			Path gamePropsPath = getGameBackupFile();
 			if (Files.exists(gamePropsPath)) {
@@ -250,12 +256,23 @@ public class GameStatus {
 				}
 
 			} else {
-				state.currentTurn=1;
-				state.currentCommand=1;
+				state.currentTurn = 1;
+				state.currentCommand = 1;
+			}
+			if (areLeadersUsed()) {
+				areLeadersOrdered = false;
+				currentLeader = computeNextLeader();
 			}
 
 		} catch (IOException e) {
 			throw new GbohError(e);
+		}
+	}
+
+	void setRoutPointsForArmy(final Properties battleProperties, final Army a) {
+		final String keyRp = "routpoints." + a.getName();
+		if (battleProperties.getProperty(keyRp) != null) {
+			a.setRoutPoints(Integer.parseInt(battleProperties.getProperty(keyRp)));
 		}
 	}
 
@@ -375,8 +392,8 @@ public class GameStatus {
 
 		}
 
-		final Unit unit =
-				new Unit(kind, sc, r.get(Head.Origin), r.get(Head.Number), r.get(Head.UnitCode), tq, size, missileTypes);
+		final Unit unit = new Unit(kind, sc, r.get(Head.Origin), r.get(Head.Number), r.get(Head.UnitCode), tq, size,
+				missileTypes);
 		if (r.isSet(Head.Hits.toString()) && Strings.isNotEmpty(r.get(Head.Hits))) {
 			unit.getStatus().hits = Integer.parseInt(r.get(Head.Hits));
 		}
@@ -396,8 +413,11 @@ public class GameStatus {
 		String name = r.get("Name");
 		final int initiative = Integer.parseInt(r.get("Initiative"));
 		final int range = Integer.parseInt(r.get("Range"));
-
-		return new Leader(code, name, initiative, range);
+		boolean present = true;
+		if (r.isSet("Present") && "No".equals(r.get("Present"))) {
+			present = false;
+		}
+		return new Leader(code, name, initiative, range, present);
 	}
 
 	public void persistGame() {
@@ -447,8 +467,8 @@ public class GameStatus {
 	}
 
 	public Leader computeNextLeader() {
-		List<Leader> nextLeaders =
-				getAllLeaders().stream().filter(l -> !l.getStatus().finished).collect(Collectors.toList());
+		List<Leader> nextLeaders = getOrderedLeaders().stream().filter(l -> !l.getStatus().finished && l.isPresent())
+				.collect(Collectors.toList());
 		if (nextLeaders.size() > 0) {
 			return nextLeaders.get(0);
 		} else {
@@ -588,11 +608,18 @@ public class GameStatus {
 
 	private List<Leader> orderedLeaders = new ArrayList<>();
 
-	public List<Leader> getAllLeaders() {
+	public List<Leader> getOrderedLeaders() {
 		if (!areLeadersOrdered) {
 			orderedLeaders = orderLeaders(army1.getLeaders(), army2.getLeaders());
 		}
 		return orderedLeaders;
+	}
+
+	public List<Leader> getAllLeaders() {
+		List<Leader> leaders = new ArrayList<>();
+		leaders.addAll(army1.getLeaders());
+		leaders.addAll(army2.getLeaders());
+		return leaders;
 	}
 
 	private static class Node<T> {
@@ -609,8 +636,10 @@ public class GameStatus {
 		List<Leader> out = new ArrayList<>();
 		for (int i = 1; i <= 8; i++) {
 			final int init = i;
-			List<Leader> l1 = leaders1.stream().filter(l -> l.getInitiative() == init).collect(Collectors.toList());
-			List<Leader> l2 = leaders2.stream().filter(l -> l.getInitiative() == init).collect(Collectors.toList());
+			List<Leader> l1 = leaders1.stream().filter(l -> l.getInitiative() == init && l.isPresent())
+					.collect(Collectors.toList());
+			List<Leader> l2 = leaders2.stream().filter(l -> l.getInitiative() == init && l.isPresent())
+					.collect(Collectors.toList());
 			Collections.reverse(l1);
 			Collections.reverse(l2);
 
@@ -711,10 +740,6 @@ public class GameStatus {
 		return rules;
 	}
 
-	public void setRules(final Rules rules) {
-		this.rules = rules;
-	}
-
 	public int computeArmy1RoutPoints() {
 		return computeRoutPoints(getArmy1());
 	}
@@ -757,4 +782,14 @@ public class GameStatus {
 	public void setDice(final Dice dice) {
 		this.dice = dice;
 	}
+
+	public String logRoutpointsForArmy(Army a) {
+		if (a.getRoutPoints() != null) {
+			return String.format("%s - rout points: %d - rout level %d", a.getName(), computeRoutPoints(a),
+					a.getRoutPoints());
+		} else {
+			return String.format("%s - rout points: %d ", a.getName(), computeRoutPoints(a));
+		}
+	}
+
 }

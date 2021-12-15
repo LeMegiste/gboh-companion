@@ -5,25 +5,25 @@ import java.util.List;
 
 import ch.megiste.gboh.army.Leader;
 
-public class Enter extends LeaderCommand {
-	public Enter() {
-		super("Allows an absent leader to enter the battlefield");
+public class Exit extends LeaderCommand {
+	public Exit() {
+		super("Allows a leader to exit the battlefield");
 	}
 
 	@Override
 	public void execute(final Leader leader) {
-		console.logFormat("%s enters the battlefield",LogLeader.logLeader(leader));
-		leadersHandler.enter(leader);
+		console.logFormat("%s exits the battlefield",LogLeader.logLeader(leader));
+		leadersHandler.exit(leader);
 	}
 
 	@Override
 	public String getKey() {
-		return "ENT";
+		return "EXI";
 	}
 
 
 	@Override
 	public List<String> getSynonyms() {
-		return Collections.singletonList("Enter");
+		return Collections.singletonList("Exit");
 	}
 }

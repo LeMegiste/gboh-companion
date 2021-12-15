@@ -7,17 +7,18 @@ import com.google.common.collect.ComparisonChain;
 import ch.megiste.gboh.command.leader.LogLeader;
 
 public class Leader implements Comparable<Leader> {
-	private  String code;
+	private String code;
 	private String name;
 	private int initiative;
 	private int range;
 	private LeaderStatus status = new LeaderStatus();
 
-	public Leader(final String code, final String name, final int initiative, final int range) {
+	public Leader(final String code, final String name, final int initiative, final int range, final boolean present) {
 		this.code = code;
 		this.name = name;
 		this.initiative = initiative;
 		this.range = range;
+		this.status.present=present;
 	}
 
 	public String getCode() {
@@ -38,7 +39,7 @@ public class Leader implements Comparable<Leader> {
 
 	@Override
 	public int compareTo(final Leader other) {
-		return ComparisonChain.start().compare(initiative,other.initiative).compare(code,other.code).result();
+		return ComparisonChain.start().compare(initiative, other.initiative).compare(code, other.code).result();
 
 	}
 
@@ -56,7 +57,7 @@ public class Leader implements Comparable<Leader> {
 		}
 		final Leader leader = (Leader) o;
 		return initiative == leader.initiative && range == leader.range && Objects.equals(code, leader.code) && Objects
-				.equals(name, leader.name) ;
+				.equals(name, leader.name);
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public class Leader implements Comparable<Leader> {
 		return status.finished;
 	}
 
-	public int getNbActivations(){
+	public int getNbActivations() {
 		return status.nbActivations;
 	}
 
@@ -86,6 +87,14 @@ public class Leader implements Comparable<Leader> {
 	}
 
 	public void setStatus(final LeaderStatus after) {
-		this.status=after;
+		this.status = after;
+	}
+
+	public void setPresent(boolean present) {
+		status.present = present;
+	}
+
+	public boolean isPresent() {
+		return status.present;
 	}
 }

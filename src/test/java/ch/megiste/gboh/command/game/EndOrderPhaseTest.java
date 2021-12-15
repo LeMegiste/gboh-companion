@@ -40,7 +40,7 @@ public class EndOrderPhaseTest {
 		gs = new GameStatus(){
 
 			@Override
-			public List<Leader> getAllLeaders() {
+			public List<Leader> getOrderedLeaders() {
 				return allLeaders;
 			}
 
@@ -61,10 +61,10 @@ public class EndOrderPhaseTest {
 
 	@Test
 	public void executeOneExcutionEach() {
-		Leader l1 = new Leader("LEO","Leonidas",5,5);
-		Leader l2 = new Leader("JAQ","Jacquos",3,5);
-		Leader l3 = new Leader("PTO","Ptolemy",5,5);
-		Leader l4 = new Leader("ALE","Alex",7,9);
+		Leader l1 = new Leader("LEO","Leonidas",5,5, true);
+		Leader l2 = new Leader("JAQ","Jacquos",3,5, true);
+		Leader l3 = new Leader("PTO","Ptolemy",5,5, true);
+		Leader l4 = new Leader("ALE","Alex",7,9, true);
 		when(console.readLine(anyString())).thenReturn("n");
 
 		allLeaders.addAll(Arrays.asList(l1,l2,l3,l4));
@@ -85,10 +85,10 @@ public class EndOrderPhaseTest {
 
 	@Test
 	public void allPossibleMomentums() {
-		Leader l1 = new Leader("LEO","Leonidas",5,5);
-		Leader l2 = new Leader("JAQ","Jacquos",3,5);
-		Leader l3 = new Leader("PTO","Ptolemy",5,5);
-		Leader l4 = new Leader("ALE","Alex",7,9);
+		Leader l1 = new Leader("LEO","Leonidas",5,5, true);
+		Leader l2 = new Leader("JAQ","Jacquos",3,5, true);
+		Leader l3 = new Leader("PTO","Ptolemy",5,5, true);
+		Leader l4 = new Leader("ALE","Alex",7,9, true);
 
 		when(console.readLine(anyString())).thenReturn("y");
 		when(d.roll()).thenReturn(0);
@@ -120,10 +120,10 @@ public class EndOrderPhaseTest {
 
 	@Test
 	public void withElitePhase() {
-		Leader l1 = new Leader("LEO","Leonidas",5,5);
-		Leader l2 = new Leader("JAQ","Jacquos",3,5);
-		Leader l3 = new Leader("PTO","Ptolemy",5,5);
-		Leader l4 = new Leader("ALE","Alex",7,9);
+		Leader l1 = new Leader("LEO","Leonidas",5,5, true);
+		Leader l2 = new Leader("JAQ","Jacquos",3,5, true);
+		Leader l3 = new Leader("PTO","Ptolemy",5,5, true);
+		Leader l4 = new Leader("ALE","Alex",7,9, true);
 
 		when(console.readLine(anyString())).thenReturn("y");
 		when(d.roll()).thenReturn(0);
@@ -139,10 +139,10 @@ public class EndOrderPhaseTest {
 
 	@Test
 	public void withTrump() {
-		Leader l1 = new Leader("LEO","Leonidas",5,5);
-		Leader l2 = new Leader("JAQ","Jacquos",3,5);
-		Leader l3 = new Leader("PTO","Ptolemy",5,5);
-		Leader l4 = new Leader("ALE","Alex",7,9);
+		Leader l1 = new Leader("LEO","Leonidas",5,5, true);
+		Leader l2 = new Leader("JAQ","Jacquos",3,5, true);
+		Leader l3 = new Leader("PTO","Ptolemy",5,5, true);
+		Leader l4 = new Leader("ALE","Alex",7,9, true);
 
 		when(console.readLine(anyString())).thenReturn("y");
 		when(d.roll()).thenReturn(0);
