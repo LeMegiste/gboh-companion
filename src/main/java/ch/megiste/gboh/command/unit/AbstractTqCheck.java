@@ -19,16 +19,16 @@ public abstract class AbstractTqCheck extends UnitCommand {
 		for (Unit u : attackers) {
 			int r = dice.roll();
 
-			int mod = getIntModifier(modifiers, ModifierDefinition.mod,0);
+			int mod = getIntModifier(modifiers, ModifierDefinition.mod, 0);
 			final String modifierText;
-			if(mod>0){
-				modifierText=" (+"+mod+")";
-			} else if(mod<0){
-				modifierText = " ("+mod+")";
+			if (mod > 0) {
+				modifierText = " (+" + mod + ")";
+			} else if (mod < 0) {
+				modifierText = " (" + mod + ")";
 			} else {
-				modifierText="";
+				modifierText = "";
 			}
-			console.logNL("Dice rolled: [" + r +"]"+modifierText);
+			console.logNL("Dice rolled: [" + r + "]" + modifierText);
 
 			int hits = Math.max(r - u.getOriginalTq(), 0);
 
@@ -38,7 +38,9 @@ public abstract class AbstractTqCheck extends UnitCommand {
 			if (hits > maxHits) {
 				hits = maxHits;
 			}
-			unitChanger.addHits(u, hits);
+			if (hits > 0) {
+				unitChanger.addHits(u, hits);
+			}
 
 		}
 	}

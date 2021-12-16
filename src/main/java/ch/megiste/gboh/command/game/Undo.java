@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import ch.megiste.gboh.game.GameStatus;
 import ch.megiste.gboh.game.PersistableGameState.CommandHistory;
 import ch.megiste.gboh.game.PersistableGameState.UnitChange;
@@ -29,9 +31,15 @@ public class Undo extends GameCommand {
 
 		final int nbCommands = Math.min(maxDepth, 9);
 		for (int i = nbCommands; i >= 1; i--) {
-			console.logNL("U" + i + " -> " + commands.get(maxDepth - i).description());
+			console.logNL("" + i + " -> " + commands.get(maxDepth - i).description());
 		}
-		String val = console.readLine(WHICH_COMMAND_TO_UNDO);
+
+		String val;
+		if (CollectionUtils.isNotEmpty(commandArgs)) {
+			val = commandArgs.get(0);
+		} else {
+			val = console.readLine(WHICH_COMMAND_TO_UNDO);
+		}
 		String valWithoutU = val.replace("U", "");
 		if (valWithoutU.length() != 1 || !Character.isDigit(valWithoutU.charAt(0))) {
 			console.logNL("Invalid answer:" + val);

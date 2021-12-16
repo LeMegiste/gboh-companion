@@ -65,7 +65,11 @@ public class UnitChanger {
 			if (newHits >= u.getOriginalTq()) {
 				newState = UnitState.ROUTED;
 				final UnitCategory unitCategory = u.getKind().getUnitCategory();
-				if (u.getKind() == UnitKind.SK || unitCategory == UnitCategory.Chariots) {
+				if (u.getKind() == UnitKind.SK || unitCategory == UnitCategory.Chariots
+						|| unitCategory == UnitCategory.Elephants) {
+					if (unitCategory == UnitCategory.Elephants) {
+						console.logFormat("%s is RAMPAGING!", Log.lotUnit(u));
+					}
 					newState = ELIMINATED;
 				}
 			} else if (newHits < 0) {
@@ -79,7 +83,7 @@ public class UnitChanger {
 	}
 
 	public void changeState(final Unit u, final Integer newHits, final UnitState newState) {
-		changeState(u,newHits,newState,null);
+		changeState(u, newHits, newState, null);
 	}
 
 	public void missileDepletion(final Unit u, final MissileType missileType) {
@@ -97,18 +101,15 @@ public class UnitChanger {
 		}
 
 		final Map<MissileType, MissileStatus> missileStatus = new HashMap<>();
-		missileStatus.put(missileType,newStatus);
+		missileStatus.put(missileType, newStatus);
 		changeState(u, null, null, missileStatus);
 
 	}
 
-
 	public void changeState(final Unit u, final Integer hits, final UnitState state,
-			final Map<MissileType,MissileStatus> missileStatus) {
-		changeStateInternal(u, hits, state, missileStatus, null, null,
-				false);
+			final Map<MissileType, MissileStatus> missileStatus) {
+		changeStateInternal(u, hits, state, missileStatus, null, null, false);
 	}
-
 
 	private void changeStateInternal(final Unit u, final Integer hits, final UnitState state,
 			final Map<MissileType, MissileStatus> missileStatus, final String stackedOn, final String stackedUnder,
@@ -135,7 +136,8 @@ public class UnitChanger {
 			}
 
 		}
-		if (missileStatus != null && !MissileStatusHelper.missileStatusToString(missileStatus).equals(status.missileStatus)) {
+		if (missileStatus != null && !MissileStatusHelper.missileStatusToString(missileStatus)
+				.equals(status.missileStatus)) {
 			if (missileStatus.size() > 0) {
 				statusList.add("is missile " + missileStatus.values().iterator().next());
 			}
@@ -169,8 +171,9 @@ public class UnitChanger {
 			status.stackUnder = stackedUnder;
 		}
 
-		gameStatus.recordChange(before, u);
-
+		if (!before.equals(u.getStatus())) {
+			gameStatus.recordChange(before, u);
+		}
 		if (stateChanged && state == ROUTED && u.isStacked()) {
 			final Unit stackedUnit = gameStatus.getStackedUnit(u);
 			Preconditions.checkNotNull(stackedUnit);
@@ -182,14 +185,14 @@ public class UnitChanger {
 
 	public void changeStateForUndo(final String unitCode, final UnitStatus status) {
 		final Unit u = gameStatus.findUnitByCode(unitCode);
-		changeStateInternal(u, status.hits, status.state, MissileStatusHelper.missileStatusFromString(status.missileStatus), status.stackOn, status.stackUnder,
+		changeStateInternal(u, status.hits, status.state,
+				MissileStatusHelper.missileStatusFromString(status.missileStatus), status.stackOn, status.stackUnder,
 				true);
 	}
 
 	public void changeStateNoCheck(final Unit u, final int hits, final UnitState state,
 			final Map<MissileType, MissileStatus> missileState) {
-		changeStateInternal(u, hits, state, missileState, null, null,
-				true);
+		changeStateInternal(u, hits, state, missileState, null, null, true);
 	}
 
 	public Rules getCurrentRules() {
