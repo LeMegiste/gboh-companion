@@ -9,6 +9,7 @@ import java.util.Map;
 import ch.megiste.gboh.army.Combat;
 import ch.megiste.gboh.army.Unit;
 import ch.megiste.gboh.army.Unit.MissileType;
+import ch.megiste.gboh.army.Unit.UnitCategory;
 import ch.megiste.gboh.army.Unit.UnitKind;
 import ch.megiste.gboh.army.UnitStatus.MissileStatus;
 import ch.megiste.gboh.army.UnitStatus.UnitState;
@@ -42,9 +43,8 @@ public class Shock extends UnitCommand {
 	@Override
 	public void execute(final List<Unit> attackers, final List<Unit> defenders, final List<Modifier<?>> modifiers) {
 		Position position = fight.computePosition(modifiers);
-		final List<Combat> combats = fight.buildCombats(attackers, defenders,position);
+		final List<Combat> combats = fight.buildCombats(attackers, defenders, position);
 		for (Combat c : combats) {
-
 
 			boolean noMissiles = getBooleanModifier(modifiers, ModifierDefinition.nmf);
 			Unit mainAttacker = c.getMainAttacker();
@@ -58,7 +58,7 @@ public class Shock extends UnitCommand {
 				} else {
 					modifiersForMissile = new ArrayList<>();
 				}
-				modifiersForMissile.add(new Modifier<Boolean>(ModifierDefinition.norf,true));
+				modifiersForMissile.add(new Modifier<Boolean>(ModifierDefinition.norf, true));
 				for (Unit attacker : c.getAttackers()) {
 					if (attacker.getMainMissile() != MissileType.NONE
 							&& attacker.getMainMissileStatus() != MissileStatus.NO) {
@@ -114,28 +114,24 @@ public class Shock extends UnitCommand {
 							|| mainDefender.getKind() == UnitKind.PH || mainDefender.getKind() == UnitKind.HI);
 
 			for (Unit attacker : c.getAttackers()) {
-				int diff =
-						preshockTQCheckForAttacker(c, ferociousBarbarians, noTqCheckForAttacker, attacker);
+				int diff = preshockTQCheckForAttacker(c, ferociousBarbarians, noTqCheckForAttacker, attacker);
 				diffPerUnit.put(attacker, diff);
 				final Unit stackedUnit = c.getStackedUnit(attacker);
 				if (diff > 0 && stackedUnit != null) {
 					int diffStackOn =
-							preshockTQCheckForAttacker(c, ferociousBarbarians, noTqCheckForAttacker,
-									stackedUnit);
+							preshockTQCheckForAttacker(c, ferociousBarbarians, noTqCheckForAttacker, stackedUnit);
 					diffPerUnit.put(stackedUnit, diffStackOn);
 
 				}
 			}
 			for (Unit defender : c.getDefenders()) {
-				int diff =
-						preshockTQCheckForDefender(c, ferociousBarbarians, noTqCheckForDefender, defender);
+				int diff = preshockTQCheckForDefender(c, ferociousBarbarians, noTqCheckForDefender, defender);
 				diffPerUnit.put(defender, diff);
 
 				final Unit stackedUnit = c.getStackedUnit(defender);
 				if (diff > 0 && stackedUnit != null) {
 					int diffStackOn =
-							preshockTQCheckForAttacker(c, ferociousBarbarians, noTqCheckForDefender,
-									stackedUnit);
+							preshockTQCheckForAttacker(c, ferociousBarbarians, noTqCheckForDefender, stackedUnit);
 					diffPerUnit.put(stackedUnit, diffStackOn);
 
 				}
@@ -168,9 +164,29 @@ public class Shock extends UnitCommand {
 			} else {
 				modifiersForFight = new ArrayList<>(modifiers);
 			}
-			modifiersForFight.add(new Modifier<>(ModifierDefinition.m,true));
-			fight.fightCombat(modifiers,position,c);
+			modifiersForFight.add(new Modifier<>(ModifierDefinition.m, true));
+			fight.fightCombat(c, modifiers, position);
+			handleCavalryPursuit(c);
 
+		}
+	}
+
+	private void handleCavalryPursuit(final Combat c) {
+		if (c.getMainAttacker().getKind().getUnitCategory() != UnitCategory.Cavalry) {
+			return;
+		}
+		if (c.getMainDefender().getKind().getUnitCategory() != UnitCategory.Cavalry) {
+			return;
+		}
+		boolean allRouting = c.getAllDefenders().stream().allMatch(u -> u.getState() == UnitState.ROUTED);
+		if (allRouting) {
+			Unit u = c.getMainAttacker();
+			final int r = getDice().roll();
+			if(r+2 > u.getOriginalTq()){
+				console.logFormat("Dice rolled [%d]. %s is pursuing.",r,Log.lotUnit(u));
+			} else {
+				console.logFormat("Dice rolled [%d]. %s is not pursuing.",r,Log.lotUnit(u));
+			}
 		}
 	}
 
@@ -263,8 +279,8 @@ public class Shock extends UnitCommand {
 				result = "unit holds firm.";
 				diff = unit.getTq() - 1 - unit.getHits();
 			}
-			console.logNL(
-					String.format("Double sized units tries to hold. Dice rolls [%d], %s%s. %s", d, modif, modif2, result));
+			console.logNL(String.format("Double sized units tries to hold. Dice rolls [%d], %s%s. %s", d, modif, modif2,
+					result));
 
 		}
 		return diff;
@@ -273,8 +289,8 @@ public class Shock extends UnitCommand {
 	private void logPreshock(final Unit u, final int roll, final List<String> diceModifiers) {
 		final String rollModifiers = Helper.buildModifiersLog("", diceModifiers);
 
-		String m = String.format("Pre-shock for %s. Dice rolls [%d]%s! (TQ=%d).", Log.lotUnit(u), roll,
-				rollModifiers, u.getTq());
+		String m = String.format("Pre-shock for %s. Dice rolls [%d]%s! (TQ=%d).", Log.lotUnit(u), roll, rollModifiers,
+				u.getTq());
 		console.logNL(m);
 	}
 

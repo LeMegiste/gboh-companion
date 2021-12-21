@@ -173,7 +173,7 @@ public class Unit {
 
 	public enum SubClass {
 		Ha("Hastati"), Pr("Principes"), CE("Cohorte Extraordinary"), Co("Cohorte"), TR("Triarii"), Ve("Velites"), RC(
-				"Roman cavalry"), HO("Hoplite"), CAT("Cataphracted"), CA("Cardaces"), NONE(""), Indian("Indian");
+				"Roman cavalry"), HO("Hoplite"), CAT("Cataphracted"), CA("Cardaces"), NONE(""), Indian("Indian"), MA("Macedonian");
 
 		private String description;
 

@@ -189,12 +189,12 @@ public class Fight extends UnitCommand {
 		List<Combat> combats = buildCombats(attackers, defenders, position);
 
 		for (Combat c : combats) {
-			fightCombat(modifiers, position, c);
+			fightCombat(c, modifiers, position);
 		}
 
 	}
 
-	void fightCombat(final List<Modifier<?>> modifiers, final Position position, final Combat c) {
+	void fightCombat(final Combat c, final List<Modifier<?>> modifiers, final Position position) {
 		Superiority sup;
 		final Unit mainAttacker = c.getMainAttacker();
 		final Unit mainDefender = c.getMainDefender();
@@ -230,9 +230,13 @@ public class Fight extends UnitCommand {
 
 		}
 
-		if (position != Position.FRONT && !ignorePositionSuperiority) {
-			sup = Superiority.AS;
-			console.logNL(String.format("%s is AS for better position.", Log.lotUnit(mainAttacker)));
+		if (position != Position.FRONT) {
+			if (!ignorePositionSuperiority) {
+				sup = Superiority.AS;
+				console.logNL(String.format("%s is AS for better position.", Log.lotUnit(mainAttacker)));
+			} else {
+				sup = Superiority.NONE;
+			}
 		} else {
 
 			sup = findSuperiority(mainAttacker, mainDefender);
@@ -279,11 +283,11 @@ public class Fight extends UnitCommand {
 			columnShift++;
 			colModifiers.add("+1 defender depleted");
 		}
-		if(mainAttacker.getSubclass()== SubClass.CAT){
+		if (mainAttacker.getSubclass() == SubClass.CAT) {
 			columnShift++;
 			colModifiers.add("+2 attacker is cataphracted cavalry");
 		}
-		if(mainDefender.getSubclass()== SubClass.CAT){
+		if (mainDefender.getSubclass() == SubClass.CAT) {
 			columnShift--;
 			colModifiers.add("-2 defender is cataphracted cavalry");
 		}
@@ -343,9 +347,8 @@ public class Fight extends UnitCommand {
 		}
 		String rollModifiersString = Helper.buildModifiersLog("", rollModifiers);
 		String columnModifiersString = Helper.buildModifiersLog("column " + originalColumn, colModifiers);
-		console.logNL(
-				String.format("Shock! Dice rolls [%d]%s on column %d%s. Result %d/%d", originalRoll, rollModifiersString,
-						column, columnModifiersString, defenderImpact, attackerImpact));
+		console.logNL(String.format("Shock! Dice rolls [%d]%s on column %d%s. Result %d/%d", originalRoll,
+				rollModifiersString, column, columnModifiersString, defenderImpact, attackerImpact));
 
 		//Repartition of impact
 		Map<Unit, Integer> impactPerUnit = computeImpactPerUnit(c, attackerImpact, defenderImpact, position);
@@ -383,7 +386,7 @@ public class Fight extends UnitCommand {
 
 	private void missileDepletionForUnitsInvolvedInShock(final Unit u) {
 		if (u.getMainMissile() != MissileType.NONE) {
-			unitChanger.changeState(u, null, null, MissileStatusHelper.putMissileStatusToState(u,MissileStatus.NO));
+			unitChanger.changeState(u, null, null, MissileStatusHelper.putMissileStatusToState(u, MissileStatus.NO));
 		}
 	}
 

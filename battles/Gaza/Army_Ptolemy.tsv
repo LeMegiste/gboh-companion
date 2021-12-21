@@ -1,0 +1,29 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus	StackedOn	Unit global type	Nb mens
+LC		Egypt	1	ELC1	7	5	MJ					Cavalry	500
+LC		Egypt	2	ELC2	7	5	MJ						
+HI	HO	Athens	1	AHI1	6	10							
+HI	HO	Athens	2	AHI2	6	10							
+HI	HO	Athens	3	AHI3	6	10							
+PH	MA	Macedonian	3	MPH3	7	10							
+PH	MA	Macedonian	4	MPH4	7	10							
+PH	MA	Macedonian	5	MPH5	7	10							
+PH	MA	Macedonian	6	MPH6	7	10							
+PH	MA	Macedonian	7	MPH7	7	10							
+HC		Egypt	1	EHC1	7	5							
+HC		Egypt	2	EHC2	7	5							
+HC		Egypt	3	EHC3	7	5							
+HC		Egypt	4	EHC4	7	5							
+HC		Egypt	5	EHC5	7	5							
+HC		Egypt	6	EHC6	7	5							
+LP		Greek mercenaries	1	LP1	5	5	J						
+LP		Greek mercenaries	2	LP2	5	5	J						
+LP		Greek mercenaries	3	LP3	5	5	J						
+LP		Greek mercenaries	4	LP4	5	5	J						
+LP		Greek mercenaries	5	LP5	5	5	J						
+SK		Mercenary	7	SK7	4	1	S						
+SK		Auxiliary	1	SK1	3	1	A						
+SK		Auxiliary	2	SK2	3	1	A						
+SK		Auxiliary	3	SK3	3	1	A						
+SK		Auxiliary	4	SK4	3	1	A						
+SK		Auxiliary	5	SK5	3	1	A						
+SK		Auxiliary	6	SK6	3	1	A						

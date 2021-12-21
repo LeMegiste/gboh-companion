@@ -29,6 +29,13 @@ public class Combat {
 		return units;
 	}
 
+	public List<Unit> getAllDefenders() {
+		return new ArrayList<>(this.defenders);
+	}
+	public List<Unit> getAllAttackers() {
+		return new ArrayList<>(this.attackers);
+	}
+
 	public Unit getMainAttacker() {
 		return getAttackers().get(0);
 	}

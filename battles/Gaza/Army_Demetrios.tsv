@@ -1,0 +1,27 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus	Unit global type	Nb mens
+LC		Tarentum	1	TLC1	7	5	MJ					
+LC		Tarentum	2	TLC2	7	5	MJ					
+LC		Tarentum	3	TLC3	7	5	MJ					
+HI	HO	Greek	1	GHI1	8	10						
+HI	HO	Greek	2	GHI2	8	10						
+HI	HO	Greek	3	GHI3	8	10						
+HI	HO	Greek	4	GHI4	8	10						
+PH	MA	Macedonian	1	MPH1	7	10						
+PH	MA	Macedonian	2	MPH2	7	10						
+LN		Media	1	MLN1	7	5						
+LN		Media	2	MLN2	7	5						
+LN		Media	3	MLN3	7	5						
+HC		Companion	Agema	CHCA	8	3						
+HC		Companion	1	CHC1	7	5						
+HC		Companion	2	CHC2	7	5						
+EL		India	1	EL1	6	5	MJ,MA					
+EL		India	2	EL2	6	5	MJ,MA					
+EL		India	3	EL3	6	5	MJ,MA					
+EL		India	4	EL4	6	5	MJ,MA					
+EL		India	5	EL5	6	5	MJ,MA					
+EL		India	6	EL6	6	5	MJ,MA					
+EL		India	7	EL7	6	5	MJ,MA					
+EL		India	8	EL8	6	5	MJ,MA					
+EL		India	9	EL9	6	5	MJ,MA					
+LN		Slave		SLN	6	1						
+LN		Tarentum Salve	7	TLN	7	3						
