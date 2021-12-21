@@ -82,11 +82,11 @@ public class EndTurn extends GameCommand {
 		}
 		console.logNL(gs.logRoutpointsForArmy(gs.getArmy1()));
 		if(gs.isArmyRouting(gs.getArmy1())){
-			console.logFormat("% army is ROUTING",gs.getArmy1().getName());
+			console.logFormat("%s army is ROUTING",gs.getArmy1().getName());
 		}
 		console.logNL(gs.logRoutpointsForArmy(gs.getArmy2()));
 		if(gs.isArmyRouting(gs.getArmy2())){
-			console.logFormat("% army is ROUTING",gs.getArmy2().getName());
+			console.logFormat("%s army is ROUTING",gs.getArmy2().getName());
 		}
 
 
