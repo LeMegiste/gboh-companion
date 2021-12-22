@@ -57,6 +57,7 @@ public class MissileFire extends UnitCommand {
 		boolean moved = getBooleanModifier(modifiers, ModifierDefinition.m);
 		boolean flank = getBooleanModifier(modifiers, ModifierDefinition.f);
 		boolean back = getBooleanModifier(modifiers, ModifierDefinition.b);
+		boolean secondaryMissile = getBooleanModifier(modifiers, ModifierDefinition.sec);
 		boolean noReactionFire = getBooleanModifier(modifiers, ModifierDefinition.norf);
 
 		if (attackers.size() != 1) {
@@ -99,33 +100,46 @@ public class MissileFire extends UnitCommand {
 			return;
 		}
 
-		fire(attacker, target, range, moved, !back && !flank, false);
+		fire(attacker, target, range, moved, !back && !flank, false, secondaryMissile);
 
 		//Reaction fire
 		if (range == 1 && target.getMainMissile() != MissileType.NONE
 				&& target.getMainMissileStatus() != MissileStatus.NO && !flank && !back && !noReactionFire) {
-			fire(target, attacker, 1, false, true, true);
+			fire(target, attacker, 1, false, true, true, false);
 		}
 
 	}
 
 	private void fire(final Unit attacker, final Unit target, final int range, final boolean moved,
-			final boolean frontFire, final boolean reaction) {
-		if (attacker.getMainMissile() == MissileType.NONE || attacker.getMainMissileStatus() == MissileStatus.NO
-				|| attacker.getMainMissileStatus() == MissileStatus.NEVER || attacker.getState() != UnitState.OK) {
-			return;
-		}
+			final boolean frontFire, final boolean reaction, final boolean secondaryMissile) {
 		String attackerName = Log.lotUnit(attacker);
 		String targetName = Log.lotUnit(target);
 
 		List<MissileType> missilesFired;
-		if(!reaction){
-			missilesFired = Collections.singletonList(attacker.getMainMissile());
+		if (!reaction) {
+			if (!secondaryMissile) {
+				missilesFired = Collections.singletonList(attacker.getMainMissile());
+			} else {
+				if (attacker.getMissiles().size() < 2) {
+					console.logFormat("%s has no secondary missile", Log.lotUnit(attacker));
+					return;
+				} else {
+					missilesFired = Collections.singletonList(attacker.getMissiles().get(1));
+				}
+			}
+
 		} else {
 			missilesFired = attacker.getMissiles();
 		}
 
-		for(MissileType missile : missilesFired){
+		for (MissileType missile : missilesFired) {
+			if (attacker.getMainMissile() == MissileType.NONE
+					|| attacker.getMissileStatus().get(missile) == MissileStatus.NO
+					|| attacker.getMissileStatus().get(missile) == MissileStatus.NEVER
+					|| attacker.getState() != UnitState.OK) {
+				return;
+			}
+
 			int threshold = table.get(missile).get(range - 1);
 
 			int roll = dice.roll();
@@ -144,7 +158,8 @@ public class MissileFire extends UnitCommand {
 				finalRoll = finalRoll + 2;
 			}
 			final MissileWeapon weapon = attacker.getMainMissile().getWeapon();
-			if (isHeavyInfantry(target) && frontFire && (weapon == MissileWeapon.Bows || weapon == MissileWeapon.Slings)) {
+			if (isHeavyInfantry(target) && frontFire && (weapon == MissileWeapon.Bows
+					|| weapon == MissileWeapon.Slings)) {
 				modifiers.add("+3 because firing on  heavy infantry through the front");
 				finalRoll = finalRoll + 3;
 			} else if (isHeavyInfantry(target)) {
@@ -181,17 +196,18 @@ public class MissileFire extends UnitCommand {
 				resultText = "Missed";
 			}
 
-			final String modifiersText = modifiers.size() == 0 ? "" : "(modifiers: " + Joiner.on(",").join(modifiers) + ")";
+			final String modifiersText =
+					modifiers.size() == 0 ? "" : "(modifiers: " + Joiner.on(",").join(modifiers) + ")";
 			String conclusionText = String.format("Dice rolls: [%d]! %s! %s", roll, resultText, modifiersText);
 			console.logNL(conclusionText);
 
 			int nbHits = 1;
-			if(target.getKind()==UnitKind.EL && attacker.getKind()!=UnitKind.EL){
-				nbHits=2;
+			if (target.getKind() == UnitKind.EL && attacker.getKind() != UnitKind.EL) {
+				nbHits = 2;
 			}
 
 			if (success) {
-				unitChanger.addHits(target,nbHits);
+				unitChanger.addHits(target, nbHits);
 			}
 
 			if (attacker.getMainMissileStatus() == MissileStatus.LOW || roll >= attacker.getMainMissile()
@@ -199,7 +215,6 @@ public class MissileFire extends UnitCommand {
 				unitChanger.missileDepletion(attacker, missile);
 			}
 		}
-
 
 	}
 

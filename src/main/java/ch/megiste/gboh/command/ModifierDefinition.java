@@ -15,6 +15,7 @@ public enum ModifierDefinition {
 	hits("Hits",Integer.class),
 	state("State", UnitState.class),
 	nmf("No missile fire"),
+	sec("Secondary missile"),
 	missile("Missile status", MissileStatus.class), mod("Modifier",Integer.class);
 
 	private Class<?> objectClass = null;

@@ -69,6 +69,7 @@ public class UnitChanger {
 						|| unitCategory == UnitCategory.Elephants) {
 					if (unitCategory == UnitCategory.Elephants) {
 						console.logFormat("%s is RAMPAGING!", Log.lotUnit(u));
+						handleRampage(u);
 					}
 					newState = ELIMINATED;
 				}
@@ -80,6 +81,27 @@ public class UnitChanger {
 			}
 		}
 		changeState(u, newHits, newState);
+	}
+
+	private void handleRampage(final Unit u) {
+		String unitName = Log.lotUnit(u);
+		for (int i = 0; i < 4; i++) {
+			final int r = getGameStatus().getDice().roll();
+			if (r == 0) {
+				console.logFormat("RAMPAGE! Dice rolled [%d]. %s is closing to the nearest friendly unit!", r,
+						unitName);
+			} else if (r < 7) {
+				console.logFormat("RAMPAGE! Dice rolled [%d]. %s is going in direction %d (refer to map)!", r, unitName,
+						r);
+			} else if (i == 0) {
+				console.logFormat("RAMPAGE! Dice rolled [%d]. %s is chasing from the unit causing the rampage!", r,
+						unitName);
+			} else {
+				console.logFormat("RAMPAGE! Dice rolled [%d]. The mahout finally killed the poor %s!", r, unitName);
+				break;
+			}
+		}
+
 	}
 
 	public void changeState(final Unit u, final Integer newHits, final UnitState newState) {
@@ -100,7 +122,7 @@ public class UnitChanger {
 			newStatus = u.getMissileStatus().get(missileType);
 		}
 
-		final Map<MissileType, MissileStatus> missileStatus = new HashMap<>();
+		final Map<MissileType, MissileStatus> missileStatus = new HashMap<>(u.getMissileStatus());
 		missileStatus.put(missileType, newStatus);
 		changeState(u, null, null, missileStatus);
 

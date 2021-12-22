@@ -172,10 +172,10 @@ public class Shock extends UnitCommand {
 	}
 
 	private void handleCavalryPursuit(final Combat c) {
-		if (c.getMainAttacker().getKind().getUnitCategory() != UnitCategory.Cavalry) {
+		if (c.getAllAttackers().get(0).getKind().getUnitCategory() != UnitCategory.Cavalry) {
 			return;
 		}
-		if (c.getMainDefender().getKind().getUnitCategory() != UnitCategory.Cavalry) {
+		if (c.getAllDefenders().get(0).getKind().getUnitCategory() != UnitCategory.Cavalry) {
 			return;
 		}
 		boolean allRouting = c.getAllDefenders().stream().allMatch(u -> u.getState() == UnitState.ROUTED);

@@ -10,6 +10,7 @@ import com.google.common.base.Joiner;
 
 import ch.megiste.gboh.army.Leader;
 import ch.megiste.gboh.game.GameStatus;
+import ch.megiste.gboh.game.GameStatus.Rules;
 
 public class EndOrderPhase extends GameCommand {
 	public EndOrderPhase() {
@@ -33,10 +34,10 @@ public class EndOrderPhase extends GameCommand {
 		}
 		final Leader l = gs.getCurrentLeader();
 		final String leaderName = logLeader(l);
-		final String elite = l.usedElite() ? " elite": "";
-		console.logFormat("Ending the current%s order phase for %s",elite,leaderName);
+		final String elite = l.usedElite() ? " elite" : "";
+		console.logFormat("Ending the current%s order phase for %s", elite, leaderName);
 		leadersHandler.endOrderPhase(gs.getCurrentLeader());
-		if(l.usedElite() && l.getNbActivations()==1){
+		if (l.usedElite() && l.getNbActivations() == 1) {
 			gs.activateNextLeader();
 			return;
 		}
@@ -44,13 +45,13 @@ public class EndOrderPhase extends GameCommand {
 			final List<Leader> trumpingLeaders =
 					gameStatus.getOrderedLeaders().stream().filter(l2 -> l2.didTrump()).collect(Collectors.toList());
 			Collections.reverse(trumpingLeaders);
-			if(trumpingLeaders.size()>0 && l.getInitiative()<trumpingLeaders.get(0).getInitiative()){
-				console.logFormat("%s did trump. %s cannot use momentum and is finished", logLeader(trumpingLeaders.get(0)),logLeader(l));
+			if (trumpingLeaders.size() > 0 && l.getInitiative() < trumpingLeaders.get(0).getInitiative()) {
+				console.logFormat("%s did trump. %s cannot use momentum and is finished",
+						logLeader(trumpingLeaders.get(0)), logLeader(l));
 				leadersHandler.markLeaderAsFinished(l);
 				gs.activateNextLeader();
 				return;
 			}
-
 
 			String val = console.readLine(
 					String.format("Do you roll for momentum. Current initiative %d?[y/n]%n>>", l.getInitiative()));
@@ -60,8 +61,8 @@ public class EndOrderPhase extends GameCommand {
 					console.logFormat("Dice rolled [%d]. %s got a momentum and can continue giving orders", d,
 							leaderName);
 				} else if (d < 9) {
-					console.logFormat("Dice rolled [%d]. %s failed his momentum attempt and is now finished",
-							d, leaderName);
+					console.logFormat("Dice rolled [%d]. %s failed his momentum attempt and is now finished", d,
+							leaderName);
 					leadersHandler.markLeaderAsFinished(l);
 					gs.activateNextLeader();
 				} else if (d == 9) {
@@ -70,15 +71,15 @@ public class EndOrderPhase extends GameCommand {
 					final int doom = dice.roll();
 					if (doom > 1 && doom < 9) {
 						console.logFormat(
-								"Dice rolled [%d]. Nothing happens, the gods are with you. %s is now finished",
-								doom, leaderName);
+								"Dice rolled [%d]. Nothing happens, the gods are with you. %s is now finished", doom,
+								leaderName);
 						leadersHandler.markLeaderAsFinished(l);
 						gs.activateNextLeader();
 					} else if (doom <= 1) {
 						console.logFormat(
 								"Dice rolled [%d]. A leader of the opposing camp can be activated. %s is now finished. ",
 								doom, leaderName);
-						gs.getOrderedLeaders().forEach(ll->console.logNL(logLeader(ll)));
+						gs.getOrderedLeaders().forEach(ll -> console.logNL(logLeader(ll)));
 						List<String> leaderCodes =
 								gs.getOrderedLeaders().stream().map(Leader::getCode).collect(Collectors.toList());
 						String leaderCodesString = Joiner.on(",").join(leaderCodes);
@@ -93,6 +94,19 @@ public class EndOrderPhase extends GameCommand {
 						leadersHandler.markLeaderAsFinished(l);
 						Leader reactivatedLeader = gameStatus.findLeaderByCode(code);
 						leadersHandler.reactivateLeader(reactivatedLeader);
+					} else {
+						if (gameStatus.getRules() == Rules.GBOA) {
+							int halfrange = l.getRange() / 2;
+							if (l.getRange() % 2 == 1) {
+								halfrange++;
+							}
+							console.logFormat(
+									"\"Dice rolled [%d]. %s has a crisis of faith and withdraws all units with %d hexes",
+									doom, leaderName, halfrange);
+							leadersHandler.markLeaderAsFinished(l);
+						} else {
+							console.logNL("The current turn is over. Proceed to next turn.");
+						}
 					}
 				}
 

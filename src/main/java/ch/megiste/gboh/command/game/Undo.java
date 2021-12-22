@@ -29,15 +29,15 @@ public class Undo extends GameCommand {
 		final List<CommandHistory> commands = gs.getState().commandHistories;
 		int maxDepth = commands.size();
 
-		final int nbCommands = Math.min(maxDepth, 9);
-		for (int i = nbCommands; i >= 1; i--) {
-			console.logNL("" + i + " -> " + commands.get(maxDepth - i).description());
-		}
-
 		String val;
 		if (CollectionUtils.isNotEmpty(commandArgs)) {
 			val = commandArgs.get(0);
 		} else {
+			final int nbCommands = Math.min(maxDepth, 9);
+			for (int i = nbCommands; i >= 1; i--) {
+				console.logNL("" + i + " -> " + commands.get(maxDepth - i).description());
+			}
+
 			val = console.readLine(WHICH_COMMAND_TO_UNDO);
 		}
 		String valWithoutU = val.replace("U", "");
@@ -49,7 +49,7 @@ public class Undo extends GameCommand {
 			List<UnitChange> changesReversed = new ArrayList<>(commandHistory.getChanges());
 			Collections.reverse(changesReversed);
 			for (UnitChange uc : changesReversed) {
-				unitChanger.changeStateForUndo(uc.getUnitCode(),uc.getBefore());
+				unitChanger.changeStateForUndo(uc.getUnitCode(), uc.getBefore());
 			}
 		}
 	}
