@@ -1,0 +1,20 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus	StackedOn	Unit global type	Nb mens
+HI	HO	Greek ally	1	GHI1	5	10		
+HI	HO	Greek ally	2	GHI2	5	10		
+HI	HO	Greek ally	3	GHI3	5	10		
+MI		Gaul	1	GMI1	6	5	J	
+MI		Gaul	2	GMI2	6	5	J	
+MI		Tribal	1	TMI1	5	5	s	
+MI		Tribal	2	TMI2	5	5	J	
+MI		Tribal	3	TMI3	5	5	J	
+MI		Tribal	4	TMI4	5	5	J	
+LI		Illyria	1	ILI1	5	5	J	
+LI		Illyria	2	ILI2	5	5	J	
+LI		Illyria	3	ILI3	5	5	J	
+SK		Illyria		ISK	5	1	J	
+MI		Illyria	1	IMI1	5	5	J	
+MI		Illyria	2	IMI2	5	5	J	
+MI		Illyria	3	IMI3	5	5	J	
+MI		Illyria	4	IMI4	5	5	J	
+LC		Arachosia		ALC	7	3	MJ	
+LC		Paenia		PLC	6	2	MJ	
