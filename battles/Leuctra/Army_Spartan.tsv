@@ -1,13 +1,13 @@
 Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus	Unit global type	Nb mens
-HI	HO	Greek	1	GHI1	8	10					Infantry	1500
-HI	HO	Greek	2	GHI2	8	10					Infantry	1500
-HI	HO	Greek	3	GHI3	8	10					Infantry	1500
-HI	HO	Greek	4	GHI4	8	10					Infantry	1500
-HI	HO	Greek	5	GHI5	8	10					Infantry	1500
-HI	HO	Greek	6	GHI6	8	10					Infantry	1500
-HI	HO	Greek	7	GHI7	8	10					Infantry	1500
-HI	HO	Sparta	1	SHI1	8	10					Infantry	1500
-HI	HO	Sparta	2	SHI2	8	10					Infantry	1500
+HI	HO	Greek	1	GHI1	6	10					Infantry	1500
+HI	HO	Greek	2	GHI2	6	10					Infantry	1500
+HI	HO	Greek	3	GHI3	6	10					Infantry	1500
+HI	HO	Greek	4	GHI4	6	10					Infantry	1500
+HI	HO	Greek	5	GHI5	7	10					Infantry	1500
+HI	HO	Greek	6	GHI6	7	10					Infantry	1500
+HI	HO	Greek	7	GHI7	6	10					Infantry	1500
+HI	HO	Sparta	1	SHI1	7	10					Infantry	1500
+HI	HO	Sparta	2	SHI2	7	10					Infantry	1500
 LP		Mercenary	1	MLP1	5	5	J				LP	0
 LP		Mercenary	2	MLP2	5	5	J				LP	0
 LP		Mercenary	3	MLP3	5	5	J				LP	0

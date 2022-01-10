@@ -1,0 +1,15 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus	StackedOn	Unit global type	Nb mens
+HI	HO	Thebes	1	THI1	7	60						Infantry	9000
+HI	HO	Thebes	2	THI2	6	10						Infantry	1500
+HI	HO	Thebes	3	THI3	6	10						Infantry	1500
+HI	HO	Thebes	4	THI4	6	10						Infantry	1500
+HI	HO	Thebes	5	THI5	6	10						Infantry	1500
+HI	HO	Argos	1	ArHI1	7	10						Infantry	1500
+HI	HO	Argos	2	ArHI2	7	10						Infantry	1500
+LP		Greek mercenaries	1	GLP1	5	5	J					Infantry	750
+LP		Greek mercenaries	2	GLP2	5	5	J					Infantry	750
+LP		Greek mercenaries	3	GLP3	5	5	J					Infantry	750
+LP		Greek mercenaries	4	GLP4	5	5	J					Infantry	750
+LC		Thebes	1	TLC1	6	5	MJ					Cavalry	500
+LC		Thebes	2	TLC2	6	5	MJ					Cavalry	500
+LC		Thebes	3	TLC3	6	5	MJ					Cavalry	500

@@ -258,6 +258,7 @@ public class GameStatus {
 			} else {
 				state.currentTurn = 1;
 				state.currentCommand = 1;
+				state.commandHistories.clear();
 			}
 			if (areLeadersUsed()) {
 				areLeadersOrdered = false;
