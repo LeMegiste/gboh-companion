@@ -125,6 +125,18 @@ public class GameStatus {
 		return a.getRoutPoints() != null && a.getRoutPoints() <= computeRoutPoints(a);
 	}
 
+	public void resetGame() {
+		Path gamePropsPath = getGameBackupFile();
+
+		try {
+			Files.deleteIfExists(gamePropsPath);
+		} catch (IOException e) {
+			throw new GbohError(e);
+		}
+		load(null);
+
+	}
+
 	public enum Rules {
 		SPQR, GBOA
 	}

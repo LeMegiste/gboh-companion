@@ -18,6 +18,6 @@ public class Save extends GameCommand {
 	@Override
 	public void execute(final List<String> commandArgs) {
 		final GameStatus gs = getGameStatus();
-gs.persistGame(true);
+		gs.persistGame(true);
 	}
 }

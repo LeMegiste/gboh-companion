@@ -20,10 +20,12 @@ public class Finish extends GameCommand {
 		if (!gs.areLeadersUsed()) {
 			console.logNL("This scenario did not define leaders. The command cannot be executed.");
 		}
-		if(gs.getCurrentLeader()==null){
-			console.logNL("No current leader");
+		if (gs.getCurrentLeader() == null) {
+			console.logNL("No current leader to be finished.");
+			return;
 		}
-		console.logNL("Marking leader "+gs.getCurrentLeader().getName() + " as finished and switching to next leader");
+		console.logNL(
+				"Marking leader " + gs.getCurrentLeader().getName() + " as finished and switching to next leader");
 		leadersHandler.markLeaderAsFinished(gs.getCurrentLeader());
 
 		if (gs.computeNextLeader() == null) {
