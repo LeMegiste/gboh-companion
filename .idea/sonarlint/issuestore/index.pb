@@ -1,18 +1,12 @@
 
-W
-'src/main/java/ch/megiste/gboh/Main.java,3\e\3e1c384c530091d4efa06698c8b3a609cee1da0f
 c
 3src/main/java/ch/megiste/gboh/CommandProcessor.java,2\8\28bc3b8ea709f22db3ec0c916563559518ad5353
 d
 4src/main/java/ch/megiste/gboh/util/ClassLocator.java,6\d\6dee8e348f3aa4d7829467a583db7c74202814d8
-i
-9src/main/java/ch/megiste/gboh/command/unit/LineFight.java,4\c\4c26f6adf639356dfb6efd7e8fd5f6b37025f14b
 ^
 .src/main/java/ch/megiste/gboh/army/Combat.java,6\e\6e4244c74013b3dec2e8a1435249146fd7d6c556
 b
 2src/main/java/ch/megiste/gboh/army/UnitStatus.java,e\5\e580c2b4537b21a435d4ef5bed13eb482ba7d754
-m
-=src/test/java/ch/megiste/gboh/command/unit/LineFightTest.java,7\3\7391df3f4b4e664122fdcb38ade11b42263f6104
 k
 ;src/main/java/ch/megiste/gboh/command/game/GameCommand.java,0\3\03985e8232a85e5bba6a6af82eeac2e01dd91db4
 d
@@ -25,8 +19,6 @@ h
 8src/main/java/ch/megiste/gboh/command/unit/Add3Hits.java,4\c\4c43a5b4cfb8789fd53c1f38ffe8540e6235d6d6
 i
 9src/main/java/ch/megiste/gboh/command/unit/Eliminate.java,8\a\8a630954e136f40f7688265c3adadef2b206dbfe
-G
-Lautulae/Army_Roman.tsv,a\2\a21b33c30bdd86e48afa129ff1d86ac6ae8d7712
 i
 9src/test/java/ch/megiste/gboh/command/unit/FightTest.java,6\b\6b260706ae124513f7f305df657eeac3242d751e
 g
@@ -39,8 +31,6 @@ k
 ;src/main/java/ch/megiste/gboh/command/unit/Remove2Hits.java,5\f\5f586bd283d787224bcfac0822d84aafa9457823
 W
 'src/main/java/ch/megiste/gboh/Repl.java,7\8\788384439de1cff626c04fff50205851043b1eab
-E
-Great plains/game.xml,7\6\7606a637da121d4699adec902876b6f634cff47f
 ^
 .src/main/java/ch/megiste/gboh/util/Helper.java,e\e\ee7005c88edf275ba8da335ef152b1f52eee39a3
 c
@@ -63,8 +53,6 @@ e
 	Notes.txt,f\b\fb01ad4caa9aea4abacdbf2516e03a0bf46bebe2
 i
 9src/test/java/ch/megiste/gboh/command/unit/RallyTest.java,6\9\69ac8665e90af2d7cb2a809e73921af3a54c8c30
-j
-:src/main/java/ch/megiste/gboh/command/CommandModifier.java,6\1\618ae1c7495b273894b70f4f7ffe9614ecdf0f12
 k
 ;src/main/java/ch/megiste/gboh/command/unit/UnitCommand.java,5\4\54de8fb4417b9e8d8f4e8a12dcadbe90910b9c05
 c

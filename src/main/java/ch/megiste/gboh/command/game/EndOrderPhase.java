@@ -104,6 +104,7 @@ public class EndOrderPhase extends GameCommand {
 									"\"Dice rolled [%d]. %s has a crisis of faith and withdraws all units with %d hexes",
 									doom, leaderName, halfrange);
 							leadersHandler.markLeaderAsFinished(l);
+							gs.activateNextLeader();
 						} else {
 							console.logNL("The current turn is over. Proceed to next turn.");
 						}

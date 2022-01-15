@@ -1,5 +1,7 @@
 package ch.megiste.gboh.command.unit;
 
+import static ch.megiste.gboh.army.Unit.UnitKind.PH;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -222,7 +224,7 @@ public class Fight extends UnitCommand {
 			console.logNL("No position superiority for skirmishers against anything else than chariots or skirmishers");
 
 		}
-		if (mainAttacker.getKind() == UnitKind.LC && (mainDefender.getKind() == UnitKind.PH
+		if (mainAttacker.getKind() == UnitKind.LC && (mainDefender.getKind() == PH
 				|| mainDefender.getKind() == UnitKind.HI || mainDefender.getKind() == UnitKind.LG
 				|| mainDefender.getKind() == UnitKind.MI)) {
 			ignorePositionSuperiority = true;
@@ -335,7 +337,7 @@ public class Fight extends UnitCommand {
 		}
 
 		if (sup == Superiority.AS) {
-			if (mainDefender.getKind() == UnitKind.PH && c.isStacked(mainDefender) && position != Position.FRONT) {
+			if (mainDefender.getKind() == PH && c.isStacked(mainDefender) && position != Position.FRONT) {
 				defenderImpact = 3 * defenderImpact;
 			} else {
 				defenderImpact = 2 * defenderImpact; //Normal case
@@ -398,9 +400,37 @@ public class Fight extends UnitCommand {
 		}
 	}
 
-	protected Map<Unit, Integer> dispatchImpact(final int impactToDispatch, List<Unit> impactedUnits) {
+	protected Map<Unit, Integer> dispatchImpact(final int impactToDispatch, final Unit opponent,
+			List<Unit> impactedUnits) {
 		Map<Unit, Integer> impactPerUnit = new LinkedHashMap<>();
 
+		if (opponent.getSize() < 10 || impactedUnits.size() < 2) {
+			dispatchEqually(impactToDispatch, impactedUnits, impactPerUnit);
+		} else {
+			//The PH dispatches the hits in order to break one of the units in front
+			final Optional<Unit> optCandidateToRout =
+					impactedUnits.stream().filter(u -> (u.getOriginalTq() - u.getHits()) < impactToDispatch)
+							.findFirst();
+			if (optCandidateToRout.isPresent()) {
+				Unit u = optCandidateToRout.get();
+				int impactMainUnit = u.getOriginalTq() - u.getHits();
+				impactPerUnit.put(u, impactMainUnit);
+				final List<Unit> subList = new ArrayList<>(impactedUnits);
+				subList.remove(u);
+				final Map<Unit, Integer> impactsDispatched =
+						dispatchImpact(impactToDispatch - impactMainUnit, opponent, subList);
+				impactPerUnit.putAll(impactsDispatched);
+			} else {
+				dispatchEqually(impactToDispatch, impactedUnits, impactPerUnit);
+			}
+
+		}
+
+		return impactPerUnit;
+	}
+
+	private void dispatchEqually(final int impactToDispatch, final List<Unit> impactedUnits,
+			final Map<Unit, Integer> impactPerUnit) {
 		int impactDispatched = impactToDispatch / impactedUnits.size();
 		int remainder = impactToDispatch % impactedUnits.size();
 
@@ -412,8 +442,6 @@ public class Fight extends UnitCommand {
 			}
 			impactPerUnit.put(u, impact);
 		}
-
-		return impactPerUnit;
 	}
 
 	protected Map<Unit, Integer> computeImpactPerUnit(final Combat c, final int attackerImpact, int defenderImpact,
@@ -422,8 +450,8 @@ public class Fight extends UnitCommand {
 		boolean defenderCollapses = false;
 
 		Map<Unit, Integer> impactPerUnit = new LinkedHashMap<>();
-		impactPerUnit.putAll(dispatchImpact(attackerImpact, c.getAttackersCountingStacks()));
-		impactPerUnit.putAll(dispatchImpact(defenderImpact, c.getDefendersCountingStacks()));
+		impactPerUnit.putAll(dispatchImpact(attackerImpact, c.getMainDefender(), c.getAttackersCountingStacks()));
+		impactPerUnit.putAll(dispatchImpact(defenderImpact, c.getMainAttacker(), c.getDefendersCountingStacks()));
 
 		Unit mainAttacker = c.getMainAttacker();
 		Unit mainDefender = c.getMainDefender();

@@ -1,0 +1,35 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus	Unit global type	Nb mens
+PH		Macedonian	1	PH1	7	10					Infantry	1500
+PH		Macedonian	2	PH2	7	10					Infantry	1500
+PH		Macedonian	3	PH3	7	10					Infantry	1500
+PH		Macedonian	4	PH4	7	10					Infantry	1500
+PH		Macedonian	5	PH5	7	10					Infantry	1500
+PH		Macedonian	6	PH6	7	10					Infantry	1500
+PH		Macedonian	7	PH7	7	10					Infantry	1500
+PH		Macedonian	8	PH8	7	10					Infantry	1500
+PH		Macedonian	9	PH9	7	10					Infantry	1500
+PH		Macedonian	10	PH10	7	10					Infantry	1500
+PH		Macedonian	11	PH11	7	10					Infantry	1500
+PH		Macedonian	12	PH12	7	10					Infantry	1500
+HI	HO	Hypaspists	1	HHI1	8	6					Infantry	900
+HI	HO	Hypaspists	2	HHI2	8	6					Infantry	900
+HI	HO	Greek allies	1	GAHI1	5	10					Infantry	1500
+HI	HO	Greek allies	2	GAHI2	5	10					Infantry	1500
+HI	HO	Greek allies	3	GAHI3	5	10					Infantry	1500
+LP		Thracian	1	TLP1	5	5	J				Infantry	750
+LP		Thracian	2	TLP2	5	5	J				Infantry	750
+LP		Thracian	3	TLP3	5	5	J				Infantry	750
+LP		Thracian	4	TLP4	5	5	J				Infantry	750
+LP		Thracian	5	TLP5	5	5	J				Infantry	750
+LP		Thracian	6	TLP6	5	5	J				Infantry	750
+HC		Companion	1	CHC1	8	4					Cavalry	400
+HC		Companion	2	CHC2	8	4					Cavalry	400
+HC		Thessaly	1	THC1	7	4					Cavalry	400
+HC		Thessaly	2	THC2	7	4					Cavalry	400
+HC		Thessaly	3	THC3	7	4					Cavalry	400
+LC		Greek allies	1	GLC	5	3	J				Cavalry	300
+LC		Thracian	1	TLC	6	2					Cavalry	200
+SKp		Agrianian	1	Ag1	6	1	J				SKp	0
+SKp		Agrianian	2	Ag2	6	1	J				SKp	0
+SK		Cretan		SK1	4	1	A				SK	0
+SK		Illyria		SK2	5	1	J				SK	0

@@ -228,4 +228,25 @@ public class FightTest {
 
 	}
 
+	@Test
+	public void dispatchHitsForPhalanxAgainstTwoUnits() {
+		Unit lg1 = new Unit(UnitKind.LG, SubClass.Ha, "12", "a", "1Haa", 7, 3, MissileType.NONE);
+		Unit lg2 = new Unit(UnitKind.LG, SubClass.Ha, "12", "b", "1Haab", 7, 3, MissileType.NONE);
+
+		Unit ph1 = new Unit(UnitKind.PH, SubClass.NONE, "Macedonian Phalanx", "1", "PH1", 7, 10, MissileType.NONE);
+
+		lg1.getStatus().hits=4;
+		lg2.getStatus().hits=4;
+
+
+		Mockito.when(dice.roll()).thenReturn(9);
+
+		fc.execute(Arrays.asList(ph1), Arrays.asList(lg1,lg2), null);
+		Mockito.verify(unitChanger).addHits(eq(lg1), eq(3));
+		Mockito.verify(unitChanger).addHits(eq(lg2), eq(1));
+		Mockito.verify(unitChanger).addHits(eq(ph1), eq(2));
+
+	}
+
+
 }
