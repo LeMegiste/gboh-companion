@@ -151,7 +151,7 @@ public class Shock extends UnitCommand {
 				}
 
 			}
-			fight.applyImpactOnUnits(diffPerUnit);
+			unitChanger.applyImpactOnUnits(diffPerUnit);
 
 			if (c.isOver()) {
 				continue;

@@ -356,7 +356,7 @@ public class Fight extends UnitCommand {
 		Map<Unit, Integer> impactPerUnit = computeImpactPerUnit(c, attackerImpact, defenderImpact, position);
 
 		//Apply all changes
-		applyImpactOnUnits(impactPerUnit);
+		unitChanger.applyImpactOnUnits(impactPerUnit);
 
 		//Mark all units as missile no (if relevant) and log them
 		for (Unit u : c.getAttackersCountingStacks()) {
@@ -389,14 +389,6 @@ public class Fight extends UnitCommand {
 	private void missileDepletionForUnitsInvolvedInShock(final Unit u) {
 		if (u.getMainMissile() != MissileType.NONE) {
 			unitChanger.changeState(u, null, null, MissileStatusHelper.putMissileStatusToState(u, MissileStatus.NO));
-		}
-	}
-
-	public void applyImpactOnUnits(Map<Unit, Integer> diffPerUnits) {
-		for (Map.Entry<Unit, Integer> e : diffPerUnits.entrySet()) {
-			if (e.getValue() > 0) {
-				unitChanger.addHits(e.getKey(), e.getValue());
-			}
 		}
 	}
 
@@ -569,6 +561,15 @@ public class Fight extends UnitCommand {
 					stackLinks.put(unitChanger.getGameStatus().getUnitFromCode(u.getStackedOn()), u);
 					updatedDefenders.add(unitChanger.getGameStatus().getUnitFromCode(u.getStackedOn()));
 
+				}
+
+			} else if (u.isStackedUnder()) {
+				if (position != Position.BACK) {
+					stackLinks.put(unitChanger.getGameStatus().getUnitFromCode(u.getStackedUnder()),u);
+					updatedDefenders.add(unitChanger.getGameStatus().getUnitFromCode(u.getStackedUnder()));
+				} else {
+					stackLinks.put(u,unitChanger.getGameStatus().getUnitFromCode(u.getStackedUnder()));
+					updatedDefenders.add(u);
 				}
 
 			} else {

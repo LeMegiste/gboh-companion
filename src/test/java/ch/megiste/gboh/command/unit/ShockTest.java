@@ -8,11 +8,13 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
+import static ch.megiste.gboh.command.unit.FightTest.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -106,9 +108,14 @@ public class ShockTest {
 		when(dice.roll()).thenReturn(4, 9, 8, 9, 5);
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), null);
-		Mockito.verify(unitChanger, Mockito.times(2)).addHits(eq(lg1), eq(2));
 		Mockito.verify(unitChanger).addHits(eq(hi1), eq(1));
-		Mockito.verify(unitChanger).addHits(eq(hi1), eq(5));
+
+		final Map<Unit, Integer> imp = buildImpact(lg1, 2, hi1, 5);
+
+
+
+
+		Mockito.verify(unitChanger).applyImpactOnUnits(imp);
 	}
 
 	@Test
@@ -124,8 +131,9 @@ public class ShockTest {
 		when(dice.roll()).thenReturn(9, 9, 9);
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), null);
-		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(lg1), eq(1));
-		Mockito.verify(unitChanger).addHits(eq(hi1), eq(3));
+		final Map<Unit, Integer> imp = buildImpact(lg1, 1, hi1, 3);
+		Mockito.verify(unitChanger).applyImpactOnUnits(imp);
+
 
 		//Only the hi collapses.
 		Assert.assertEquals(UnitState.ROUTED, hi1.getStatus().state);
@@ -167,7 +175,9 @@ public class ShockTest {
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), null);
 
-		Mockito.verify(unitChanger).addHits(eq(hi1), eq(2));
+		final Map<Unit, Integer> imp = buildImpact(lg1,0,hi1, 2);
+		Mockito.verify(unitChanger).applyImpactOnUnits(imp);
+
 
 		Assert.assertEquals(UnitState.ELIMINATED, hi1.getState());
 		Assert.assertEquals(0, lg1.getHits());
@@ -188,8 +198,10 @@ public class ShockTest {
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), null);
 
-		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(lg1), eq(2));
-		Mockito.verify(unitChanger).addHits(eq(hi1), eq(4));
+
+		final Map<Unit, Integer> imp = buildImpact(lg1,2,hi1, 4);
+		Mockito.verify(unitChanger).applyImpactOnUnits(imp);
+
 
 		Assert.assertEquals(UnitState.ELIMINATED, hi1.getState());
 		Assert.assertEquals(2, lg1.getHits());
@@ -209,7 +221,11 @@ public class ShockTest {
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(sk1), null);
 
-		Mockito.verify(unitChanger).addHits(eq(sk1), eq(2));
+
+
+		final Map<Unit, Integer> imp = buildImpact(lg1,0,sk1, 2);
+		Mockito.verify(unitChanger).applyImpactOnUnits(imp);
+
 
 		Assert.assertEquals(UnitState.ELIMINATED, sk1.getState());
 		Assert.assertEquals(0, lg1.getHits());
@@ -230,9 +246,13 @@ public class ShockTest {
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(samnite), null);
 		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(lg1), eq(1));
-		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(lg1), eq(2));
+
 		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(samnite), eq(1));
-		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(samnite), eq(2));
+
+
+		final Map<Unit, Integer> imp = buildImpact(lg1, 2, samnite, 2);
+		Mockito.verify(unitChanger).applyImpactOnUnits(imp);
+
 	}
 
 	@Test
@@ -249,9 +269,12 @@ public class ShockTest {
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(samnite), Collections.singletonList(new Modifier<>(
 				ModifierDefinition.f,true)));
-		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(lg1), eq(2));
+
 		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(samnite), eq(1));
-		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(samnite), eq(4));
+
+
+		final Map<Unit, Integer> imp = buildImpact(lg1, 2, samnite, 4);
+		Mockito.verify(unitChanger).applyImpactOnUnits(imp);
 	}
 
 	@Test
@@ -268,9 +291,14 @@ public class ShockTest {
 
 		sh.execute(Collections.singletonList(lg1), Collections.singletonList(samnite), null);
 		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(lg1), eq(1));
-		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(lg1), eq(2));
 
-		Mockito.verify(unitChanger, Mockito.times(1)).addHits(eq(samnite), eq(2));
+		final Map<Unit, Integer> imp = FightTest.buildImpact(lg1, 2, samnite, 2);
+
+
+
+		Mockito.verify(unitChanger, Mockito.times(1)).applyImpactOnUnits(imp);
+
+
 		Assert.assertEquals("After shock combat, missile capable units are missile no", MissileStatus.NO,
 				samnite.getMainMissileStatus());
 	}
@@ -330,7 +358,7 @@ public class ShockTest {
 						+ "Pre-shock for Mercenary HI 1. Dice rolls [3]! (TQ=8).\n" + "Legio XII Hastati a took 1 hit.\n"
 						+ "Legio XII Hastati a is AS for better weapon system.\n"
 						+ "Shock! Dice rolls [7] on column 5 (column 6, -1 due to size ratio 3/7). Result 4/2\n"
-						+ "Legio XII Hastati a took 2 hits.\n" + "Mercenary HI 1 took 4 hits. It is ROUTED\n"
+						+ "Legio XII Hastati a took 2 hits.\n" + "Mercenary HI 1 took 4 hits.\n"+"Mercenary HI 1 is ROUTED\n"
 						+ "Legio XII Hastati a is missile NO\n"
 						+ "Final status: [Legio XII Hastati a] TQ=7 size=3 - 3 hits is MISSILE NO\n"
 						+ "Final status: [Mercenary HI 1] TQ=8 size=7 - ROUTED");
@@ -371,9 +399,10 @@ public class ShockTest {
 		when(dice.roll()).thenReturn(9, 9, 9, 5, 4, 7, 8);
 
 		sh.execute(Arrays.asList(sk1, sk2), Collections.singletonList(ch), Collections.singletonList(boolMod(f)));
-		Mockito.verify(unitChanger).addHits(eq(sk1), eq(2));
-		Mockito.verify(unitChanger, times(2)).addHits(eq(sk2), eq(1));
-		Mockito.verify(unitChanger).addHits(eq(ch), eq(3));
+		final Map<Unit, Integer> impact1 = FightTest.buildImpact(sk1, 2, sk2, 1, ch, 3);
+		Mockito.verify(unitChanger).applyImpactOnUnits(impact1);
+
+
 
 	}
 
@@ -385,9 +414,12 @@ public class ShockTest {
 		gs.stack(ph1.getUnitCode(), ph2.getUnitCode(), Arrays.asList(ph1, ph2));
 		when(dice.roll()).thenReturn(8, 8, 3, 3);
 		sh.execute(Collections.singletonList(ph1), Collections.singletonList(hi1), null);
-		Mockito.verify(unitChanger, times(2)).addHits(eq(ph1), eq(1));
-		Mockito.verify(unitChanger, times(2)).addHits(eq(ph2), eq(1));
-		Mockito.verify(unitChanger).addHits(eq(hi1), eq(2));
+
+		final Map<Unit, Integer> imp1 = buildImpact(ph1, 1, ph2, 1, hi1, 0);
+		final Map<Unit, Integer> imp2 = buildImpact(ph1, 1, ph2, 1, hi1, 2);
+
+		Mockito.verify(unitChanger).applyImpactOnUnits(imp1);
+		Mockito.verify(unitChanger).applyImpactOnUnits(imp2);
 	}
 
 	@Test
@@ -400,9 +432,11 @@ public class ShockTest {
 		sh.execute(Collections.singletonList(li), Collections.singletonList(ph1), Collections.singletonList(new Modifier<>(ModifierDefinition.b,true)));
 		Mockito.verify(unitChanger, times(1)).addHits(eq(ph2), eq(1));
 
-		Mockito.verify(unitChanger, times(1)).addHits(eq(ph1), eq(3));
-		Mockito.verify(unitChanger, times(1)).addHits(eq(ph2), eq(3));
-		Mockito.verify(unitChanger).addHits(eq(li), eq(2));
+
+
+		final Map<Unit, Integer> imp = buildImpact(ph1, 3, ph2, 3,li,2);
+		Mockito.verify(unitChanger).applyImpactOnUnits(imp);
+
 	}
 
 	private Unit createUnit(final UnitKind kind, final SubClass subclass, final String origin, final String number,

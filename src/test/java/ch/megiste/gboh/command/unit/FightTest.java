@@ -1,6 +1,10 @@
 package ch.megiste.gboh.command.unit;
 
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,9 +21,12 @@ import ch.megiste.gboh.army.Unit;
 import ch.megiste.gboh.army.Unit.MissileType;
 import ch.megiste.gboh.army.Unit.SubClass;
 import ch.megiste.gboh.army.Unit.UnitKind;
-import ch.megiste.gboh.army.UnitStatus.MissileStatus;
+import ch.megiste.gboh.army.UnitStatus.UnitState;
+import ch.megiste.gboh.command.Modifier;
+import ch.megiste.gboh.command.ModifierDefinition;
 import ch.megiste.gboh.command.unit.Fight.Position;
 import ch.megiste.gboh.command.unit.Fight.Superiority;
+import ch.megiste.gboh.game.GameStatus;
 import ch.megiste.gboh.game.UnitChanger;
 import ch.megiste.gboh.util.Console;
 import ch.megiste.gboh.util.Dice;
@@ -29,16 +36,24 @@ public class FightTest {
 	private Fight fc;
 	private Dice dice;
 	private UnitChanger unitChanger;
+	private Console console;
 
 	@Before
 	public void init() {
 		fc = new Fight();
-		unitChanger = Mockito.mock(UnitChanger.class);
+		unitChanger = mock(UnitChanger.class);
 		fc.setUnitChanger(unitChanger);
-		final Console console = Mockito.mock(Console.class);
+		console = mock(Console.class);
+		doAnswer(inv -> {
+			String s = inv.getArgumentAt(0, String.class);
+			System.out.println(s);
+
+			return null;
+		}).when(console).logNL(anyString());
+
 		fc.setConsole(console);
 
-		dice = Mockito.mock(Dice.class);
+		dice = mock(Dice.class);
 		fc.setDice(dice);
 	}
 
@@ -54,7 +69,7 @@ public class FightTest {
 		Assert.assertEquals("LG is DS against HC only if it is not missile NO", Superiority.DS,
 				fc.findSuperiority(hc, lg1));
 
-		lg1.getStatus().missileStatus="J=NO";
+		lg1.getStatus().missileStatus = "J=NO";
 		Assert.assertEquals("LG is DS against HC only if it is not missile NO", Superiority.NONE,
 				fc.findSuperiority(hc, lg1));
 
@@ -79,11 +94,14 @@ public class FightTest {
 		Unit hi1 = new Unit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
 		Unit hi2 = new Unit(UnitKind.HI, SubClass.NONE, "Mercenary", "2", "MHI1", 8, 7, MissileType.NONE);
 
-		Mockito.when(dice.roll()).thenReturn(5);
+		when(dice.roll()).thenReturn(5);
 
 		fc.execute(Arrays.asList(lg1), Arrays.asList(hi1), null);
-		Mockito.verify(unitChanger).addHits(eq(lg1), eq(2));
-		Mockito.verify(unitChanger).addHits(eq(hi1), eq(4));
+
+		final Map<Unit, Integer> impact = new HashMap<>();
+		impact.put(lg1, 2);
+		impact.put(hi1, 4);
+		Mockito.verify(unitChanger).applyImpactOnUnits(eq(impact));
 
 	}
 
@@ -96,13 +114,14 @@ public class FightTest {
 		Unit hi1 = new Unit(UnitKind.HI, SubClass.NONE, "Mercenary", "1", "MHI1", 8, 7, MissileType.NONE);
 		Unit hi2 = new Unit(UnitKind.HI, SubClass.NONE, "Mercenary", "2", "MHI1", 8, 7, MissileType.NONE);
 
-		Mockito.when(dice.roll()).thenReturn(1);
+		when(dice.roll()).thenReturn(1);
 
 		fc.execute(Arrays.asList(lg1, lg2), Arrays.asList(hi1), null);
-		Mockito.verify(unitChanger).addHits(eq(lg1), eq(2));
-		Mockito.verify(unitChanger).addHits(eq(lg2), eq(1));
-		Mockito.verify(unitChanger).addHits(eq(hi1), eq(4));
-
+		final Map<Unit, Integer> impact = new HashMap<>();
+		impact.put(lg1, 2);
+		impact.put(lg2, 1);
+		impact.put(hi1, 4);
+		Mockito.verify(unitChanger).applyImpactOnUnits(eq(impact));
 	}
 
 	@Test
@@ -115,7 +134,7 @@ public class FightTest {
 		final Map<Unit, Integer> impactPerUnits = new HashMap<>();
 		impactPerUnits.put(lg1, 2);
 		impactPerUnits.put(lg2, 2);
-		Mockito.when(dice.roll()).thenReturn(1, 8);
+		when(dice.roll()).thenReturn(1, 8);
 
 		fc.nearCollapseCheck(impactPerUnits, lg1);
 		fc.nearCollapseCheck(impactPerUnits, lg2);
@@ -180,12 +199,32 @@ public class FightTest {
 		lg1.getStatus().hits = 4;
 		hi1.getStatus().hits = 3;
 
-		Mockito.when(dice.roll()).thenReturn(5, 7, 8);
+		when(dice.roll()).thenReturn(5, 7, 8);
 
 		fc.execute(Collections.singletonList(lg1), Collections.singletonList(hi1), null);
-		Mockito.verify(unitChanger).addHits(eq(lg1), eq(4));
-		Mockito.verify(unitChanger).addHits(eq(hi1), eq(3));
+		final Map<Unit, Integer> impact = new HashMap<>();
+		impact.put(lg1, 4);
 
+		impact.put(hi1, 3);
+		Mockito.verify(unitChanger).applyImpactOnUnits(eq(impact));
+	}
+
+	public static Map<Unit, Integer> buildImpact(Unit u, int i) {
+		final Map<Unit, Integer> impact = new HashMap<>();
+		impact.put(u, i);
+		return impact;
+	}
+
+	public static Map<Unit, Integer> buildImpact(Unit u, int i, Unit u2, int i2) {
+		final Map<Unit, Integer> impact = buildImpact(u, i);
+		impact.put(u2, i2);
+return impact;
+	}
+
+	public static Map<Unit, Integer> buildImpact(Unit u, int i, Unit u2, int i2, Unit u3, int i3) {
+		final Map<Unit, Integer> impact = buildImpact(u, i, u2, i2);
+		impact.put(u3, i3);
+		return impact;
 	}
 
 	@Test
@@ -194,11 +233,14 @@ public class FightTest {
 
 		Unit li = new Unit(UnitKind.LI, SubClass.NONE, "Levy", "1", "CLI1", 4, 3, MissileType.NONE);
 
-		Mockito.when(dice.roll()).thenReturn(5, 7, 8);
+		when(dice.roll()).thenReturn(5, 7, 8);
 
 		fc.execute(Collections.singletonList(ag1), Collections.singletonList(li), null);
-		Mockito.verify(unitChanger).addHits(eq(ag1), eq(3));
-		Mockito.verify(unitChanger).addHits(eq(li), eq(1));
+
+		final Map<Unit, Integer> impact = new HashMap<>();
+		impact.put(ag1, 3);
+		impact.put(li, 1);
+		Mockito.verify(unitChanger).applyImpactOnUnits(eq(impact));
 
 	}
 
@@ -208,7 +250,7 @@ public class FightTest {
 
 		Unit li = new Unit(UnitKind.LI, SubClass.NONE, "Levy", "1", "CLI1", 4, 3, MissileType.NONE);
 
-		Mockito.when(dice.roll()).thenReturn(5, 7, 8);
+		when(dice.roll()).thenReturn(5, 7, 8);
 
 		fc.execute(Collections.singletonList(ag1), Collections.singletonList(li), null);
 
@@ -220,11 +262,14 @@ public class FightTest {
 
 		Unit li = new Unit(UnitKind.CH, SubClass.NONE, "Chariots", "1", "CH1", 4, 3, MissileType.A);
 
-		Mockito.when(dice.roll()).thenReturn(5, 7, 8);
+		when(dice.roll()).thenReturn(5, 7, 8);
 
 		fc.execute(Collections.singletonList(ag1), Collections.singletonList(li), null);
-		Mockito.verify(unitChanger).addHits(eq(ag1), eq(4));
-		Mockito.verify(unitChanger).addHits(eq(li), eq(3));
+
+		final Map<Unit, Integer> impact = new HashMap<>();
+		impact.put(ag1, 4);
+		impact.put(li, 3);
+		Mockito.verify(unitChanger).applyImpactOnUnits(eq(impact));
 
 	}
 
@@ -235,18 +280,49 @@ public class FightTest {
 
 		Unit ph1 = new Unit(UnitKind.PH, SubClass.NONE, "Macedonian Phalanx", "1", "PH1", 7, 10, MissileType.NONE);
 
-		lg1.getStatus().hits=4;
-		lg2.getStatus().hits=4;
+		lg1.getStatus().hits = 4;
+		lg2.getStatus().hits = 4;
 
+		when(dice.roll()).thenReturn(9);
 
-		Mockito.when(dice.roll()).thenReturn(9);
+		fc.execute(Arrays.asList(ph1), Arrays.asList(lg1, lg2), null);
 
-		fc.execute(Arrays.asList(ph1), Arrays.asList(lg1,lg2), null);
-		Mockito.verify(unitChanger).addHits(eq(lg1), eq(3));
-		Mockito.verify(unitChanger).addHits(eq(lg2), eq(1));
-		Mockito.verify(unitChanger).addHits(eq(ph1), eq(2));
+		final Map<Unit, Integer> impact = new HashMap<>();
+		impact.put(lg1, 3);
+		impact.put(lg2, 1);
+		impact.put(ph1, 2);
+		Mockito.verify(unitChanger).applyImpactOnUnits(eq(impact));
 
 	}
 
+	@Test
+	public void routingStackedPhalanxes() {
+		Unit ph1 = new Unit(UnitKind.PH, SubClass.NONE, "Macedonian Phalanx", "1", "PH1", 7, 10, MissileType.NONE);
+		Unit ph2 = new Unit(UnitKind.PH, SubClass.NONE, "Macedonian Phalanx", "2", "PH2", 7, 10, MissileType.NONE);
+		ph1.getStatus().hits = 3;
+		ph2.getStatus().hits = 3;
+
+		ph2.stackUnder(ph1.getUnitCode());
+		ph1.stackOn(ph2.getUnitCode());
+
+		Unit hi1 = new Unit(UnitKind.HI, SubClass.HO, "Argos hoplites", "1", "AHI1", 7, 10, MissileType.NONE);
+
+		final GameStatus gameStatus = mock(GameStatus.class);
+		unitChanger = new UnitChanger(console, gameStatus);
+		fc.setUnitChanger(unitChanger);
+
+		when(gameStatus.getUnitFromCode("PH1")).thenReturn(ph1);
+		when(gameStatus.getUnitFromCode("PH2")).thenReturn(ph2);
+		when(gameStatus.getStackedUnit(ph1)).thenReturn(ph2);
+		when(gameStatus.getStackedUnit(ph2)).thenReturn(ph1);
+
+		when(dice.roll()).thenReturn(9, 9, 9);
+
+		fc.execute(Arrays.asList(hi1), Arrays.asList(ph1),
+				Collections.singletonList(new Modifier<>(ModifierDefinition.f, true)));
+
+		Assert.assertEquals(UnitState.ROUTED, ph1.getState());
+		Assert.assertEquals(UnitState.ROUTED, ph2.getState());
+	}
 
 }

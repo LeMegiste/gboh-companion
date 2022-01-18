@@ -9,8 +9,10 @@ import static ch.megiste.gboh.army.UnitStatus.UnitState.ROUTED;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 import com.google.common.base.Joiner;
@@ -54,33 +56,21 @@ public class UnitChanger {
 	}
 
 	public void addHits(final Unit u, final int c) {
+		int newHits = computeNewHits(u, c);
+		StateChange sc = new StateChange(u);
+		sc.hits = newHits;
+		changeStateInternal(u, sc);
+
+	}
+
+	public int computeNewHits(final Unit u, final int c) {
 		final UnitStatus status = u.getStatus();
-		UnitState newState;
-		int newHits;
-		if (u.getState() == ROUTED) {
-			newState = ELIMINATED;
-			newHits = u.getOriginalTq();
-		} else {
-			newHits = status.hits + c;
-			if (newHits >= u.getOriginalTq()) {
-				newState = UnitState.ROUTED;
-				final UnitCategory unitCategory = u.getKind().getUnitCategory();
-				if (u.getKind() == UnitKind.SK || unitCategory == UnitCategory.Chariots
-						|| unitCategory == UnitCategory.Elephants) {
-					if (unitCategory == UnitCategory.Elephants) {
-						console.logFormat("%s is RAMPAGING!", Log.lotUnit(u));
-						handleRampage(u);
-					}
-					newState = ELIMINATED;
-				}
-			} else if (newHits < 0) {
-				newHits = 0;
-				newState = null;
-			} else {
-				newState = null;
-			}
+
+		int newHits = status.hits + c;
+		if (newHits < 0) {
+			newHits = 0;
 		}
-		changeState(u, newHits, newState);
+		return newHits;
 	}
 
 	private void handleRampage(final Unit u) {
@@ -133,14 +123,55 @@ public class UnitChanger {
 		changeStateInternal(u, hits, state, missileStatus, null, null, false);
 	}
 
+	public static class StateChange {
+
+		private final Unit u;
+
+		public StateChange(final Unit u) {
+			this.u = u;
+		}
+
+		public Integer hits;
+		public UnitState state;
+		public Map<MissileType, MissileStatus> missileStatus;
+		public String stackedOn;
+		public String stackedUnder;
+		public boolean undo;
+	}
+
 	private void changeStateInternal(final Unit u, final Integer hits, final UnitState state,
 			final Map<MissileType, MissileStatus> missileStatus, final String stackedOn, final String stackedUnder,
 			final boolean undo) {
+		StateChange sc = new StateChange(u);
+		sc.hits = hits;
+		sc.missileStatus = missileStatus;
+		sc.stackedOn = stackedOn;
+		sc.state = state;
+		sc.stackedUnder = stackedUnder;
+		sc.undo = undo;
+		changeStateInternal(u, sc);
+	}
+
+	private void changeStateInternal(final Unit u, final StateChange sc) {
+		final Queue<StateChange> q = new LinkedList<>();
+		q.add(sc);
+		changeStateInternal(q);
+	}
+
+	private void changeStateInternal(Queue<StateChange> q) {
+
+		if (q.isEmpty()) {
+			return;
+		}
+
+		StateChange sc = q.poll();
+		Unit u = sc.u;
 		final UnitStatus status = u.getStatus();
 		final UnitStatus before = Helper.clone(status);
 		List<String> statusList = new ArrayList<>();
-		if (hits != null && hits != status.hits) {
-			int diff = hits - status.hits;
+
+		if (sc.hits != null && sc.hits != status.hits) {
+			int diff = sc.hits - status.hits;
 			if (diff == 1) {
 				statusList.add("took 1 hit.");
 			} else if (diff > 1) {
@@ -151,58 +182,109 @@ public class UnitChanger {
 				statusList.add("was removed " + Math.abs(diff) + " hits.");
 			}
 
-			if (hits > u.getOriginalTq()) {
+			if (status.state == ROUTED && diff > 0) {
+				StateChange scNext = new StateChange(u);
+				scNext.state = ELIMINATED;
+				q.add(scNext);
+			} else if ((status.state == OK || status.state == RALLIED) && sc.hits >= u.getOriginalTq()) {
+				UnitState newState = ROUTED;
+				final UnitCategory unitCategory = u.getKind().getUnitCategory();
+				if (u.getKind() == UnitKind.SK || unitCategory == UnitCategory.Chariots
+						|| unitCategory == UnitCategory.Elephants) {
+					if (unitCategory == UnitCategory.Elephants) {
+						console.logFormat("%s is RAMPAGING!", Log.lotUnit(u));
+						handleRampage(u);
+					}
+					newState = ELIMINATED;
+				}
+
+				StateChange scNext = new StateChange(u);
+				scNext.state = newState;
+				q.add(scNext);
+			}
+
+			if (sc.hits > u.getOriginalTq()) {
 				status.hits = u.getOriginalTq();
 			} else {
-				status.hits = hits;
+				status.hits = sc.hits;
 			}
 
 		}
-		if (missileStatus != null && !MissileStatusHelper.missileStatusToString(missileStatus)
+		if (sc.missileStatus != null && !MissileStatusHelper.missileStatusToString(sc.missileStatus)
 				.equals(status.missileStatus)) {
-			if (missileStatus.size() > 0) {
-				statusList.add("is missile " + missileStatus.values().iterator().next());
+			if (sc.missileStatus.size() > 0) {
+				statusList.add("is missile " + sc.missileStatus.values().iterator().next());
 			}
-			status.missileStatus = MissileStatusHelper.missileStatusToString(missileStatus);
+			status.missileStatus = MissileStatusHelper.missileStatusToString(sc.missileStatus);
 		} else if (u.getMainMissile() == MissileType.NONE) {
 			status.missileStatus = "";
 		}
 
 		boolean stateChanged = false;
-		if (state != null && state != before.state) {
+		if (sc.state != null && sc.state != before.state) {
 			stateChanged = true;
-			if (!undo) {
-				Preconditions.checkArgument(stateTransitions.get(state).contains(before.state),
-						"Unit must be in state " + Joiner.on(" or ").join(stateTransitions.get(state))
-								+ " before passing to state: " + state);
+			if (!sc.undo) {
+				Preconditions.checkArgument(stateTransitions.get(sc.state).contains(before.state),
+						"Unit must be in state " + Joiner.on(" or ").join(stateTransitions.get(sc.state))
+								+ " before passing to state: " + sc.state);
 			}
-			statusList.add("is " + state.name());
-			status.state = state;
-			if (state == RALLIED) {
+			statusList.add("is " + sc.state.name());
+			status.state = sc.state;
+			if (sc.state == RALLIED) {
 				status.depleted = true;
 			}
+
 		}
 		String changeMessage = Joiner.on(" It ").join(statusList);
 		if (!Strings.isNullOrEmpty(changeMessage.trim())) {
 			console.logNL(Log.lotUnit(u) + " " + changeMessage);
 		}
-		if (stackedOn != null) {
-			status.stackOn = stackedOn;
+		if (sc.stackedOn != null) {
+			status.stackOn = sc.stackedOn;
 		}
-		if (stackedUnder != null) {
-			status.stackUnder = stackedUnder;
+		if (sc.stackedUnder != null) {
+			status.stackUnder = sc.stackedUnder;
 		}
 
 		if (!before.equals(u.getStatus())) {
 			gameStatus.recordChange(before, u);
 		}
-		if (stateChanged && state == ROUTED && u.isStacked()) {
+		if (stateChanged && sc.state == ROUTED && u.isStacked()) {
 			final Unit stackedUnit = gameStatus.getStackedUnit(u);
 			Preconditions.checkNotNull(stackedUnit);
 			if (stackedUnit.getState() != ROUTED && stackedUnit.getState() != ELIMINATED) {
-				changeStateInternal(stackedUnit, stackedUnit.getOriginalTq(), ROUTED, null, null, null, undo);
+				StateChange scNext1 = new StateChange(stackedUnit);
+				scNext1.state = ROUTED;
+				q.add(scNext1);
+
+				StateChange scNext2 = new StateChange(u);
+				scNext2.stackedOn = NONE;
+				scNext2.stackedUnder = NONE;
+				q.add(scNext2);
+
+				StateChange scNext3 = new StateChange(stackedUnit);
+				scNext3.stackedOn = NONE;
+				scNext3.stackedUnder = NONE;
+				q.add(scNext3);
 			}
 		}
+		if (!q.isEmpty()) {
+			changeStateInternal(q);
+		}
+	}
+
+	public void applyImpactOnUnits(Map<Unit, Integer> diffPerUnits) {
+		LinkedList<StateChange> queue = new LinkedList<>();
+		for (Map.Entry<Unit, Integer> e : diffPerUnits.entrySet()) {
+			if (e.getValue() > 0) {
+				int newHits = computeNewHits(e.getKey(), e.getValue());
+				StateChange sc = new StateChange(e.getKey());
+				sc.hits = newHits;
+				queue.add(sc);
+
+			}
+		}
+		changeStateInternal(queue);
 	}
 
 	public void changeStateForUndo(final String unitCode, final UnitStatus status) {
