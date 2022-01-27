@@ -40,7 +40,7 @@ public class UnitStatus implements Serializable {
 	@XStreamAsAttribute
 	public String stackUnder = NONE;
 
-	@XStreamOmitField
+	@XStreamAsAttribute
 	public boolean depleted = false;
 
 	@Override
