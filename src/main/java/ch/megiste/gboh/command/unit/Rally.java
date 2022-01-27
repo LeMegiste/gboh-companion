@@ -50,7 +50,7 @@ public class Rally extends UnitCommand {
 				if(rallyRollModified<= l.getInitiative()+1){
 					console.logFormat("Dice rolled [%d]%s. %s rallied %s!",rallyRoll,modifier, LogLeader.logLeader(l),Log.lotUnit(u));
 					rallySuccess(u);
-				} else if(rallyRollModified>u.getOriginalTq()){
+				} else if(rallyRollModified>u.getOriginalTq() || u.isDoubleSizedUnit()){
 					unitChanger.eliminated(u);
 					console.logFormat("Dice rolled [%d]%s. Rally attempt failed %s is eliminated!",rallyRoll,modifier, Log.lotUnit(u));
 

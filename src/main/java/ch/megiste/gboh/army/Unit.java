@@ -254,6 +254,10 @@ public class Unit {
 		return size;
 	}
 
+	public boolean isDoubleSizedUnit() {
+		return size >= 10;
+	}
+
 	public MissileType getMainMissile() {
 		if (missiles.isEmpty()) {
 			return MissileType.NONE;
