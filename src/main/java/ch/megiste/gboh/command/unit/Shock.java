@@ -108,7 +108,7 @@ public class Shock extends UnitCommand {
 
 			Map<Unit, Integer> diffPerUnit = new HashMap<>();
 
-			boolean noTqCheckForAttacker = mainDefender.getKind() == UnitKind.SK || allDefendersRouted;
+			boolean noTqCheckForAttacker = mainDefender.getKind().getUnitCategory() == UnitCategory.Skirmishers || allDefendersRouted;
 			boolean noTqCheckForDefender =
 					mainAttacker.getKind() == UnitKind.LI && (mainDefender.getKind() == UnitKind.LG
 							|| mainDefender.getKind() == UnitKind.PH || mainDefender.getKind() == UnitKind.HI);

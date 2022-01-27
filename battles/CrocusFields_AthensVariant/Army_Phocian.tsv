@@ -1,0 +1,44 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus	StackedOn	Unit global type	Nb mens
+HI	HO	Greek	1	GHI1	8	10						Infantry	1500
+HI	HO	Greek	2	GHI2	7	10						Infantry	1500
+HI	HO	Greek	3	GHI3	7	10						Infantry	1500
+HI	HO	Greek	4	GHI4	6	10						Infantry	1500
+HI	HO	Greek	5	GHI5	6	10						Infantry	1500
+HI	HO	Greek	6	GHI6	6	10						Infantry	1500
+HI	HO	Greek	7	GHI7	6	10						Infantry	1500
+HI	HO	Greek	8	GHI8	6	10						Infantry	1500
+HI	HO	Argos	1	AHI1	7	10						Infantry	1500
+HI	HO	Argos	2	AHI2	7	10						Infantry	1500
+HI	HO	Argos	3	AHI3	7	10						Infantry	1500
+HI	HO	Greek merc	1	MHI1	6	10						Infantry	1500
+HI	HO	Greek merc	2	MHI2	6	10						Infantry	1500
+LP		Greek merc	1	MLP1	6	5	J					Infantry	750
+LP		Greek merc	2	MLP2	6	5	J					Infantry	750
+MI		Mercenary	1	MMI1	6	4						Infantry	600
+MI		Mercenary	2	MMI2	6	4						Infantry	600
+MI		Mercenary	3	MMI3	6	4						Infantry	600
+MI		Mercenary	4	MMI4	6	4						Infantry	600
+MI		Mercenary	5	MMI5	6	4						Infantry	600
+LI		Mercenary	1	MLI1	5	4	J					Infantry	600
+LI		Mercenary	2	MLI2	5	4	J					Infantry	600
+LI		Mercenary	3	MLI3	5	4	J					Infantry	600
+LI		Mercenary	4	MLI4	5	4	J					Infantry	600
+LI		Mercenary	5	MLI5	5	4	J					Infantry	600
+LI		Mercenary	6	MLI6	5	4	J					Infantry	600
+LI		Mercenary	7	MLI7	5	4	J					Infantry	600
+LI		Mercenary	8	MLI8	5	4	J					Infantry	600
+SK		Rhodian	1	RSK1	5	1	S					SK	0
+SK		Rhodian	2	RSK2	5	1	S					SK	0
+SK		Rhodian	3	RSK3	5	1	S					SK	0
+SK		Susian	1	SSK1	5	1	A					SK	0
+SK		Susian	2	SSK2	5	1	A					SK	0
+SK		Susian	3	SSK3	5	1	A					SK	0
+SK		Susian	4	SSK4	5	1	A					SK	0
+LN		Mercenary		MLN	7	5						Cavalry	500
+LN		Allied Greeks		ALN	7	5						Cavalry	500
+HI	HO	Athens	1	ATHI1	6	10						Infantry	1500
+HI	HO	Athens	2	ATHI2	6	10						Infantry	1500
+HI	HO	Athens	3	ATHI3	6	10						Infantry	1500
+HI	HO	Athens	4	ATHI4	6	10						Infantry	1500
+HI	HO	Athens	5	ATHI5	6	10						Infantry	1500
+LC		Athens		ALC	4	2	J					Cavalry	200
