@@ -238,7 +238,7 @@ return impact;
 		fc.execute(Collections.singletonList(ag1), Collections.singletonList(li), null);
 
 		final Map<Unit, Integer> impact = new HashMap<>();
-		impact.put(ag1, 3);
+		impact.put(ag1, 2);
 		impact.put(li, 1);
 		Mockito.verify(unitChanger).applyImpactOnUnits(eq(impact));
 

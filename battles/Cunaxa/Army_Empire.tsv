@@ -1,0 +1,48 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus	StackedOn	Unit global type	Nb mens
+LC		Persia		PLC	6	5	MJ					Cavalry	500
+LC		Dahae		DLC	6	5	MA					Cavalry	500
+LC		Armenia		ALC	6	5	MJ					Cavalry	500
+SK		Susia	1	SSK1	5	1	A					SK	0
+SK		Susia	2	SSK2	5	1	A					SK	0
+SK		Persia	1	PSK1	5	1	J					SK	0
+SK		Persia	2	PSK2	5	1	J					SK	0
+LP		Greek mercenary	1	GMLP1	6	5	J					Infantry	750
+LP		Greek mercenary	2	GMLP2	6	5	J					Infantry	750
+SK		Uxian	1	USK1	3	1	S					SK	0
+SK		Uxian	2	USK2	3	1	S					SK	0
+LI		Anatolian	1	AnLI1	3	5	A					Infantry	750
+LI		Anatolian	2	AnLI2	3	5	A					Infantry	750
+LI		Babylon	1	BLI1	4	5	IA					Infantry	750
+LI		Babylon	2	BLI2	4	5	IA					Infantry	750
+LI		Hyrcanian		HLI	5	5	J					Infantry	750
+LI		Carian	1	CLI1	4	5	J					Infantry	750
+LI		Carian	2	CLI2	4	5	J					Infantry	750
+LI		Carian	3	CLI3	4	5	J					Infantry	750
+MI		Sacaen	1	SMI1	5	5	J					Infantry	750
+MI		Sacaen	2	SMI2	5	5	J					Infantry	750
+MI		Immortals	1	IMI1	8	5	A					Infantry	750
+MI		Immortals	2	IMI2	8	5	A					Infantry	750
+MI		Immortals	3	IMI3	8	5	A					Infantry	750
+HC		Kinsmen		KHC	7	5						Cavalry	500
+LN		Carian		CLN	6	5						Cavalry	500
+LI		Asian levy	1	ALI1	3	5	J					Infantry	750
+LI		Asian levy	2	ALI2	3	5	J					Infantry	750
+LI		Asian levy	3	ALI3	3	5	J					Infantry	750
+LI		Asian levy	4	ALI4	3	5	J					Infantry	750
+LI		Asian levy	5	ALI5	3	5	J					Infantry	750
+LI		Asian levy	6	ALI6	3	5	J					Infantry	750
+LI		Asian levy	7	ALI7	3	5	J					Infantry	750
+LI		Asian levy	8	ALI8	3	5	J					Infantry	750
+SK		Sitacenian	1	SiSK1	3	1	A					SK	0
+SK		Sitacenian	2	SiSK2	3	1	A					SK	0
+LI		Egypt		ELI	4	5	IA					Infantry	750
+SK		Arabian	1	ArSK1	4	1	A					SK	0
+SK		Arabian	2	ArSK2	4	1	A					SK	0
+HC		Media	1	MHC1	7	5						Cavalry	500
+LC		Mesopotamia	1	MLC1	6	5	MJ					Cavalry	500
+LC		Cappadocia	1	CLC1	6	5	MJ					Cavalry	500
+CH		Persia	1	CH1	5	3	MA					CH	0
+CH		Persia	2	CH2	5	3	MA					CH	0
+CH		Persia	3	CH3	5	3	MA					CH	0
+CH		Persia	4	CH4	5	3	MA					CH	0
+CH		Persia	5	CH5	5	3	MA					CH	0

@@ -383,7 +383,7 @@ public class Fight extends UnitCommand {
 	}
 
 	private boolean doNotUseSizeColumnShift(final UnitKind kind) {
-		return kind == UnitKind.CH || kind == UnitKind.EL;
+		return kind == UnitKind.CH || kind == UnitKind.EL || kind.getUnitCategory() == UnitCategory.Skirmishers;
 	}
 
 	private void missileDepletionForUnitsInvolvedInShock(final Unit u) {
@@ -565,10 +565,10 @@ public class Fight extends UnitCommand {
 
 			} else if (u.isStackedUnder()) {
 				if (position != Position.BACK) {
-					stackLinks.put(unitChanger.getGameStatus().getUnitFromCode(u.getStackedUnder()),u);
+					stackLinks.put(unitChanger.getGameStatus().getUnitFromCode(u.getStackedUnder()), u);
 					updatedDefenders.add(unitChanger.getGameStatus().getUnitFromCode(u.getStackedUnder()));
 				} else {
-					stackLinks.put(u,unitChanger.getGameStatus().getUnitFromCode(u.getStackedUnder()));
+					stackLinks.put(u, unitChanger.getGameStatus().getUnitFromCode(u.getStackedUnder()));
 					updatedDefenders.add(u);
 				}
 

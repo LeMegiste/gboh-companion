@@ -1,0 +1,31 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus	Unit global type	Nb mens
+LC		Arbelitis		ArLC	6	3	MA					Cavalry	300
+LC		Sogdian		SLC	6	2	MJ					Cavalry	200
+LC		Pirimisida		PiLC	7	3	MJ					Cavalry	300
+SK		Auxiliary	1	ASK1	3	1	A					SK	0
+SK		Auxiliary	2	ASK2	3	1	A					SK	0
+SK		Auxiliary	3	ASK3	3	1	A					SK	0
+SK		Auxiliary	4	ASK4	3	1	A					SK	0
+SK		Auxiliary	5	ASK5	3	1	A					SK	0
+SK		Auxiliary	6	ASK6	3	1	S					SK	0
+SK		Auxiliary	7	ASK7	3	1	S					SK	0
+LI		Persia	1	PLI1	6	5	A					Infantry	750
+LI		Persia	2	PLI2	6	5	A					Infantry	750
+LP		Mercenary	1	MLP1	5	5	J					Infantry	750
+LP		Mercenary	2	MLP2	5	5	J					Infantry	750
+LP		Mercenary	3	MLP3	5	5	J					Infantry	750
+LP		Mercenary	4	MLP4	5	5	J					Infantry	750
+LP		Mercenary	5	MLP5	5	5	J					Infantry	750
+HC		Companion	1	CHC	8	4						Cavalry	400
+LC		Arachosia	1	ArLC1	7	3	MJ					Cavalry	300
+LC		Arachosia	2	ArLC2	7	3	MJ					Cavalry	300
+SK		Mercenary		MSK	4	1	S					SK	0
+LP		Greek merc	1	GLP1	5	5	J					Infantry	750
+LP		Greek merc	2	GLP2	5	5	J					Infantry	750
+LP		Greek merc	3	GLP3	5	5	J					Infantry	750
+SK		Cretan		CSK	4	1	A					SK	0
+HI	HO	Sparta	1	SHI1	7	10						Infantry	1500
+HI	HO	Sparta	2	SHI2	7	10						Infantry	1500
+HI	HO	Sparta	3	SHI3	7	10						Infantry	1500
+HI	HO	Sparta	4	SHI4	7	10						Infantry	1500
+HI	HO	Sparta	5	SHI5	7	10						Infantry	1500
