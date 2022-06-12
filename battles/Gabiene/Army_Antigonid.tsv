@@ -1,0 +1,58 @@
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus	Unit global type	Nb mens
+SK		Sitacenian	1	SiSK1	3	1	A				SK	0
+SK		Sitacenian	2	SiSK2	3	1	A				SK	0
+SK		Sitacenian	3	SiSK3	3	1	A				SK	0
+SK		Sitacenian	4	SiSK4	3	1	A				SK	0
+SK		Sitacenian	5	SiSK5	3	1	A				SK	0
+SK		Sitacenian	6	SiSK6	3	1	A				SK	0
+SK		Sitacenian	7	SiSK7	3	1	A				SK	0
+SK		Sitacenian	8	SiSK8	3	1	A				SK	0
+SK		Uxian	1	USK1	3	1	S				SK	0
+SK		Uxian	2	USK2	3	1	S				SK	0
+EL		Indian	1	IEL1	6	5	MJ,A				EL	0
+EL		Indian	2	IEL2	6	5	MJ,A				EL	0
+EL		Indian	3	IEL3	6	5	MJ,A					
+EL		Indian	4	IEL4	6	5	MJ,A					
+EL		Indian	5	IEL5	6	5	MJ,A					
+EL		Indian	6	IEL6	6	5	MJ,A					
+EL		Indian	7	IEL7	6	5	MJ,A					
+EL		Indian	8	IEL8	6	5	MJ,A					
+EL		Indian	9	IEL9	6	5	MJ,A					
+EL		Indian	10	IEL10	6	5	MJ,A					
+EL		Indian	11	IEL11	6	5	MJ,A					
+EL		Indian	12	IEL12	6	5	MJ,A					
+HI	HO	Greek Mercenaries	1	GMHI1	6	10						
+HI	HO	Greek Mercenaries	2	GMHI2	6	10						
+PH		Phalanx	1	APH1	6	10						
+PH		Phalanx	2	APH2	6	10						
+PH		Phalanx	3	APH3	6	10						
+PH		Phalanx	4	APH4	6	10						
+PH		Phalanx	5	APH5	6	10						
+PH	MA	Phalanx	1	MPH1	7	10						
+PH	MA	Phalanx	2	MPH2	7	10						
+PH	MA	Phalanx	3	MPH3	7	10						
+PH	MA	Phalanx	4	MPH4	7	10						
+PH	MA	Phalanx	5	MPH5	7	10						
+LC		Median Archers	1	MALC	6	4	MA					
+LC		Parthian Archers	1	PALC	6	4	MA					
+LC		Median	1	MELC1	6	5	MJ					
+LC		Median	2	MELC2	6	5	MJ					
+LC		Median	3	MELC3	6	5	MJ					
+LC		Phrygia		PHLC	7	5	MJ					
+LC		Lydia		LYLC	7	5	MJ					
+LN		Allied Greek		AGLC	7	5						
+LN		Thrace	1	THLN1	7	5						
+LN		Thrace	2	THLN2	7	5						
+HC		Ashtippoi		ASHC	7	5						
+HC		Companion	1	CHC1	7	5						
+HC		Companion	2	CHC2	7	5						
+LN		Median	3	MELN3	7	4						
+LN		Median	4	MELN4	7	4						
+LN		Median	5	MELN5	7	4						
+LC		Tarantine		TALC1	7	5	MJ					
+LC		Tarantine		TALC2	7	5	MJ					
+LC		Tarantine		TALC3	7	5	MJ					
+LC		Tarantine		TALC4	7	5	MJ					
+HC		Antoginous Agema		AAHC	8	3						
+LN		Median	1	MELN1	7	4						
+LN		Median	2	MELN2	7	4						
