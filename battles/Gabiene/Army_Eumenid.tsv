@@ -1,70 +1,70 @@
-Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus	StackedOn	Unit global type	Nb mens
-SK		Auxiliary Archers	1	AASK1	3	1	A					SK	0
-SK		Auxiliary Archers	2	AASK2	3	1	A					SK	0
-SK		Auxiliary Archers	3	AASK3	3	1	A					SK	0
-SK		Auxiliary Archers	4	AASK4	3	1	A					SK	0
-SK		Auxiliary Archers	5	AASK5	3	1	A					SK	0
-SK		Auxiliary Archers	6	AASK6	3	1	A					SK	0
-SK		Auxiliary Archers	7	AASK7	3	1	A					SK	0
-SK		Auxiliary Archers	8	AASK8	3	1	A					SK	0
-SK		Auxiliary Slingers	1	ASSK1	3	1	S					SK	0
-SK		Auxiliary Slingers	2	ASSK2	3	1	S					SK	0
-EL		India	1	EL1	6	5	MJ,A					EL	0
-EL		India	2	EL2	6	5	MJ,A					EL	0
-EL		India	3	EL3	6	5	MJ,A					EL	0
-EL		India	4	EL4	6	5	MJ,A					EL	0
-EL		India	5	EL5	6	5	MJ,A					EL	0
-EL		India	6	EL6	6	5	MJ,A					EL	0
-EL		India	7	EL7	6	5	MJ,A					EL	0
-EL		India	8	EL8	6	5	MJ,A					EL	0
-EL		India	9	EL9	6	5	MJ,A					EL	0
-EL		India	10	EL10	6	5	MJ,A					EL	0
-EL		India	11	EL11	6	5	MJ,A					EL	0
-EL		India	12	EL12	6	5	MJ,A					EL	0
-EL		India	13	EL13	6	5	MJ,A					EL	0
-EL		India	14	EL14	6	5	MJ,A						
-EL		India	15	EL15	6	5	MJ,A						0
-EL		India	16	EL16	6	5	MJ,A						
-EL		India	17	EL17	6	5	MJ,A						
-EL		India	18	EL18	6	5	MJ,A						
-EL		India	19	EL19	6	5	MJ,A						
-EL		India	20	EL20	6	5	MJ,A						
-EL		India	21	EL21	6	5	MJ,A						
-EL		India	22	EL22	6	5	MJ,A						
-EL		India	23	EL23	6	5	MJ,A						
-HI	HO	Greek	1	GHI1	6	10							
-HI	HO	Greek	2	GHI2	6	10							
-HI	HO	Greek	3	GHI3	6	10							
-HI	HO	Greek	4	GHI4	6	10							
-PH		Phalanx	1	EPH1	7	10							
-PH		Phalanx	2	EPH2	7	10							
-PH		Phalanx	3	EPH3	7	10							
-PH		Phalanx	4	EPH4	7	10							
-PH		Hypaspists	1	HPH1	7	5							
-PH		Hypaspists	2	HPH2	7	5							
-PH		Hypaspists	3	HPH3	7	5							
-PH		Hypaspists	4	HPH4	7	5							
-PH		Argyraspids	1	APH1	8	5							
-PH		Argyraspids	2	APH2	8	5							
-PH		Argyraspids	3	APH3	8	5							
-PH		Argyraspids	4	APH4	8	5							
-LN		Slave		SLN	6	1							
-HC		Eumenes Agema		EAHC	7	3							
-HC		Companion	1	COHC1	8	4							
-HC		Companion	2	COHC2	8	4							
-HC		Peuc/Ant Agema		PAHC	7	3							
-HC		Elite	1	ELHC1	8	3							
-HC		Elite	2	ELHC2	8	3							
-HC		Carmania	1	CAHC1	7	4							
-HC		Carmania	2	CAHC2	7	4							
-LC		Thrace		THLC	6	2	MJ						
-LC		Paramasidia		PALC	6	5	MJ						
-LC		Arachosia	1	ARLC1	7	3	MJ						
-LC		Arachosia	2	ARLC2	7	3	MJ						
-LC		Mesopotamia		MELC	6	3	MA						
-LC		Arbelitis		ABLC	6	5	MA						
-LC		Drangiana		DRLC	6	5	MJ						
-LC		Areia		AELC	6	5	MJ						
-HC		Eudamus Agema		UAHC	7	3							
-LN		India		ILN	7	2							
-LC		Elite Archer		ELLC	8	1	MA						
+Kind	Subclass	Origin	Number	Unit code	TQ	Size	Missile	Hits	State	MissileStatus	StackedOn
+SK		Auxiliary Archers	1	AASK1	3	1	A							
+SK		Auxiliary Archers	2	AASK2	3	1	A							
+SK		Auxiliary Archers	3	AASK3	3	1	A							
+SK		Auxiliary Archers	4	AASK4	3	1	A							
+SK		Auxiliary Archers	5	AASK5	3	1	A							
+SK		Auxiliary Archers	6	AASK6	3	1	A							
+SK		Auxiliary Archers	7	AASK7	3	1	A							
+SK		Auxiliary Archers	8	AASK8	3	1	A							
+SK		Auxiliary Slingers	1	ASSK1	3	1	S							
+SK		Auxiliary Slingers	2	ASSK2	3	1	S							
+EL		India	1	EL1	6	5	MJ,A							
+EL		India	2	EL2	6	5	MJ,A							
+EL		India	3	EL3	6	5	MJ,A							
+EL		India	4	EL4	6	5	MJ,A							
+EL		India	5	EL5	6	5	MJ,A							
+EL		India	6	EL6	6	5	MJ,A							
+EL		India	7	EL7	6	5	MJ,A							
+EL		India	8	EL8	6	5	MJ,A							
+EL		India	9	EL9	6	5	MJ,A							
+EL		India	10	EL10	6	5	MJ,A							
+EL		India	11	EL11	6	5	MJ,A							
+EL		India	12	EL12	6	5	MJ,A							
+EL		India	13	EL13	6	5	MJ,A							
+EL		India	14	EL14	6	5	MJ,A							
+EL		India	15	EL15	6	5	MJ,A							
+EL		India	16	EL16	6	5	MJ,A							
+EL		India	17	EL17	6	5	MJ,A							
+EL		India	18	EL18	6	5	MJ,A							
+EL		India	19	EL19	6	5	MJ,A							
+EL		India	20	EL20	6	5	MJ,A							
+EL		India	21	EL21	6	5	MJ,A							
+EL		India	22	EL22	6	5	MJ,A							
+EL		India	23	EL23	6	5	MJ,A							
+HI	HO	Greek	1	GHI1	6	10								
+HI	HO	Greek	2	GHI2	6	10								
+HI	HO	Greek	3	GHI3	6	10								
+HI	HO	Greek	4	GHI4	6	10								
+PH		Phalanx	1	EPH1	7	10								
+PH		Phalanx	2	EPH2	7	10								
+PH		Phalanx	3	EPH3	7	10								
+PH		Phalanx	4	EPH4	7	10								
+PH		Hypaspists	1	HPH1	7	5								
+PH		Hypaspists	2	HPH2	7	5								
+PH		Hypaspists	3	HPH3	7	5								
+PH		Hypaspists	4	HPH4	7	5								
+PH		Argyraspids	1	APH1	8	5								
+PH		Argyraspids	2	APH2	8	5								
+PH		Argyraspids	3	APH3	8	5								
+PH		Argyraspids	4	APH4	8	5								
+LN		Slave		SLN	6	1								
+HC		Eumenes Agema		EAHC	7	3								
+HC		Companion	1	CHC1	7	4								
+HC		Companion	2	CHC2	7	4								
+HC		Peuc/Ant Agema		PAHC	7	3								
+HC		Elite	1	ELHC1	8	3								
+HC		Elite	2	ELHC2	8	3								
+HC		Carmania	1	CAHC1	7	4								
+HC		Carmania	2	CAHC2	7	4								
+LC		Thrace		THLC	6	2	MJ							
+LC		Paramasidia		PMLC	6	5	MJ							
+LC		Arachosia	1	ARLC1	7	3	MJ							
+LC		Arachosia	2	ARLC2	7	3	MJ							
+LC		Mesopotamia		MELC	6	3	MA							
+LC		Arbelitis		ABLC	6	5	MA							
+LC		Drangiana		DRLC	6	5	MJ							
+LC		Areia		AELC	6	5	MJ							
+HC		Eudamus Agema		UAHC	7	3								
+LN		India		ILN	7	2								
+LC		Elite Archer		ELLC	8	1	MA							
